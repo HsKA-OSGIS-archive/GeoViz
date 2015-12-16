@@ -1,0 +1,2 @@
+﻿Verarbeitete Datensätze, Lizenz der Originaldaten:
+Alle auf dem Downloadserver angebotenen Dateien, die auf OpenStreetMap-Daten basieren, stehen unter der Open Database License 1.0. Sie dürfen diese Daten beliebig weiterverwenden, müssen aber OpenStreetMap als Quelle angeben. Datenbanken, die auf Basis dieser Daten hergestellt werden, müssen die Lizenz beibehalten.

@@ -1,0 +1,2 @@
+Modified datasets, license of original datasets:
+All OpenStreetMap derived data on the download server is licensed under the Open Database License 1.0. You may use the data for any purpose, but you have to acknowledge OpenStreetMap as the data source. Derived databases have to retain the same license. 

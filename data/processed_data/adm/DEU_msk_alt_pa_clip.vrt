@@ -1,0 +1,58 @@
+<VRTDataset rasterXSize="135" rasterYSize="122" subClass="VRTWarpedDataset">
+  <SRS>GEOGCS["WGS 84",DATUM["unknown",SPHEROID["WGS84",6378137,298.257223563]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433]]</SRS>
+  <GeoTransform> 1.1530690627421755e+001, 8.3388587203523275e-003, 0.0000000000000000e+000, 5.0371628170016940e+001, 0.0000000000000000e+000,-8.3270488169702502e-003</GeoTransform>
+  <VRTRasterBand dataType="Int16" band="1" subClass="VRTWarpedRasterBand">
+    <Metadata>
+      <MDI key="STATISTICS_MAXIMUM">1006</MDI>
+      <MDI key="STATISTICS_MEAN">530.11609538003</MDI>
+      <MDI key="STATISTICS_MINIMUM">325</MDI>
+      <MDI key="STATISTICS_STDDEV">91.389991985592</MDI>
+    </Metadata>
+    <Description>DEU_msk_alt</Description>
+    <NoDataValue>-9.99900000000000E+003</NoDataValue>
+    <Histograms>
+      <HistItem>
+        <HistMin>324.5007331378299</HistMin>
+        <HistMax>1006.49926686217</HistMax>
+        <BucketCount>682</BucketCount>
+        <IncludeOutOfRange>0</IncludeOutOfRange>
+        <Approximate>0</Approximate>
+        <HistCounts>1|3|0|2|0|2|0|1|1|4|2|3|3|2|5|1|2|2|3|3|3|3|4|5|1|4|3|7|3|8|4|9|4|10|12|2|11|10|9|10|6|2|11|9|7|11|9|12|12|11|9|15|11|6|15|16|19|11|18|14|18|19|20|17|18|16|23|25|13|28|23|18|32|27|27|26|22|29|29|35|30|28|33|23|32|30|37|29|36|33|31|42|42|40|47|43|38|52|60|55|34|42|39|41|45|59|44|56|49|39|51|48|52|39|41|40|47|49|36|56|40|44|40|52|45|32|50|43|33|44|49|49|60|39|52|54|50|58|45|44|46|26|45|52|46|46|38|48|40|44|50|37|43|32|53|61|54|64|47|56|47|50|51|39|54|66|58|70|53|77|47|56|81|58|65|58|70|63|60|59|62|65|62|44|63|51|59|57|60|58|57|65|68|61|59|66|50|74|54|72|55|58|63|68|57|82|54|73|76|64|47|58|59|70|68|62|56|66|52|50|68|61|61|59|63|52|62|72|62|56|54|48|54|57|48|59|54|48|55|44|51|55|47|53|40|45|60|43|52|39|53|48|47|47|60|46|48|56|38|37|41|37|50|54|44|36|37|38|49|34|49|47|34|38|42|27|43|35|45|25|39|30|37|39|36|34|42|33|35|35|25|31|22|22|29|27|38|30|30|29|23|20|29|30|23|25|25|25|35|23|19|23|22|21|21|15|19|25|19|14|13|11|26|22|16|24|17|17|24|14|20|16|14|17|17|14|23|18|16|16|16|16|18|9|17|9|20|16|12|11|13|8|8|10|13|10|14|15|8|12|8|15|18|13|8|9|10|5|10|11|11|8|10|10|7|11|7|9|8|16|9|4|15|9|8|14|4|9|7|5|9|13|9|3|5|12|9|8|5|3|6|4|10|2|5|7|3|9|9|8|10|5|7|5|6|7|8|3|4|4|6|7|7|4|12|3|3|3|4|4|5|6|3|8|7|4|14|6|7|6|2|5|6|6|4|4|2|4|1|2|2|2|3|4|1|3|2|3|1|3|3|2|4|0|1|2|1|5|4|3|4|2|2|1|1|4|0|2|5|3|2|3|1|3|3|2|0|1|1|1|1|2|1|3|1|2|0|3|1|0|1|3|0|1|0|3|1|2|0|0|1|4|2|0|2|1|0|1|0|0|0|1|1|0|0|1|0|1|4|0|1|0|3|1|1|0|0|1|0|0|1|0|0|0|0|1|0|0|1|0|0|0|0|1|1|1|0|0|1|1|0|1|0|0|1|0|0|0|1|0|0|2|0|0|1|0|0|0|0|0|0|0|0|1|0|0|0|0|0|0|2|0|0|0|0|0|0|0|0|1|0|0|0|0|0|0|0|0|1|0|0|1|0|0|0|0|0|0|0|0|1|0|0|0|0|0|0|0|0|0|0|0|1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|1|0|0|0|0|0|1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|1</HistCounts>
+      </HistItem>
+    </Histograms>
+  </VRTRasterBand>
+  <BlockXSize>135</BlockXSize>
+  <BlockYSize>122</BlockYSize>
+  <GDALWarpOptions>
+    <WarpMemoryLimit>6.71089e+007</WarpMemoryLimit>
+    <ResampleAlg>NearestNeighbour</ResampleAlg>
+    <WorkingDataType>Int16</WorkingDataType>
+    <Option name="INIT_DEST">NO_DATA</Option>
+    <Option name="CUTLINE">MULTIPOLYGON (((687.68290279792689 701.3126423309177,687.68290279792689 579.40464277415322,822.77241947121536 579.40464277415322,822.77241947121536 701.3126423309177,687.68290279792689 701.3126423309177)))</Option>
+    <Option name="EXTRA_ELTS">1</Option>
+    <Option name="EXTRA_ELTS">1</Option>
+    <SourceDataset relativeToVRT="0">C:/OSG/data/original_data/ADM/DEU_msk_alt.vrt</SourceDataset>
+    <Transformer>
+      <ApproxTransformer>
+        <MaxError>0.125</MaxError>
+        <BaseTransformer>
+          <GenImgProjTransformer>
+            <SrcGeoTransform>5.7999999999999998,0.0083333330000000001,0,55.200000000000003,0,-0.0083333330000000001</SrcGeoTransform>
+            <SrcInvGeoTransform>-696.00002784000105,120.0000048000002,0,6624.000264960011,0,-120.0000048000002</SrcInvGeoTransform>
+            <DstGeoTransform>11.530690627421755,0.0083388587203523275,0,50.37162817001694,0,-0.0083270488169702502</DstGeoTransform>
+            <DstInvGeoTransform>-1382.7660371891477,119.92048714764036,0,6049.1573037690405,0,-120.09056533474778</DstInvGeoTransform>
+          </GenImgProjTransformer>
+        </BaseTransformer>
+      </ApproxTransformer>
+    </Transformer>
+    <BandList>
+      <BandMapping src="1" dst="1">
+        <SrcNoDataReal>-9999</SrcNoDataReal>
+        <SrcNoDataImag>0</SrcNoDataImag>
+        <DstNoDataReal>-9999</DstNoDataReal>
+        <DstNoDataImag>0</DstNoDataImag>
+      </BandMapping>
+    </BandList>
+    <Cutline>MULTIPOLYGON (((687.68290279792689 701.3126423309177,687.68290279792689 579.40464277415322,822.77241947121536 579.40464277415322,822.77241947121536 701.3126423309177,687.68290279792689 701.3126423309177)))</Cutline>
+  </GDALWarpOptions>
+</VRTDataset>

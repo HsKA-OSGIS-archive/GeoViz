@@ -1,0 +1,97 @@
+Replace NULL-Values (for calculation purposes):
+CASE WHEN "MESSW_KE" IS NULL THEN to_real(0) ELSE  "MESSW_KE" END 
+
+MIN-Value > 0:
+CASE WHEN "MESSW_KE" > to_real(0) THEN
+	CASE WHEN "MESSW_EG" > to_real(0) THEN
+		CASE WHEN "MESSW_1G" > to_real(0) THEN
+			CASE WHEN "MESSW_KE" < "MESSW_EG" THEN
+				CASE WHEN "MESSW_KE" < "MESSW_1G" THEN
+					to_real("MESSW_KE")
+				ELSE
+					to_real("MESSW_1G")
+				END
+			ELSE
+				CASE WHEN "MESSW_EG" < "MESSW_1G" THEN
+					to_real("MESSW_EG")
+				ELSE
+					to_real("MESSW_1G")
+				END
+			END
+		ELSE
+			CASE WHEN "MESSW_KE" < "MESSW_EG" THEN
+				to_real("MESSW_KE")
+			ELSE
+				to_real("MESSW_EG")
+			END
+		END
+	ELSE
+		CASE WHEN "MESSW_1G" > to_real(0) THEN
+			CASE WHEN "MESSW_KE" < "MESSW_1G" THEN
+				to_real("MESSW_KE")
+			ELSE
+				to_real("MESSW_1G")
+			END
+		ELSE
+			to_real("MESSW_KE")
+		END
+	END
+ELSE
+	CASE WHEN "MESSW_EG" > to_real(0) THEN
+		CASE WHEN "MESSW_1G" > to_real(0) THEN
+			CASE WHEN "MESSW_EG" < "MESSW_1G" THEN
+				to_real("MESSW_EG")
+			ELSE
+				to_real("MESSW_1G")
+			END
+		ELSE
+			to_real("MESSW_EG")
+		END
+	ELSE
+		to_real("MESSW_1G")
+	END
+END
+
+AVG-Value (only values > 0):
+
+CASE WHEN "MESSW_KE" > to_real(0) AND "MESSW_EG" > to_real(0) AND "MESSW_1G" > to_real(0) THEN 
+	("MESSW_KE"+"MESSW_EG"+"MESSW_1G")/3
+ELSE
+	CASE WHEN "MESSW_KE" > to_real(0) AND "MESSW_EG" > to_real(0) AND "MESSW_1G" = to_real(0) THEN 
+		("MESSW_KE" + "MESSW_EG")/2
+	ELSE
+		CASE WHEN "MESSW_KE" > to_real(0) AND "MESSW_EG" = to_real(0) AND "MESSW_1G" > to_real(0) THEN
+			("MESSW_KE" + "MESSW_1G")/2
+		ELSE
+			CASE WHEN "MESSW_KE" = to_real(0) AND "MESSW_EG" > to_real(0) AND "MESSW_1G" > to_real(0) THEN
+				("MESSW_EG" + "MESSW_1G")/2
+			ELSE
+				CASE WHEN "MESSW_KE" > to_real(0) AND "MESSW_EG" = to_real(0) AND "MESSW_1G" = to_real(0) THEN
+					"MESSW_KE"
+				ELSE
+					CASE WHEN "MESSW_KE" = to_real(0) AND "MESSW_EG" > to_real(0) AND "MESSW_1G" = to_real(0) THEN
+						"MESSW_EG"
+					ELSE 
+						CASE WHEN "MESSW_KE" = to_real(0) AND "MESSW_EG" = to_real(0) AND "MESSW_1G" > to_real(0) THEN "MESSW_1G" END
+					END
+				END
+			END
+		END
+	END
+END
+
+MAX-Value:
+
+CASE WHEN "MESSW_KE" > "MESSW_EG" THEN
+	CASE WHEN "MESSW_KE" > "MESSW_1G" THEN
+		to_real("MESSW_KE")
+	ELSE
+		to_real("MESSW_1G")
+	END
+ELSE
+	CASE WHEN "MESSW_EG" > "MESSW_1G" THEN
+		to_real("MESSW_EG")
+	ELSE
+		to_real("MESSW_1G")
+	END
+END
