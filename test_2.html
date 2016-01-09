@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+   <script type="text/javascript" src="./lib/d3.js"></script>
+    <style>
+      .axis path {
+      stroke-width: 1px;
+      fill: none;
+      stroke: black;
+    } 
+    </style>
+
+    
+  </head>
+
+  <body>
+    <div id="diagram">
+
+    </div>
+
+    <!--script to load asynchronous JavaScript, otherwise DOM is not ready when the script is loaded-->
+    <script language="javascript" type="text/javascript">
+      function loadScriptAfter() {
+        var script = document.createElement("script");
+        script.src = "./js/diagram3.js";
+        document.body.appendChild(script);
+      }
+
+      if (window.addEventListener) {
+        window.addEventListener("load", loadScriptAfter);
+      } else if (window.attachEvent) {
+        window.attachEvent("onload", loadScriptAfter);
+      } else {
+        window.onload = loadScriptAfter;
+      }
+    </script>
+  </body>
+
+</html>
