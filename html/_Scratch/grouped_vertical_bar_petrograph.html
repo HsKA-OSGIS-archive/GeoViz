@@ -1,0 +1,215 @@
+<!--based on: http://bl.ocks.org/erikvullings/51cc5332439939f1f292 / https://gist.github.com/erikvullings/51cc5332439939f1f292 -->
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+/*
+.chart rect {
+  fill: steelblue;
+}
+*/
+.chart .legend {
+  fill: black;
+  font: 14px sans-serif;
+  text-anchor: start;
+  font-size: 12px;
+}
+
+.chart text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: end;
+}
+
+.chart .label {
+  fill: black;
+  font: 14px sans-serif;
+  text-anchor: end;
+}
+
+.bar:hover {
+  fill: brown;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  stroke-width: 6;
+  shape-rendering: crispEdges;
+}
+
+
+</style>
+<svg class="chart"></svg>
+<script src="/GeoViz_local/lib/d3.min.js"></script>
+<script>
+var labels = [];
+var values_raumluft = [];
+var values_bodenluft = [];
+var values_odl = [];
+
+/*d3.csv("/data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv", function(statistics) {
+
+			var rateByAVG = {};
+				
+			statistics.forEach(function (d) { // <-B
+				labels.push(d.ID_2);
+				values_raumluft.push(d.AVG_MW_RL);
+				values_bodenluft.push(d.AVG_MW_BL);
+				values_odl.push(d.AVG_MW_ODL);
+				console.log(d.ID_2,d.NAME_2);
+                //rateByAVG[d.ID_2] = Math.round( d.AVG_MW_RL );
+				//console.log(d.ID_2, d.NAME_2, rateByAVG[d.ID_2])
+			});	
+});*/
+/*var data = {
+  labels: [
+    'resilience', 'maintainability', 'accessibility',
+    'uptime', 'functionality', 'impact'
+  ],
+  series: [
+    {
+      label: '2012',
+      values: [4, 8, 15, 16, 23, 42]
+    },
+    {
+      label: '2013',
+      values: [12, 43, 22, 11, 73, 25]
+    },
+    {
+      label: '2014',
+      values: [31, 28, 14, 8, 15, 21]
+    },]
+};*/
+
+var data = {
+  // id and name of counties:
+  labels: [
+    '24,Sand/Kies/Schotter', '85,Sand/Kies', '503,Ton/Sand/Kies/Braunkohle', '508,Kies/Sand/Ton', '546,Sand/Ton/gelegentlichKonglomerat', '583,Ton/Tonmergelstein/Kalksandstein/Mergelstein/oolithischerKalkstein/Eisenerz-Floeze','590,Ton-/Sand-/Mergelstein','596,Sandstein/Tonstein/Wechsellagen_mit_dolomitischen_Einlagerungen','597,Tonstein_mit Lagen_von_Steinmergel_und_Gips','602,Kalkstein/Mergelstein/Dolomitstein/Tonstein','608,Sandstein/Schluffstein/Tonstein','659,Sandstein/Tonstein','660,Schieferton/Sandstein/Konglomerat/Kohle/Porphyrbreccie/Tuff','670,Grauwacke/Tonschiefer/Plattenkalk/Kieselkalk/Kieselschiefer/Alaunschiefer','679,Tonschiefer/Quarzit/Kieselschiefer/Sandstein/Kalkstein/basischerTuff','712,Tonschiefer/Quarzit/Geroellquarzit','715,Phyllit', '720,Phyllit/Kalkphyllit/Quarzit/Grauwacke', '721,Glimmerschiefer', '750,Hornblendebaendergneis', '760,Glimmerschiefer', '761,Paragneis', '766,Marmor(Kalk-/Dolomit-/Kalksilikatfels-)', '770,Paragneis', '771,Amphibolit','791,Alkalibasalt/Basanit/Tephrit/Nephelinit/Tholeyitbasalt/Olivinbasalt/Andesit', '833,Granit/Granodiorit', '834,Granit', '838,Diorit/Redwitzit', '842,mikrogranitoidesGanggestein','845,Orthogneis:granitisch/granodioritisch','858,none','999,none'
+  ],
+  series: [
+	{
+	  // values for basement:
+      label: 'basement',
+      values: [0.0000000000,0.0000000000,0.0000000000,0.0000000000,0.0000000000,0.0000000000,63.000000000,0.0000000000,0.0000000000,0.0000000000,0.0000000000,0.0000000000,0.0000000000,309.00000000,108.00000000,0.0000000000,0.0000000000,0.0000000000,0.0000000000,0.0000000000,0.0000000000,0.0000000000,0.0000000000,0.0000000000,0.0000000000,0.0000000000,0.0000000000,0.0000000000,0.0000000000,0.0000000000,0.0000000000,0.0000000000,518.00000000]
+    },
+	{
+	  // values for ground floor:
+      label: 'ground floor',
+      values: [50.6923076923076923,54.1304347826086957,52.2000000000000000,76.1477272727272727,50.0000000000000000,61.4000000000000000,30.0000000000000000,56.9230769230769231,38.2222222222222222,43.8787878787878788,51.3571428571428571,42.2777777777777778,46.4827586206896552,609.0000000000000000,134.5000000000000000,48.9000000000000000,95.0246913580246914,256.0526315789473684,92.9333333333333333,44.6000000000000000,106.0304878048780488,103.6129032258064516,73.6190476190476190,75.7500000000000000,60.6000000000000000,117.2500000000000000,272.9615384615384615,163.1173184357541899,95.4736842105263158,0.00000000000000000000,149.3636363636363636,70.4871794871794872,212.0000000000000000]
+    },
+	{
+	  // values for first floor:
+      label: 'first floor',
+      values: [170.00000000,0.0000000000,56.000000000,73.000000000,47.000000000,86.000000000,0.0000000000,88.000000000,39.000000000,34.000000000,39.000000000,60.000000000,28.000000000,0.0000000000,0.0000000000,0.0000000000,411.00000000,769.00000000,264.00000000,146.00000000,537.00000000,110.00000000,608.00000000,361.00000000,145.00000000,496.00000000,845.00000000,838.00000000,77.000000000,0.0000000000,515.00000000,175.00000000,0.0000000000]
+    }
+	]
+};
+
+var chartWidth       = 700,
+    barHeight        = 20,
+    groupHeight      = barHeight * data.series.length,
+    gapBetweenGroups = 30,
+    spaceForLabels   = 600,
+    spaceForLegend   = 300;
+
+// Zip the series data together (bodenluft / odl / raumluft values)
+var zippedData = [];
+for (var i=0; i<data.labels.length; i++) {
+  for (var j=0; j<data.series.length; j++) {
+    zippedData.push(data.series[j].values[i]);
+  }
+}
+
+// Color scale
+var color = d3.scale.category20();
+var chartHeight = barHeight * zippedData.length + gapBetweenGroups * data.labels.length;
+
+var x = d3.scale.linear()
+    .domain([0, d3.max(zippedData)])
+    .range([0, chartWidth]);
+
+var y = d3.scale.linear()
+    .range([chartHeight + gapBetweenGroups, 0]);
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .tickFormat('')
+    .tickSize(0)
+    .orient("left");
+
+// Specify the chart area and dimensions
+var chart = d3.select(".chart")
+    .attr("width", spaceForLabels + chartWidth + spaceForLegend)
+    .attr("height", chartHeight);
+
+// Create bars
+var bar = chart.selectAll("g")
+    .data(zippedData)
+    .enter().append("g")
+    .attr("transform", function(d, i) {
+      return "translate(" + spaceForLabels + "," + (i * barHeight + gapBetweenGroups * (0.5 + Math.floor(i/data.series.length))) + ")";
+    });
+
+// Create rectangles of the correct width
+bar.append("rect")
+    .attr("fill", function(d,i) { return color(i % data.series.length); })
+    .attr("class", "bar")
+    .attr("width", x)
+    .attr("height", barHeight - 1);
+
+// Add text label in bar
+bar.append("text")
+    .attr("x", function(d) { return x(d) - 3; })
+    .attr("y", barHeight / 2)
+    .attr("fill", "red")
+    .attr("dy", ".35em")
+    .text(function(d) { return d; });
+
+// Draw labels
+bar.append("text")
+    .attr("class", "label")
+    .attr("x", function(d) { return - 10; })
+    .attr("y", groupHeight / 2)
+    .attr("dy", ".35em")
+    .text(function(d,i) {
+      if (i % data.series.length === 0)
+        return data.labels[Math.floor(i/data.series.length)];
+      else
+        return ""});
+
+chart.append("g")
+      .attr("class", "y axis")
+      .attr("transform", "translate(" + spaceForLabels + ", " + -gapBetweenGroups/2 + ")")
+      .call(yAxis);
+
+// Draw legend
+var legendRectSize = 18,
+    legendSpacing  = 4;
+
+var legend = chart.selectAll('.legend')
+    .data(data.series)
+    .enter()
+    .append('g')
+    .attr('transform', function (d, i) {
+        var height = legendRectSize + legendSpacing;
+        var offset = -gapBetweenGroups/2;
+        var horz = spaceForLabels + chartWidth + 40 - legendRectSize;
+        var vert = i * height - offset;
+        return 'translate(' + horz + ',' + vert + ')';
+    });
+
+legend.append('rect')
+    .attr('width', legendRectSize)
+    .attr('height', legendRectSize)
+    .style('fill', function (d, i) { return color(i); })
+    .style('stroke', function (d, i) { return color(i); });
+
+legend.append('text')
+    .attr('class', 'legend')
+    .attr('x', legendRectSize + legendSpacing)
+    .attr('y', legendRectSize - legendSpacing)
+    .text(function (d) { return d.label; });
+
+</script>

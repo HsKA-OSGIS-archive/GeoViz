@@ -1,0 +1,302 @@
+/*Basic reset*/
+* {margin: 0; padding: 0;}
+
+body {
+	background: #FFFFFF;
+	font-family: Nunito, arial, verdana;
+}
+.menuData{
+	height:auto;
+	width: 200px;
+	background:#FFFFFF;
+}
+#toggle1{
+	height:200px;
+	overflow: auto;
+}
+#accordian {
+	background: #FFFFFF;
+	margin: 0px auto 0 auto;
+	color: black;
+	/*Some cool shadow and glow effect*/
+	box-shadow: 
+		0 0px 0px 0px rgba(0, 0, 0, 0), 
+		0 0 0px 0px rgba(0, 0, 0, 0);
+        height: auto;
+        overflow: hidden;
+	overflow: noscroll;
+	position: fixed;
+	height: 97%;
+}
+/*heading styles*/
+#accordian h2 {
+	font-size: 12px;
+	line-height: 34px;
+	padding: 0 10px;
+	cursor: pointer;
+	/*fallback for browsers not supporting gradients*/
+	color: black;
+    display: inline-block;
+}
+
+/*heading hover effect*/
+#accordian h2:hover {
+	text-shadow: 0 0 1px rgba(255, 255, 255, 0.7);
+}
+/*iconfont styles*/
+
+/*list items*/
+#accordian li {
+	list-style-type: none;
+}
+/*links*/
+#accordian ul ul li a{
+	text-decoration: none;
+	font-size: 11px;
+	line-height: 27px;
+	display: block;
+	padding: 0 15px;
+	/*transition for smooth hover animation*/
+	transition: all 0.15s;
+}
+/*hover effect on links*/
+#myButton{
+    display: inline-block;
+   
+}
+/*Lets hide the non active LIs by default*/
+#accordian ul ul {
+	display: block;
+}
+#accordian ul li ul li ul{
+        border-left: 5px solid #bbb;
+        width: 250px;
+        margin-left: 10px;
+        color: black;    
+}
+#accordian ul li ul li ul:last-child{
+        width: 250px;
+        margin-left: 10px;
+        color: black;    
+}
+#accordian ul li ul li ul li:hover{
+	display: inline-block;
+        border-left: 4.55px solid #888888;
+        color: black;
+        overflow: hidden;
+        margin-left: -4px;
+        
+}
+#accordian ul li ul li ul li:last-child{
+	display: inline-block;
+        color: black;
+        overflow: hidden;
+        margin-left: -4px;        
+}
+#accordian ul li ul li ul li a:hover{
+	width: 200px;
+        display: inline-block;
+        padding: 2px;
+        margin-left: 10px;
+        color: gray;
+        cursor: pointer;
+}
+
+#accordian ul li ul li ul li{
+	display: inline-block;
+}
+#accordian li.active ul {
+	display: block;
+}
+#dots{
+    width: 5px;
+    height: 5px;
+    display: inline-block;
+    padding: 2px;
+    margin-right: 5px;
+    background: url(../logo/dots.png) no-repeat center;
+}
+#logo{
+    height: 175px;
+    width: 300px;
+    padding: 5px;
+    margin-left: 10px;
+  /* background: url(../logo/logo.png) no-repeat center;   */
+    background-color: #DDD;
+}
+#p5{
+    height: 175px;
+    width: 300px;
+    padding: 5px;
+    margin-left: 10px;
+    background: url(../logo/p5.png) no-repeat center;  
+}
+
+#p6{
+    height: 175px;
+    width: 300px;
+    padding: 5px;
+    margin-left: 10px;
+    background: url(../logo/p6.png) no-repeat center;  
+}
+
+#p7{
+    height: 175px;
+    width: 300px;
+    padding: 5px;
+    margin-left: 10px;
+    background: url(../logo/p7.png) no-repeat center;  
+}
+
+.plus{
+    height: 25px;
+    padding: 0px;
+    margin: 0px;
+    display: inline-block;
+    width: 30px;
+    background: url(../logo/zoom_in.png) no-repeat center;
+}
+.minus{
+    height: 25px;
+    width: 30px;
+    padding: 0px;
+    margin: 0px;
+    display: inline-block;
+    background: url(../logo/zoom_out.png)no-repeat center;
+}
+.print{
+    height: 25px;
+    width: 30px;
+    padding: 0px;
+    margin: 0px;
+    display: inline-block;
+     background: url(../logo/print.png)no-repeat center;
+}
+.language{
+    height: 25px;
+    width:30px;
+    padding: 0px;
+    padding: 0px;
+    margin: 0px;
+    display: inline-block;
+    background: url(../logo/language_de.png)no-repeat center;
+}
+.help{
+    height: 25px;
+    width: 30px;
+    padding: 0px;
+    padding: 0px;
+    margin: 0px;
+    display: inline-block;
+    background: url(../logo/help.png)no-repeat center;
+}
+#horizotalBar{
+    height: 5px;
+    width: 340px;
+    margin-left: 0px;
+    background: url(../logo/bar.png) no-repeat center;
+}
+#collapse_top{
+    height: 40px;
+    width: 50px;
+    padding: 4px;
+    margin-left: 180px;
+    background: url(../logo/collapse_top_1.png) no-repeat center;
+}
+#collapse_left{
+    height: 40px;
+    width: 60px;
+    padding: 4px;
+    margin-left: 180px;
+    background: url(../logo/collapse_left.png) no-repeat center right;
+}
+#s{
+	/* The search text box. */
+	border:none;
+	color:#888888;
+	background:url("../logo/search.png") no-repeat right center;
+	float:right;
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:15px;
+	height:36px;
+	line-height:36px;
+	margin-right: 5px;
+	outline:medium none;
+	padding:0 0 0 35px;
+	text-shadow:1px 1px 0 white;
+}
+.options{
+    width: 200px;
+    height: 30px;
+    margin-left: 80px;
+}
+
+///////////////////
+/*------------------------------------*\
+-------- Page Styles: Accordion
+\*------------------------------------*/
+body {
+	position:relative;
+	z-index:0;
+}
+.main:before {
+	width:100%;
+	height:100%;
+	position:absolute;
+	top:0px;
+	left:0px;
+	z-index:-1;
+	content:'';
+	background:-webkit-radial-gradient(30%, rgba(255,255,255,0.15), rgba(0,0,0,0)), url('img/body-bg.png');
+	background:-moz-radial-gradient(30%, rgba(255,255,255,0.15), rgba(0,0,0,0)), url('img/body-bg.png');
+	background:-o-radial-gradient(30%, rgba(255,255,255,0.15), rgba(0,0,0,0)), url('img/body-bg.png');
+	background:radial-gradient(30%, rgba(255,255,255,0.15), rgba(0,0,0,0)), url('img/body-bg.png');
+}
+
+.site-header-wrap {
+	margin-bottom:60px;
+	border-bottom:1px solid #cd9ad6;
+}
+
+/*------------------------------------*\
+-------- DEMO Code: accordion
+\*------------------------------------*/
+/*----- Accordion -----*/
+.accordion, .accordion * {
+	-webkit-box-sizing:border-box; 
+	-moz-box-sizing:border-box; 
+	box-sizing:border-box;
+}
+
+.accordion {
+	overflow:hidden;
+	box-shadow:0px 1px 3px rgba(0,0,0,0.25);
+	border-radius:3px;
+}
+
+/*----- Section Titles -----*/
+.accordion-section-title {
+	width:300px;
+	padding:15px;
+	display:inline-block;
+	border-bottom:1px solid #1a1a1a;
+	transition:all linear 0.15s;
+	color: black;
+}
+
+.accordion-section-title.active, .accordion-section-title:hover {
+	/* Type */
+	text-decoration:none;
+}
+
+.accordion-section:last-child .accordion-section-title {
+	border-bottom:none;
+}
+
+/*----- Section Content -----*/
+.accordion-section-content {
+	padding:15px;
+	display:none;
+	height:200px;
+	overflow-y:auto;
+}

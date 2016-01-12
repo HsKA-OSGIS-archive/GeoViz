@@ -1,0 +1,178 @@
+Bodenluft:
+
+SELECT
+  bodenluft_4326_attributes_total."GEO" AS GEO,
+  bodenluft_4326_attributes_total."PETROGRAPH" AS PETROGRAPH,
+  MIN(bodenluft_4326_attributes_total."MESSW_BL") AS BL_MIN,
+  AVG(bodenluft_4326_attributes_total."MESSW_BL") AS BL_AVG,
+  MAX(bodenluft_4326_attributes_total."MESSW_BL") AS BL_MAX
+FROM 
+  public.bodenluft_4326_attributes_total
+WHERE
+  public.bodenluft_4326_attributes_total."MESSW_BL" > 0
+GROUP BY
+  bodenluft_4326_attributes_total."GEO", bodenluft_4326_attributes_total."PETROGRAPH"
+ORDER BY GEO;
+  
+ODL:
+
+SELECT
+  odl_4326_attributes_total."GEO" AS GEO,
+  odl_4326_attributes_total."PETROGRAPH" AS PETROGRAPH,
+  MIN(odl_4326_attributes_total."MESSW_ODL") AS ODL_MIN,
+  AVG(odl_4326_attributes_total."MESSW_ODL") AS ODL_AVG,
+  MAX(odl_4326_attributes_total."MESSW_ODL") AS ODL_MAX
+FROM 
+  public.odl_4326_attributes_total
+WHERE
+  public.odl_4326_attributes_total."MESSW_ODL" > 0
+GROUP BY
+  odl_4326_attributes_total."GEO", odl_4326_attributes_total."PETROGRAPH"
+ORDER BY GEO;
+  
+Raumluft:
+- calculated values:
+SELECT
+  raumluft_4326_statistics_attributes_total."GEO" AS GEO,
+  raumluft_4326_statistics_attributes_total."PETROGRAPH" AS PETROGRAPH,
+  MIN(raumluft_4326_statistics_attributes_total."MIN_MW") AS RL_MIN,
+  AVG(raumluft_4326_statistics_attributes_total."AVG_MW") AS RL_AVG,
+  MAX(raumluft_4326_statistics_attributes_total."MAX_MW") AS RL_MAX
+FROM 
+  public.raumluft_4326_statistics_attributes_total
+GROUP BY
+  raumluft_4326_statistics_attributes_total."GEO", raumluft_4326_statistics_attributes_total."PETROGRAPH"
+ORDER BY GEO;
+  
+- KE:
+SELECT
+  raumluft_4326_statistics_attributes_total."GEO" AS GEO,
+  raumluft_4326_statistics_attributes_total."PETROGRAPH" AS PETROGRAPH,
+  MIN(raumluft_4326_statistics_attributes_total."MESSW_KE") AS RL_KE_MIN,
+  AVG(raumluft_4326_statistics_attributes_total."MESSW_KE") AS RL_KE_AVG,
+  MAX(raumluft_4326_statistics_attributes_total."MESSW_KE") AS RL_KE_MAX
+FROM 
+  public.raumluft_4326_statistics_attributes_total
+WHERE
+  public.raumluft_4326_statistics_attributes_total."MESSW_KE" > 0
+GROUP BY
+  raumluft_4326_statistics_attributes_total."GEO", raumluft_4326_statistics_attributes_total."PETROGRAPH"
+ORDER BY GEO;
+
+-EG:
+SELECT
+  raumluft_4326_statistics_attributes_total."GEO" AS GEO,
+  raumluft_4326_statistics_attributes_total."PETROGRAPH" AS PETROGRAPH,
+  MIN(raumluft_4326_statistics_attributes_total."MESSW_EG") AS RL_EG_MIN,
+  AVG(raumluft_4326_statistics_attributes_total."MESSW_EG") AS RL_EG_AVG,
+  MAX(raumluft_4326_statistics_attributes_total."MESSW_EG") AS RL_EG_MAX
+FROM 
+  public.raumluft_4326_statistics_attributes_total
+WHERE
+  public.raumluft_4326_statistics_attributes_total."MESSW_EG" > 0
+GROUP BY
+  raumluft_4326_statistics_attributes_total."GEO", raumluft_4326_statistics_attributes_total."PETROGRAPH"
+ORDER BY GEO;
+
+
+-1G:
+SELECT
+  raumluft_4326_statistics_attributes_total."GEO" AS GEO,
+  raumluft_4326_statistics_attributes_total."PETROGRAPH" AS PETROGRAPH,
+  MIN(raumluft_4326_statistics_attributes_total."MESSW_1G") AS RL_1G_MIN,
+  AVG(raumluft_4326_statistics_attributes_total."MESSW_1G") AS RL_1G_AVG,
+  MAX(raumluft_4326_statistics_attributes_total."MESSW_1G") AS RL_1G_MAX
+FROM 
+  public.raumluft_4326_statistics_attributes_total
+WHERE
+  public.raumluft_4326_statistics_attributes_total."MESSW_1G" > 0
+GROUP BY
+  raumluft_4326_statistics_attributes_total."GEO", raumluft_4326_statistics_attributes_total."PETROGRAPH"
+ORDER BY GEO;
+
+all three floors:
+SELECT
+  raumluft_4326_statistics_attributes_total."GEO" AS GEO,
+  raumluft_4326_statistics_attributes_total."PETROGRAPH" AS PETROGRAPH,
+  MIN(raumluft_4326_statistics_attributes_total."MESSW_KE") AS RL_KE,
+  AVG(raumluft_4326_statistics_attributes_total."MESSW_EG") AS RL_EG,
+  MAX(raumluft_4326_statistics_attributes_total."MESSW_1G") AS RL_1G
+FROM 
+  public.raumluft_4326_statistics_attributes_total
+GROUP BY
+  raumluft_4326_statistics_attributes_total."GEO", raumluft_4326_statistics_attributes_total."PETROGRAPH"
+ORDER BY GEO;
+  
+  
+  total:
+  SELECT *
+FROM
+  (SELECT
+  bodenluft_4326_attributes_total."PETROGRAPH" AS PETROGRAPH, 
+  MIN(bodenluft_4326_attributes_total."MESSW_BL") AS BL_MIN,
+  AVG(bodenluft_4326_attributes_total."MESSW_BL") AS BL_AVG,
+  MAX(bodenluft_4326_attributes_total."MESSW_BL") AS BL_MAX
+FROM 
+  public.bodenluft_4326_attributes_total
+WHERE
+  public.bodenluft_4326_attributes_total."MESSW_BL" > 0
+GROUP BY
+  bodenluft_4326_attributes_total."PETROGRAPH") AS query1,
+  (SELECT
+  odl_4326_attributes_total."PETROGRAPH" AS PETROGRAPH, 
+  MIN(odl_4326_attributes_total."MESSW_ODL") AS ODL_MIN,
+  AVG(odl_4326_attributes_total."MESSW_ODL") AS ODL_AVG,
+  MAX(odl_4326_attributes_total."MESSW_ODL") AS ODL_MAX
+FROM 
+  public.odl_4326_attributes_total
+WHERE
+  public.odl_4326_attributes_total."MESSW_ODL" > 0
+GROUP BY
+  odl_4326_attributes_total."PETROGRAPH") AS query2,
+  (SELECT
+  raumluft_4326_statistics_attributes_total."PETROGRAPH" AS PETROGRAPH, 
+  MIN(raumluft_4326_statistics_attributes_total."MIN_MW") AS RL_MIN,
+  AVG(raumluft_4326_statistics_attributes_total."AVG_MW") AS RL_AVG,
+  MAX(raumluft_4326_statistics_attributes_total."MAX_MW") AS RL_MAX
+FROM 
+  public.raumluft_4326_statistics_attributes_total
+GROUP BY
+  raumluft_4326_statistics_attributes_total."PETROGRAPH") AS query3,
+  (SELECT
+  raumluft_4326_statistics_attributes_total."PETROGRAPH" AS PETROGRAPH, 
+  MIN(raumluft_4326_statistics_attributes_total."MESSW_KE") AS RL_KE_MIN,
+  AVG(raumluft_4326_statistics_attributes_total."MESSW_KE") AS RL_KE_AVG,
+  MAX(raumluft_4326_statistics_attributes_total."MESSW_KE") AS RL_KE_MAX
+FROM 
+  public.raumluft_4326_statistics_attributes_total
+WHERE
+  public.raumluft_4326_statistics_attributes_total."MESSW_KE" > 0
+GROUP BY
+  raumluft_4326_statistics_attributes_total."PETROGRAPH") AS query4,
+  (SELECT
+  raumluft_4326_statistics_attributes_total."PETROGRAPH" AS PETROGRAPH, 
+  MIN(raumluft_4326_statistics_attributes_total."MESSW_EG") AS RL_EG_MIN,
+  AVG(raumluft_4326_statistics_attributes_total."MESSW_EG") AS RL_EG_AVG,
+  MAX(raumluft_4326_statistics_attributes_total."MESSW_EG") AS RL_EG_MAX
+FROM 
+  public.raumluft_4326_statistics_attributes_total
+WHERE
+  public.raumluft_4326_statistics_attributes_total."MESSW_EG" > 0
+GROUP BY
+  raumluft_4326_statistics_attributes_total."PETROGRAPH") AS query5,
+  (SELECT
+  raumluft_4326_statistics_attributes_total."PETROGRAPH" AS PETROGRAPH, 
+  MIN(raumluft_4326_statistics_attributes_total."MESSW_1G") AS RL_1G_MIN,
+  AVG(raumluft_4326_statistics_attributes_total."MESSW_1G") AS RL_1G_AVG,
+  MAX(raumluft_4326_statistics_attributes_total."MESSW_1G") AS RL_1G_MAX
+FROM 
+  public.raumluft_4326_statistics_attributes_total
+WHERE
+  public.raumluft_4326_statistics_attributes_total."MESSW_1G" > 0
+GROUP BY
+  raumluft_4326_statistics_attributes_total."PETROGRAPH") AS query6;
+
+
+
+
+ 

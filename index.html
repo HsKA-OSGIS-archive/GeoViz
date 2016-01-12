@@ -1,0 +1,519 @@
+<!--document.getElementById(accordian-1).style.height=100px
+
+this function has to be called  when the accordion is opend
+don't forget to remove this tag when you close the accordion or when you open an other accordion-->
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Radon</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/ol.css" type="text/css">
+
+    <link rel="stylesheet" href="./css/ol3-sidebar.css" />
+
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+        html, body, #map {
+            height: 100%;
+            font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
+        }
+        .lorem {
+            font-style: italic;
+            color: #AAA;
+        }
+		#menu{
+			
+		}
+		#zoom_in{
+			box-shadow:.5px .5px .5px .5px #ccc;
+			-webkit-box-shadow:.5px .5px .5px .5px #ccc;
+			-moz-box-shadow:.5px .5px .5px .5px #ccc;
+			border-radius: 7px;
+			-moz-border-radius: 7px;
+			-webkit-border-radius: 7px;
+			width:32px;
+			height:32px;
+		}
+		#zoom_out{
+			box-shadow:.5px .5px .5px .5px #ccc;
+			-webkit-box-shadow:.5px .5px .5px .5px #ccc;
+			-moz-box-shadow:.5px .5px .5px .5px #ccc;
+			border-radius: 7px;
+			-moz-border-radius: 7px;
+			-webkit-border-radius: 7px;
+			width:32px;
+			height:32px;
+		}
+		.glyphicon-plus{
+			font-size: 1.7em;
+			margin-left: 6px;
+			margin-top:5px;
+		}
+		.glyphicon-minus{
+			font-size: 1.9em;
+			margin-left: 9px;
+		}
+		.glyphicon-plus:hover{
+			cursor: pointer;
+		}
+		.glyphicon-minus:hover{
+			cursor: pointer;
+		}
+    </style>
+</head>
+<body>
+    <div id="sidebar" class="sidebar collapsed">
+        <!-- Nav tabs -->
+        <div class="sidebar-tabs">
+            <ul role="tablist">
+                <li id="menu "><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
+                <li id="zoom_in"><i class="glyphicon glyphicon-plus"></i></a></li>
+                <li id="zoom_out"><i class="glyphicon glyphicon-minus"></i></a></li>
+            </ul>
+        </div>
+
+        <!-- Tab panes -->
+        <div class="sidebar-content">
+            <div class="sidebar-pane" id="home">
+			                    <div class="sidebar-close"><i class="fa fa-caret-left"></i></div>
+              <html>
+    <head>
+        <title>accordion</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" type="text/css" href="./css/style.css">
+        <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+    </head>
+    <body>
+       <div id="accordian">
+           <ul>
+				<li>
+							
+				<div class="accordion">
+					<ul>
+                             <div id="logo"></div>
+                             <p style="padding: 10px;"><a href="#">
+                                     <div class="input-group" style="padding-left: 20px;">
+                                         <input type="text" class="form-control" style=" width: 250px;"value="Search" id="s"/>                          
+                                   </div>
+                                 </a>
+                            </p> 
+                            <p>
+                            <div class="options">
+                                <span id="plus"><a href="#" class="plus"></a></span>
+                                <span id="minusSymbol"><a href="#" class="minus"></a></span>
+                                <a href="#" class="print"></a>
+                                <a href="#" class="language"></a>
+                                <a href="#" class="help"></a>
+                            </div>
+                        </p>
+                        <li>
+						<div class="accordion-section">
+                            <div id="horizotalBar"></div>
+                            <h2 style="width: 300px;" id="id1"><a class="accordion-section-title" href="#accordion-1">Layer Selection<span id="collapse_top"></span></a></h2>
+                           <div id="accordion-1" class="accordion-section-content">
+                            <ul>
+                                <li><a><span id="dots"></span><label for="dots" id="label_ls_osm">OSM Basemap</label></a></li><br/>
+                                <li><a><span id="dots"></span><label for="dots" id="label_ls_mq">MapQuest Basemap</label></a></li><br/>
+                                <li><a><span id="dots"></span><label for="dots" id="label_ls_bfs_rl">Raumluft Measurements</label></a></li><br/>
+                                <li><a><span id="dots"></span><label for="dots" id="label_ls_bfs_bl">Bodenluft Measurements</label></a></li><br/>
+                                <li><a><span id="dots"></span><label for="dots" id="label_ls_bfs_odl">ODL Measurements</label></a></li><br/>
+								<li><a><span id="dots"></span><label for="dots" id="label_ls_bfs_rl_grid">RL Grid</label></a></li><br/>
+                                <li><a><span id="dots"></span><label for="dots" id="label_ls_bfs_bl_grid">BL Grid</label></a></li><br/>
+                                <li><a><span id="dots"></span><label for="dots" id="label_ls_bfs_odl_grid">ODL Grid</label></a></li><br/>
+                                <li><a><span id="dots"></span><label for="dots" id="label_ls_project_area">Project Area</label></a></li><br/>
+                                
+                            </ul>  
+							</div>
+                                </div>
+								
+                        </li>
+                        <li>
+						<div class="accordion-section">
+                            <div id="horizotalBar"></div>
+                            <h2 style="width: 300px;" id="id2"><a class="accordion-section-title" href="#accordion-2">Legend<span id="collapse_top" style="margin-left: 220px;"></span></a></h2>
+                           <div id="accordion-2" class="accordion-section-content">
+                            <ul>
+                                <!--<div id="p5" style="visibility:visible"></div>
+								<div id="p6" style="visibility:visible"></div>
+								<div id="p7" style="visibility:visible"></div>-->
+								<li><a><span id="legend_layer_1">Legend OSM</span><img id="image_legend_1" style="visibility:visible" src="./logo/p5.png"></a></li><br/>
+                                <li><a><span id="legend_layer_2">Legend MQ</span><img id="image_legend_2" style="visibility:visible" src="./logo/p6.png"></a></li><br/>
+								<li><a><span id="legend_layer_3">Legend RL</span><img id="image_legend_3" style="visibility:hidden" src="./logo/p7.png"></a></li><br/>
+								<li><a><span id="legend_layer_4">Legend BL</span><img id="image_legend_4" style="visibility:hidden" src="./logo/p5.png"></a></li><br/>
+								<li><a><span id="legend_layer_5">Legend ODL</span><img id="image_legend_5" style="visibility:hidden" src="./logo/p6.png"></a></li><br/>
+								<li><a><span id="legend_layer_6">Legend RL Grid</span><img id="image_legend_6" style="visibility:hidden" src="./logo/p7.png"></a></li><br/>
+								<li><a><span id="legend_layer_6">Legend BL Grid</span><img id="image_legend_7" style="visibility:hidden" src="./logo/p5.png"></a></li><br/>
+								<li><a><span id="legend_layer_6">Legend ODL Grid</span><img id="image_legend_8" style="visibility:hidden" src="./logo/p6.png"></a></li><br/>
+								<li><a><span id="legend_layer_6">Legend Project Area</span><img id="image_legend_9" style="visibility:visible" src="./logo/p7.png"></a></li><br/>								 
+                            </ul>
+                             </div>
+							 </div>
+                        </li>
+                        <li>
+						<div class="accordion-section">
+                            <div id="horizotalBar"></div>
+                            
+                            <h2 style="width: 300px;" id="id3"><a class="accordion-section-title" href="#accordion-3">Thematic</b><span id="collapse_top" style="margin-left: 210px;"></span></a></h2>
+                             <div id="accordion-3" class="accordion-section-content">
+                            <ul style=" border-left: 5px solid #ffffff;">
+                                
+                                <li style=" border-left: 5px solid #ffffff;">
+                                <p style="padding: 5px; text-align: justify; display: ">
+                                    Radon is a chemical element with symbol Rn and atomic number 86. It is a radioactive, colorless, odorless, tasteless noble gas, occurring naturally as a decay product of radium. Its most stable isotope, ²²²Rn, has a half-life of 3.8 days
+                                </p> 
+                                </li>                                
+                            </ul>
+                             </div>
+                             </div>
+                        </li>
+                     </ul>                       
+                    </div>  
+                </li> 
+            </ul>
+        </div>
+        <script type="text/javascript" src="./lib/jquery-2.1.3.js"></script>
+        <script type="text/javascript" src="./lib/prefixfree.js"></script>
+        <script type="text/javascript" src="./lib/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="./lib/accordion.js"></script>
+
+    </body>
+</html>
+				
+            </div>
+        </div>
+    </div>
+
+    <div id="map" class="sidebar-map">
+	
+	</div>
+
+
+    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="http://openlayers.org/en/master/build/ol.js" type="text/javascript"></script>
+    <script src="./lib/jquery-sidebar.js"></script>
+
+    <script>
+		//OpenLayers map object:
+        var map = new ol.Map({
+            target: 'map',
+            layers: [],
+            view: new ol.View({
+                center: ol.proj.transform([12, 49.8], 'EPSG:4326', 'EPSG:3857'),
+				zoom: 9
+            })
+        });
+		
+		/*Order to add layers:
+		1.) OSM / MQ baselayer(s)
+		2.) Project area
+		3.) Grids
+		4.) Radon measurements (Points)*/
+		
+		//OpenLayers tile layer (OSM):
+		//defined as variable
+		var layerOSM = new ol.layer.Tile({
+                source: new ol.source.OSM(),
+				visible: true
+            });	
+		var layerOSM_visible = "true"; //variable for LayerSwitcher
+		map.addLayer(layerOSM);
+		
+		//OpenLayers Tile Layer (MapQuest):
+		var layerMQ = new ol.layer.Tile({
+                    source: new ol.source.MapQuest({layer: 'sat'}),
+					visible: true
+                });
+		var layerMQ_visible = "true";
+		map.addLayer(layerMQ);
+		
+		//OpenLayers Tile WMS layer (Project Area):		
+		var layer_project_area = new ol.layer.Tile({
+			source: new ol.source.TileWMS({
+				url: 'http://localhost:8080/geoserver/geoviz/wms',
+				params: {'FORMAT': 'image/png', 
+                   'VERSION': '1.1.1',
+                   tiled: true,
+					LAYERS: 'geoviz:project_area_4326',
+					STYLES: 'geoviz:geoviz_polygon_project_area',
+				}
+			}),
+			visible: true
+		});
+		project_area_visible = "true";
+		map.addLayer(layer_project_area);
+		
+		//OpenLayers Tile WMS layer (Raumluft - GRID):
+		/*localhost:8080/geoserver/geoviz/wms?service=WMS&version=1.1.0&request=GetMap&layers=geoviz:raumluft_4326_grid_combined&styles=&bbox=11.530690627421755,49.35572821434657,12.65643655466932,50.37162817001694&width=768&height=693&srs=EPSG:4326&format=application/openlayers*/
+		
+		var layer_bfs_raumluft_grid = new ol.layer.Tile({
+			source: new ol.source.TileWMS({
+				url: 'http://localhost:8080/geoserver/geoviz/wms',
+				params: {'FORMAT': 'image/png', 
+                   'VERSION': '1.1.1',
+                   tiled: true,
+					LAYERS: 'geoviz:raumluft_4326_grid_combined',
+					STYLES: 'geoviz:geoviz_grid_raumluft',
+				}
+			}),
+			visible: false
+		});
+		bfs_raumluft_grid_visible = "false";
+		map.addLayer(layer_bfs_raumluft_grid);
+		
+		//OpenLayers Tile WMS layer (ODL - GRID):		
+		var layer_bfs_odl_grid = new ol.layer.Tile({
+			source: new ol.source.TileWMS({
+				url: 'http://localhost:8080/geoserver/geoviz/wms',
+				params: {'FORMAT': 'image/png', 
+                   'VERSION': '1.1.1',
+                   tiled: true,
+					LAYERS: 'geoviz:odl_4326_grid',
+					STYLES: 'geoviz:geoviz_grid_odl',
+				}
+			}),
+			visible: false
+		});
+		bfs_odl_grid_visible = "false";
+		map.addLayer(layer_bfs_odl_grid);
+		
+		//OpenLayers Tile WMS layer (Bodenluft - GRID):		
+		var layer_bfs_bodenluft_grid = new ol.layer.Tile({
+			source: new ol.source.TileWMS({
+				url: 'http://localhost:8080/geoserver/geoviz/wms',
+				params: {'FORMAT': 'image/png', 
+                   'VERSION': '1.1.1',
+                   tiled: true,
+					LAYERS: 'geoviz:bodenluft_4326_grid',
+					//STYLES: 'geoviz:geoviz_grid_bodenluft',
+				}
+			}),
+			visible: false
+		});
+		bfs_bodenluft_grid_visible = "false";
+		map.addLayer(layer_bfs_bodenluft_grid);
+		
+		//OpenLayers Tile WMS layer (Raumluft):
+		var layer_bfs_raumluft_points = new ol.layer.Tile({
+			source: new ol.source.TileWMS({
+				url: 'http://localhost:8080/geoserver/geoviz/wms',
+				params: {'FORMAT': 'image/png', 
+                   'VERSION': '1.1.1',
+                   tiled: true,
+					LAYERS: 'geoviz:raumluft_4326',
+					//STYLES: 'geoviz:geoviz_point_raumluft',
+				}
+			}),
+			visible: false
+		});
+		bfs_raumluft_points_visible = "false";
+		map.addLayer(layer_bfs_raumluft_points);
+		
+		//OpenLayers Tile WMS layer (Bodenluft):
+		var layer_bfs_bodenluft_points = new ol.layer.Tile({
+			source: new ol.source.TileWMS({
+				url: 'http://localhost:8080/geoserver/geoviz/wms',
+				params: {'FORMAT': 'image/png', 
+                   'VERSION': '1.1.1',
+                   tiled: true,
+					LAYERS: 'geoviz:bodenluft_4326',
+					//STYLES: 'geoviz:geoviz_point_bodenluft',
+				}
+			}),
+			visible: false
+		});
+		bfs_bodenluft_points_visible = "false";
+		map.addLayer(layer_bfs_bodenluft_points);
+		
+		//OpenLayers Tile WMS layer (ODL):
+		var layer_bfs_odl_points = new ol.layer.Tile({
+			source: new ol.source.TileWMS({
+				url: 'http://localhost:8080/geoserver/geoviz/wms',
+				params: {'FORMAT': 'image/png', 
+                   'VERSION': '1.1.1',
+                   tiled: true,
+					LAYERS: 'geoviz:bodenluft_4326',
+					STYLES: 'geoviz:geoviz_point_odl',
+				}
+			}),
+			visible: false
+		});
+		bfs_odl_points_visible = "false";
+		map.addLayer(layer_bfs_odl_points);
+		
+		//END OF OPENLAYERS PART
+		
+		//Sidebar:
+        var sidebar = $('#sidebar').sidebar();
+		document.getElementById('zoom_out').onclick = function() {
+		  var view = map.getView();
+			var zoom = view.getZoom();
+			view.setZoom(zoom - 1);
+			};
+
+			document.getElementById('zoom_in').onclick = function() {
+			  var view = map.getView();
+			  var zoom = view.getZoom();
+			  view.setZoom(zoom + 1);
+			  };
+		document.getElementById('plus').onclick = function() {
+		  var view = map.getView();
+			var zoom = view.getZoom();
+			view.setZoom(zoom + 1);
+			};
+			document.getElementById('minusSymbol').onclick = function() {
+		  var view = map.getView();
+			var zoom = view.getZoom();
+			view.setZoom(zoom -1);
+			};
+		
+		//LAYERSWITCHER:
+		/*create function (e.g. called layerSwitcher), one argument, e.g. name of layer,
+		and there do the following changes to disable layers (change visibility of OL3 layer and legend)*/
+		//OSM:
+		$('#label_ls_osm').on('click', function() {
+				if (layerOSM_visible == "true") {
+					layerOSM.setVisible(false);
+					layerOSM_visible = "false";
+					document.getElementById('legend_layer_1').style.visibility="hidden";
+					document.getElementById('image_legend_1').style.visibility="hidden";
+				} else {
+					layerOSM.setVisible(true);
+					layerOSM_visible = "true";
+					document.getElementById('legend_layer_1').style.visibility="visible";
+					document.getElementById('image_legend_1').style.visibility="visible";
+				}   
+        });
+		
+		//MapQuest:
+		$('#label_ls_mq').on('click', function() {
+                if (layerMQ_visible == "true") {
+					layerMQ.setVisible(false);
+					layerMQ_visible = "false";
+					document.getElementById('legend_layer_2').style.visibility="hidden";
+					document.getElementById('image_legend_2').style.visibility="hidden";
+				} else {
+					layerMQ.setVisible(true);
+					layerMQ_visible = "true";
+					document.getElementById('legend_layer_2').style.visibility="visible";
+					document.getElementById('image_legend_2').style.visibility="visible";
+				}
+        });
+		
+		//Raumluft:
+		$('#label_ls_bfs_rl').on('click', function() {
+                if (bfs_raumluft_points_visible == "true") {
+					layer_bfs_raumluft_points.setVisible(false);
+					bfs_raumluft_points_visible = "false";
+					document.getElementById('legend_layer_3').style.visibility="hidden";
+					document.getElementById('image_legend_3').style.visibility="hidden";
+				} else {
+					layer_bfs_raumluft_points.setVisible(true);
+					bfs_raumluft_points_visible = "true";
+					document.getElementById('legend_layer_3').style.visibility="visible";
+					document.getElementById('image_legend_3').style.visibility="visible";
+				}
+        });
+		
+		//Bodenluft:
+		$('#label_ls_bfs_bl').on('click', function() {
+                if (bfs_bodenluft_points_visible == "true") {
+					layer_bfs_bodenluft_points.setVisible(false);
+					bfs_bodenluft_points_visible = "false";
+					document.getElementById('legend_layer_4').style.visibility="hidden";
+					document.getElementById('image_legend_4').style.visibility="hidden";
+				} else {
+					layer_bfs_bodenluft_points.setVisible(true);
+					bfs_bodenluft_points_visible = "true";
+					document.getElementById('legend_layer_4').style.visibility="visible";
+					document.getElementById('image_legend_4').style.visibility="visible";
+				}
+        });
+		
+		//ODL:
+		$('#label_ls_bfs_odl').on('click', function() {
+                if (bfs_odl_points_visible == "true") {
+					layer_bfs_odl_points.setVisible(false);
+					bfs_odl_points_visible = "false";
+					document.getElementById('legend_layer_5').style.visibility="hidden";
+					document.getElementById('image_legend_5').style.visibility="hidden";
+				} else {
+					layer_bfs_odl_points.setVisible(true);
+					bfs_odl_points_visible = "true";
+					document.getElementById('legend_layer_5').style.visibility="visible";
+					document.getElementById('image_legend_5').style.visibility="visible";
+				}
+        });
+		
+		//Raumluft (grid):
+		$('#label_ls_bfs_rl_grid').on('click', function() {
+                if (bfs_raumluft_grid_visible == "true") {
+					layer_bfs_raumluft_grid.setVisible(false);
+					bfs_raumluft_grid_visible = "false";
+					document.getElementById('legend_layer_6').style.visibility="hidden";
+					document.getElementById('image_legend_6').style.visibility="hidden";
+				} else {
+					layer_bfs_raumluft_grid.setVisible(true);
+					bfs_raumluft_grid_visible = "true";
+					document.getElementById('legend_layer_6').style.visibility="visible";
+					document.getElementById('image_legend_6').style.visibility="visible";
+				}
+        });
+		
+		//Bodenluft (grid):
+		$('#label_ls_bfs_bl_grid').on('click', function() {
+                if (bfs_bodenluft_grid_visible == "true") {
+					layer_bfs_bodenluft_grid.setVisible(false);
+					bfs_bodenluft_grid_visible = "false";
+					document.getElementById('legend_layer_7').style.visibility="hidden";
+					document.getElementById('image_legend_7').style.visibility="hidden";
+				} else {
+					layer_bfs_bodenluft_grid.setVisible(true);
+					bfs_bodenluft_grid_visible = "true";
+					document.getElementById('legend_layer_7').style.visibility="visible";
+					document.getElementById('image_legend_7').style.visibility="visible";
+				}
+        });
+		
+		//ODL (grid):
+		$('#label_ls_bfs_odl_grid').on('click', function() {
+                if (bfs_odl_grid_visible == "true") {
+					layer_bfs_odl_grid.setVisible(false);
+					bfs_odl_grid_visible = "false";
+					document.getElementById('legend_layer_8').style.visibility="hidden";
+					document.getElementById('image_legend_8').style.visibility="hidden";
+				} else {
+					layer_bfs_odl_grid.setVisible(true);
+					bfs_odl_grid_visible = "true";
+					document.getElementById('legend_layer_8').style.visibility="visible";
+					document.getElementById('image_legend_8').style.visibility="visible";
+				}
+        });
+		
+		//Project Area:
+		$('#label_ls_project_area').on('click', function() {
+                if (project_area_visible == "true") {
+					layer_project_area.setVisible(false);
+					project_area_visible = "false";
+					document.getElementById('legend_layer_9').style.visibility="hidden";
+					document.getElementById('image_legend_9').style.visibility="hidden";
+				} else {
+					layer_project_area.setVisible(true);
+					project_area_visible = "true";
+					document.getElementById('legend_layer_9').style.visibility="visible";
+					document.getElementById('image_legend_9').style.visibility="visible";
+				}
+        });
+    </script>
+</body>
+</html>
