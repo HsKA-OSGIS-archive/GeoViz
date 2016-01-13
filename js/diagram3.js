@@ -6,7 +6,9 @@ var margin = {top: 20, right: 20, bottom: 200, left: 200},
     innerWidth = totHeight - margin.left - margin.right,//offet to the axis
     innerHeight = totWidth - margin.top - margin.bottom;
     width = innerWidth - padding.left - padding.right,//just the area where bubbles are visible
-    height = innerHeight - padding.top - padding.bottom;
+    height = innerHeight - padding.top - padding.bottom,
+    myYcol = 'Nutzung',
+    myXcol = 'Hausart';
 
 //controlprints to the console
 console.log("the variable totHeight has the value: " + totHeight);
@@ -29,24 +31,24 @@ function draw(data) {
     .scale(xScale)
     .orient("bottom")//defines direction the labels of the axis are placed
     .ticks(function(d) {
-      return d.Hausart;
+      return d[myXcol];
     });//defines number of subelements
 
   var yAxis = d3.svg.axis()
     .scale(yScale)
     .orient("left")
     .ticks(function(d) {
-      return d.Nutzung;
+      return d[myYcol];
     });
 
   //fill the x axis with data
   xScale.domain(data.map(function(d) {
-    return d.Hausart;
+    return d[myXcol];
   }));
 
   //fill the y axis with data
   yScale.domain(data.map(function(d) {
-    return d.Nutzung;
+    return d[myYcol];
   }));
 
   //check out the margin-conventions set up by mike bostock
