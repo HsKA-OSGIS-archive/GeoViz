@@ -1,68 +1,5 @@
-<!-- based on: http://bl.ocks.org/mbostock/3887051 -->
-<!DOCTYPE html>
-<meta charset="utf-8">
-<style>
-
-body {
-  font: 10px sans-serif;
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.bar {
-  fill: steelblue;
-}
-
-.x.axis path {
-  display: none;
-}
-
-label {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
-
-.d3-tip {
-  line-height: 1;
-  font-weight: bold;
-  padding: 12px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  border-radius: 2px;
-}
-
-/* Creates a small triangle extender for the tooltip */
-.d3-tip:after {
-  box-sizing: border-box;
-  display: inline;
-  font-size: 10px;
-  width: 100%;
-  line-height: 1;
-  color: rgba(0, 0, 0, 0.8);
-  content: "\25BC";
-  position: absolute;
-  text-align: center;
-}
-
-/* Style northward tooltips differently */
-.d3-tip.n:after {
-  margin: -1px 0 0 0;
-  top: 100%;
-  left: 0;
-}
-
-</style>
-<body>
-<script src="/GeoViz_local/lib/d3.min.js"></script>
-<script src="/GeoViz_local/lib/d3.tip.v0.6.3.js"></script>
-<script>
-
+function drawGroupedVerticalBar(div) {
+	
 var margin = {top: 40, right: 50, bottom: 200, left: 50},
     width = 1024 - margin.left - margin.right,
     height = 800 - margin.top - margin.bottom;
@@ -107,7 +44,7 @@ var tip = d3.tip()
 		return name +  "<strong>: </strong><span style='color:red'>" + measurement + "</span>";
 });
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select(div).append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
@@ -115,7 +52,7 @@ var svg = d3.select("body").append("svg")
 
 svg.call(tip);
 
-d3.csv("/GeoViz_local/data/processed_data/bfs/raumluft_4326_statistics_attributes_total_petrograph_stockwerke_csv.csv", function(error, data) {
+d3.csv("../data/processed_data/bfs/raumluft_4326_statistics_attributes_total_petrograph_stockwerke_csv.csv", function(error, data) {
   if (error) throw error;
 
   var petrograph = d3.keys(data[0]).filter(function(key) { return (key !== "geo") & (key != "petrograph"); });
@@ -207,5 +144,4 @@ d3.csv("/GeoViz_local/data/processed_data/bfs/raumluft_4326_statistics_attribute
 		return name; });
 
 });
-
-</script>
+}

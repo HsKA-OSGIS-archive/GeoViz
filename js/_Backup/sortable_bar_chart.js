@@ -1,5 +1,5 @@
 //based on: http://bl.ocks.org/mbostock/3885705
-function drawSortableBarChart(div,filename,attributes) { //div to append the svg element to, filename of the data, attributes to visualize (x-axis and y-axis)
+function drawSortableBarChart(div,drawType,boolean_clearDiv) {
 var margin = {top: 70, right: 50, bottom: 100, left: 80},
     width = 960 - margin.left - margin.right,
     height = 550 - margin.top - margin.bottom;
@@ -27,13 +27,13 @@ var tip = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-    return "<strong>AVG MW in </strong>" + d.value_x + "<strong>: </strong><span style='color:red'>" + d.value_y + "</span>";
+    return "<strong>AVG </strong>" + drawType + "<strong> MW in </strong>" + d.name + "<strong>: </strong><span style='color:red'>" + d.value + "</span>";
   });
 
-/*If div already contains a svg element -> clear it:
+//If div already contains a svg element -> clear it:
 if (boolean_clearDiv == true) {
 	clearDiv(div);
-}*/
+}
 
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -44,14 +44,14 @@ var svg = d3.select("body").append("svg")
 svg.call(tip);
 
 //d3.csv("/GeoViz/data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv", function(error, data) {
-d3.csv(filename, type, function(error, data) {
+d3.csv("../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv", type, function(error, data) {
 
   
 
   //x.domain(data.map(function(d) { return d.letter; }));
   //y.domain([0, d3.max(data, function(d) { return d.frequency; })]);
-  x.domain(data.map(function(d) { return d.value_x; }));
-  y.domain([0, d3.max(data, function(d) { return d.value_y; })]);
+  x.domain(data.map(function(d) { return d.name; }));
+  y.domain([0, d3.max(data, function(d) { return d.value; })]);
 
   svg.append("g")
       .attr("class", "x axis")
@@ -73,7 +73,7 @@ d3.csv(filename, type, function(error, data) {
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       //.text("Frequency");
-	  .text("Average Radon value [Bq m-3]");
+	  .text("Average " + drawType + " value");
 
   svg.selectAll(".bar")
       .data(data)
@@ -83,10 +83,10 @@ d3.csv(filename, type, function(error, data) {
       .attr("width", x.rangeBand())
       .attr("y", function(d) { return y(d.frequency); })
       .attr("height", function(d) { return height - y(d.frequency); });*/
-	  .attr("x", function(d) { return x(d.value_x); })
+	  .attr("x", function(d) { return x(d.name); })
       .attr("width", x.rangeBand())
-      .attr("y", function(d) { return y(d.value_y); })
-      .attr("height", function(d) { return height - y(d.value_y); })
+      .attr("y", function(d) { return y(d.value); })
+      .attr("height", function(d) { return height - y(d.value); })
 	  //new tooltip:
       .on('mouseover', tip.show)										// event for tooltip
       .on('mouseout', tip.hide);										// event for tooltip
@@ -106,14 +106,14 @@ d3.csv(filename, type, function(error, data) {
         : function(a, b) { return d3.ascending(a.letter, b.letter); })
         .map(function(d) { return d.letter; }))
         .copy();*/
-        ? function(a, b) { return b.value_y - a.value_y; }
-        : function(a, b) { return d3.ascending(a.value_x, b.value_x); })
-        .map(function(d) { return d.value_x; }))
+        ? function(a, b) { return b.value - a.value; }
+        : function(a, b) { return d3.ascending(a.name, b.name); })
+        .map(function(d) { return d.name; }))
         .copy();
 
     svg.selectAll(".bar")
 		//.sort(function(a, b) { return x0(a.letter) - x0(b.letter); });
-        .sort(function(a, b) { return x0(a.value_x) - x0(b.value_x); });
+        .sort(function(a, b) { return x0(a.name) - x0(b.name); });
 
     var transition = svg.transition().duration(750),
         delay = function(d, i) { return i * 50; };
@@ -121,7 +121,7 @@ d3.csv(filename, type, function(error, data) {
     transition.selectAll(".bar")
         .delay(delay)
 		//.attr("x", function(d) { return x0(d.letter); });
-        .attr("x", function(d) { return x0(d.value_x); });
+        .attr("x", function(d) { return x0(d.name); });
 
     //Update x-axis:
 	transition.select("g.x.axis")
@@ -137,8 +137,15 @@ d3.csv(filename, type, function(error, data) {
 });
 //Change function type to get right values:
 function type(d) {
-  d.value_x = d[attributes[0]];
-  d.value_y = +d[attributes[1]];
+  console.log(drawType);
+  d.name = d.NAME_2;
+  if (drawType == "raumluft") {
+	d.value = +d.AVG_MW_RL
+  } else if (drawType == "bodenluft") {
+	d.value = +d.AVG_MW_BL
+  } else {
+	d.value = +d.AVG_MW_ODL
+  }
   return d;
 }
 

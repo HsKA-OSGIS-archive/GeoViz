@@ -69,17 +69,29 @@ label {
 }
 
 </style>
+<script src="../lib/jquery.min.js" charset="utf-8"></script>
 <script src="../lib/d3.min.js" charset="utf-8"></script>
 <script src="../lib/d3.tip.v0.6.3.js" charset="utf-8"></script>
 <script src="../js/sortable_bar_chart.js"></script>
 </head>
 <body>
+	<!--Define buttons and div for d3 chart-->
+	<button id="button_rl" onClick="updateData(this.id)">Raumluft</button>
+	<button id="button_bl" onClick="updateData(this.id)">Bodenluft</button>
+	<button id="button_odl" onClick="updateData(this.id)">ODL</button>
+	
+	<!--Define Checkbox to sort values-->
 	<label><input type="checkbox"> Sort values</label>
+	
 	<div id="diagram"></div>
-	<!--script to introduce necessary variables to pass to function drawSortableBarChart:-->
+	
+	<!--Define variable to control the type of the drawn chart-->
 	<script>
-		var div = "#diagram", filename = "../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv",
-			attributes = ["NAME_2", "AVG_MW_ODL"];
+		var arrayDrawTypes = ["raumluft","bodenluft","odl"];
+		console.log(arrayDrawTypes[0]);
+		var drawType = arrayDrawTypes[0];
+		var arrayButtons = ['button_rl','button_bl','button_odl'];
+		var boolean_clearDiv = false;
 	</script>
 	
 	<!--script to load asynchronous JavaScript, otherwise DOM is not ready when the script is loaded-->
@@ -88,7 +100,11 @@ label {
         /*var script = document.getElementById("diagram");
         script.src = "GeoViz_local/js/stacked_vertical_bar.js";
         document.body.appendChild(script);*/
-		drawSortableBarChart(div,filename,attributes);
+		drawSortableBarChart("#diagram",drawType,boolean_clearDiv);
+		console.log(drawType);
+		document.getElementById('button_rl').disabled = true;
+		document.getElementById('button_bl').disabled = false;
+		document.getElementById('button_odl').disabled = false;	
       }
 
       if (window.addEventListener) {
@@ -99,4 +115,35 @@ label {
         window.onload = loadScriptAfter;
       }
     </script>
+	
+	<!--Interaction with the buttons-->
+	<script>
+	function updateData(clicked_buttonid) {
+		
+		//Disable clicked button and change drawType as well as enable other buttons:
+		for (i = 0; i<arrayButtons.length; i++) {
+			if (clicked_buttonid == arrayButtons[i]) {
+				//Disable clicked button:
+				document.getElementById(clicked_buttonid).disabled = true; 
+				
+				//Change drawType:
+				drawType = arrayDrawTypes[i];
+				 
+			} else {
+				//Enable other buttons:
+				document.getElementById(arrayButtons[i]).disabled = false;			
+			}
+		}
+		boolean_clearDiv = true;
+		console.log(drawType);	
+		loadScriptAfter;	
+		//Call loadScriptAfter?	
+		//Change drawType:
+			
+    };
+
+	function refreshDiv(div) {
+		$(div).load("quote.html");
+	}
+	</script>
 </body>

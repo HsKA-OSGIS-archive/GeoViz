@@ -1,4 +1,4 @@
-function drawChoroplethMap(div,filenames,attribute_choropleth,attributes_tooltip,domain,range) {
+function drawChoroplethMap(div) {
 
   var height = 1024;
   var width = 768;
@@ -6,7 +6,7 @@ function drawChoroplethMap(div,filenames,attribute_choropleth,attributes_tooltip
   var counties_var = void 0;
   var db = d3.map();
   var b, s, t;
-  //var sparkline = d3.charts.sparkline().height(50).width(138);
+  var sparkline = d3.charts.sparkline().height(50).width(138);
   var map = void 0; // update global
   
   /*// New function
@@ -34,7 +34,7 @@ function drawChoroplethMap(div,filenames,attribute_choropleth,attributes_tooltip
     return d.properties.id;
   };
 
-  /*var hover = function(d) {
+  var hover = function(d) {
     var div = document.getElementById('tooltip');
     div.style.left = event.pageX +'px';
     div.style.top = event.pageY + 'px';
@@ -43,11 +43,10 @@ function drawChoroplethMap(div,filenames,attribute_choropleth,attributes_tooltip
 
     var id = geoID(d);
     d3.select("#tooltip").datum(db.get(id)).call(sparkline.draw);
-  };*/
+  };
 	
-  var color = d3.scale.threshold().domain(domain)
-			.range(range); //<-A
-			//["#0a6e01", "#40ff05", "#E4FF05", "#FFDB00", "#ff6700", "#ff0000"]
+  var color = d3.scale.threshold().domain([60, 100, 150, 250, 350])
+			.range(["#0a6e01", "#40ff05", "#E4FF05", "#FFDB00", "#ff6700", "#ff0000"]); //<-A
 			//.range(["#f2f0f7", "#dadaeb", "#bcbddc", "#9e9ac8", "#756bb1", "#54278f"]); //<-A
 			//.range(["#000", "#222", "#333", "#444", "#555", "#666"]);
 			
@@ -64,15 +63,7 @@ function drawChoroplethMap(div,filenames,attribute_choropleth,attributes_tooltip
     svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
   }
   
-  var tooltip = d3.select(div);
-  tooltip.append('div').attr('class','tooltip');
-  
-  var divs_tooltip = [];
-  for (i=0; i<attributes_tooltip.length;i++) {
-	tooltip.append('div').attr('class', attributes_tooltip[i]);
-	divs_tooltip[i] = "." + attributes_tooltip[i];
-  }
-  /*var tooltip = d3.select(div)                               // NEW
+  var tooltip = d3.select(div)                               // NEW
           .append('div')                                                // NEW
           .attr('class', 'tooltip');                                    // NEW
                       
@@ -92,15 +83,14 @@ function drawChoroplethMap(div,filenames,attribute_choropleth,attributes_tooltip
           .attr('class', 'mw_eg');                                    // NEW
 		  
 		  tooltip.append('div')                                           // NEW
-          .attr('class', 'mw_ke');                                    // NEW*/
+          .attr('class', 'mw_ke');                                    // NEW
 
-  d3.json(filenames[0], function(data) {
-	d3.csv(filenames[1], function(statistics) {
+  d3.json("../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics2_topo.json", function(data) {
+	d3.csv("../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv", function(statistics) {
 	
 		//CSV:
 		//setDb(statistics);
-		//for hover with sparkline...
-		/*var setDb = function(data) {
+		var setDb = function(data) {
 			data.forEach(function(d) {
 				db.set(d.ID_2, [ //COUNT_BL,AVG_MW_BL,COUNT_ODL,AVG_MW_ODL,COUNT_RL,AVG_MW_RL
 					{"x": 1, "y": +d.AVG_MW_BL},
@@ -109,17 +99,16 @@ function drawChoroplethMap(div,filenames,attribute_choropleth,attributes_tooltip
 				]);
 			});
 		};
-		setDb(statistics);*/
+		setDb(statistics);
 		
-		//get color for choropleth map:
 		var rateByAVG = {};
 				
         statistics.forEach(function (d) { // <-B
-                rateByAVG[d[attribute_choropleth[0]]] = Math.round( d[attribute_choropleth[1]] );
-				//console.log(d[attribute_choropleth[0]], d[attribute_choropleth[1]], rateByAVG[d[attribute_choropleth[0]]);
+                rateByAVG[d.ID_2] = Math.round( d.AVG_MW_RL );
+				console.log(d.ID_2, d.NAME_2, rateByAVG[d.ID_2])
 		});	
 		
-		//change also later to get lates topojson from PostGIS database?
+		
 		var counties = topojson.feature(data, data.objects.counties);
 
     
@@ -186,7 +175,7 @@ function drawChoroplethMap(div,filenames,attribute_choropleth,attributes_tooltip
       
     
 	
-	d3.csv(filenames[2], function(raumluft_data) {
+	d3.csv('../data/processed_data/bfs/raumluft_4326_statistics_attributes_total_csv.csv', function(raumluft_data) {
       var raumluftPoints = svg.selectAll('circle').data(raumluft_data);
 
       raumluftPoints.enter()
@@ -197,15 +186,12 @@ function drawChoroplethMap(div,filenames,attribute_choropleth,attributes_tooltip
           .attr('fill', 'steelblue')
 		  .attr('stroke', 'black')
 		  .on('mouseover', function(d) {                            // NEW
-			for (i=0;divs_tooltip.length;i++) {
-				tooltip.select(divs_tooltip[i]).html(d[attributes_tooltip[i]]);
-			}
-            /*tooltip.select('.hausart').html(d[attributes_tooltip[0]]);                // NEW
-			tooltip.select('.bauweise').html(d[attributes_tooltip[0]]);                // NEW
-            tooltip.select('.mw_avg').html(Math.round(d[attributes_tooltip[0]]));                // NEW
-            tooltip.select('.mw_1g').html(Math.round(d[attributes_tooltip[0]]);             // NEW
-			tooltip.select('.mw_eg').html(Math.round(d[attributes_tooltip[0]]));             // NEW
-			tooltip.select('.mw_ke').html(Math.round(d[attributes_tooltip[0]]));*/             // NEW
+            tooltip.select('.hausart').html(d.HAUSART);                // NEW
+			tooltip.select('.bauweise').html(d.BAUWEISE);                // NEW
+            tooltip.select('.mw_avg').html(Math.round(d.AVG_MW));                // NEW
+            tooltip.select('.mw_1g').html(Math.round(d.MESSW_1G));             // NEW
+			tooltip.select('.mw_eg').html(Math.round(d.MESSW_EG));             // NEW
+			tooltip.select('.mw_ke').html(Math.round(d.MESSW_KE));             // NEW
             tooltip.style('display', 'block');                          // NEW
           });                                                           // NEW
           
@@ -215,7 +201,7 @@ function drawChoroplethMap(div,filenames,attribute_choropleth,attributes_tooltip
     
 	});
 	
-	/*d3.json('../data/processed_data/bfs/project_area_4326_topo.json', function(pa_data) {
+	d3.json('../data/processed_data/bfs/project_area_4326_topo.json', function(pa_data) {
 		var project_area = topojson.feature(pa_data, pa_data.objects.project);
 		
 		var project_var = map.selectAll('path').data(project_area.features);
@@ -225,14 +211,14 @@ function drawChoroplethMap(div,filenames,attribute_choropleth,attributes_tooltip
 			.attr('d', path)
 			.attr('stroke', '#999');
 			
-		svg.append("rect")
+		/*svg.append("rect")
 			.attr("class", "overlay")
 			.attr("width", width)
 			.attr("height", height)
-			.call(zoom);
+			.call(zoom);*/
 		
 	
-	});*/
+	});
 	});	
 	
   });

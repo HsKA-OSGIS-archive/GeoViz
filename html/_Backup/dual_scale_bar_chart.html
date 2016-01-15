@@ -1,36 +1,33 @@
+<!--with the help of: https://github.com/liufly/Dual-scale-D3-Bar-Chart/blob/master/src/index.html -->
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
-<title>Sortable Bar Chart</title>
+<title>Dual Scale Bar Chart</title>
 <style>
-
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  position: relative;
-  width: 960px;
+  font: 12px sans-serif;
 }
-
-.axis text {
-  font: 10px sans-serif;
+.y.axisRight text {
+    fill: orange;
 }
-
+.y.axisLeft text {
+    fill: steelblue;
+}
 .axis path,
 .axis line {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
 }
-
-.bar {
+.bar1 {
   fill: steelblue;
-  fill-opacity: .9;
 }
-
+.bar2 {
+  fill: orange;
+}
 .x.axis path {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
+  display: none;
 }
 
 label {
@@ -67,20 +64,16 @@ label {
   top: 100%;
   left: 0;
 }
-
 </style>
-<script src="../lib/d3.min.js" charset="utf-8"></script>
-<script src="../lib/d3.tip.v0.6.3.js" charset="utf-8"></script>
-<script src="../js/sortable_bar_chart.js"></script>
+<!--<script src="/GeoViz_local/lib/d3.min.js"></script>
+<script src="/GeoViz_local/lib/d3.tip.v0.6.3.js"></script>
+<script src="/GeoViz_local/js/dual_scale_bar_chart.js"></script>-->
+<script src="../lib/d3.min.js"></script>
+<script src="../lib/d3.tip.v0.6.3.js"></script>
+<script src="../js/dual_scale_bar_chart.js"></script>
 </head>
 <body>
-	<label><input type="checkbox"> Sort values</label>
 	<div id="diagram"></div>
-	<!--script to introduce necessary variables to pass to function drawSortableBarChart:-->
-	<script>
-		var div = "#diagram", filename = "../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv",
-			attributes = ["NAME_2", "AVG_MW_ODL"];
-	</script>
 	
 	<!--script to load asynchronous JavaScript, otherwise DOM is not ready when the script is loaded-->
     <script language="javascript" type="text/javascript">
@@ -88,7 +81,7 @@ label {
         /*var script = document.getElementById("diagram");
         script.src = "GeoViz_local/js/stacked_vertical_bar.js";
         document.body.appendChild(script);*/
-		drawSortableBarChart(div,filename,attributes);
+		drawDualScaleBarChart("#diagram");
       }
 
       if (window.addEventListener) {
