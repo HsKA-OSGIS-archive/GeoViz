@@ -76,11 +76,6 @@ label {
 <body>
 	<label><input type="checkbox"> Sort values</label>
 	<div id="diagram"></div>
-	<!--script to introduce necessary variables to pass to function drawSortableBarChart:-->
-	<script>
-		var div = "#diagram", filename = "../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv",
-			attributes = ["NAME_2", "AVG_MW_ODL"];	//first: attribute for x-Axis, second: attribute for y-Axis (bars)
-	</script>
 	
 	<!--script to load asynchronous JavaScript, otherwise DOM is not ready when the script is loaded-->
     <script language="javascript" type="text/javascript">
@@ -88,7 +83,7 @@ label {
         /*var script = document.getElementById("diagram");
         script.src = "GeoViz_local/js/stacked_vertical_bar.js";
         document.body.appendChild(script);*/
-		drawSortableBarChart(div,filename,attributes);
+		drawSortableBarChart("#diagram");
       }
 
       if (window.addEventListener) {

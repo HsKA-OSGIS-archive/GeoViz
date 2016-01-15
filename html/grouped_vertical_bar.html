@@ -68,6 +68,16 @@ label {
 <body>
 	<div id="diagram"></div>
 	
+	<!--script to introduce necessary variables to pass to function drawGroupedBarChart:-->
+	<script>
+		var 	div = "#diagram",
+				filename = "../data/processed_data/bfs/raumluft_4326_statistics_attributes_total_petrograph_stockwerke_csv.csv",
+				range = ["#98abc5", "#6b486b", "#ff8c00"],	//colors for bars
+				attributes = ["NAME_2", "AVG_MW_ODL"];	//first: attribute for x-Axis, second: attribute for y-Axis (bars)
+	</script>
+	
+	
+	//colors for different bars
 	<!--script to load asynchronous JavaScript, otherwise DOM is not ready when the script is loaded-->
     <script language="javascript" type="text/javascript">
       function loadScriptAfter() {

@@ -13,7 +13,7 @@ var y = d3.scale.linear()
     .range([height, 0]);
 
 var color = d3.scale.ordinal()
-    .range(["#98abc5", "#6b486b", "#ff8c00"]);
+    .range(range);
 
 var xAxis = d3.svg.axis()
     .scale(x0)
@@ -52,7 +52,7 @@ var svg = d3.select(div).append("svg")
 
 svg.call(tip);
 
-d3.csv("../data/processed_data/bfs/raumluft_4326_statistics_attributes_total_petrograph_stockwerke_csv.csv", function(error, data) {
+d3.csv(filename, function(error, data) {
   if (error) throw error;
 
   var petrograph = d3.keys(data[0]).filter(function(key) { return (key !== "geo") & (key != "petrograph"); });
@@ -66,15 +66,6 @@ d3.csv("../data/processed_data/bfs/raumluft_4326_statistics_attributes_total_pet
   y.domain([0, d3.max(data, function(d) { return d3.max(d.petro, function(d) { console.log(d.name); return d.value; }); })]);
 
   svg.append("g")
-      /*.attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis) //;
-	  .selectAll("text")
-	  .attr("y", 0)
-	  .attr("x", 10)
-	  .attr("dy", ".35em")
-	  .attr("transform", "rotate(90)")
-	  .style("text-anchor", "start");*/
 	  .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
       .call(xAxis) //;

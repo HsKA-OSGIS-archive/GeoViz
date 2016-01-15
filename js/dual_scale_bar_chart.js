@@ -63,18 +63,11 @@ d3.csv(filename, type, function(error, data) {
 	  .attr("transform", "translate(0,0)")
 	  .call(yAxisLeft)
 	.append("text")
-	  /*.attr("y", 6)
-	  .attr("dy", "-2em")
-	  .style("text-anchor", "end")
-	  .style("text-anchor", "end")
-	  .text("Avg. Raumluft Measurement");*/
 	  .attr("transform", "rotate(-90)")
       .attr("y", 6)
-      //.attr("dy", ".71em")
 	  .attr("dy", "-10em")
 	  .attr("dy", "-4em")
       .style("text-anchor", "end")
-      //.text("Frequency");
 	  .text("Average Raumluft value [Bq m-3]");
 	
   svg.append("g")
@@ -82,18 +75,11 @@ d3.csv(filename, type, function(error, data) {
 	  .attr("transform", "translate(" + (width) + ",0)")
 	  .call(yAxisRight)
 	.append("text")
-	  /*.attr("y", 6)
-	  .attr("dy", "-2em")
-	  .attr("dx", "2em")
-	  .style("text-anchor", "end")
-	  .text("Avg. Bodenluft Measurement");*/
 	  .attr("transform", "rotate(-90)")
       .attr("y", 6)
-      //.attr("dy", ".71em")
 	  .attr("dy", "-10em")
 	  .attr("dy", "4em")
       .style("text-anchor", "end")
-      //.text("Frequency");
 	  .text("Average Bodenluft value [kBq m-3]");
 	  
   bars = svg.selectAll(".bar").data(data).enter();

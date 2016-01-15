@@ -5,62 +5,9 @@
 <head>
 <meta charset="utf-8">
 <title>Stacked Vertical Bar Chart</title>
-<style>
-
-body {
-  font: 10px sans-serif;
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.bar {
-  fill: steelblue;
-}
-
-.x.axis path {
-  display: none;
-}
-
-label {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
-
-.d3-tip {
-  line-height: 1;
-  font-weight: bold;
-  padding: 12px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  border-radius: 2px;
-}
-
-/* Creates a small triangle extender for the tooltip */
-.d3-tip:after {
-  box-sizing: border-box;
-  display: inline;
-  font-size: 10px;
-  width: 100%;
-  line-height: 1;
-  color: rgba(0, 0, 0, 0.8);
-  content: "\25BC";
-  position: absolute;
-  text-align: center;
-}
-
-/* Style northward tooltips differently */
-.d3-tip.n:after {
-  margin: -1px 0 0 0;
-  top: 100%;
-  left: 0;
-}
-</style>
+<link rel="stylesheet" 
+          href="../css/style_stacked_vertical_bar.css" 
+          type="text/css">
 <script src="../lib/d3.min.js"></script>
 <script src="../lib/d3.tip.v0.6.3.js"></script>
 <script src="../js/stacked_vertical_bar.js"></script>
@@ -68,13 +15,27 @@ label {
 <body>
 	<div id="diagram"></div>
 	
+	<!--script to introduce necessary variables to pass to function drawStackedBarChart:-->
+	<script>
+		var 	/*div = "#diagram",
+				filename = "../data/processed_data/bfs/raumluft_4326_statistics_attributes_total_petrograph_stockwerke_csv.csv",
+				attributes = ["petrograph","rl_eg","rl_1g","rl_ke"],	//first: attribute for x-Axis, the following attributes: attribute for y-Axis (bars)
+				range = ["#98abc5","#6b486b", "#ff8c00"]; //colors for bars*/
+				div = "#diagram",
+				filename = "../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv",
+				attributes = ["NAME_2","AVG_MW_RL","AVG_MW_BL","AVG_MW_ODL"],	//first: attribute for x-Axis, the following attributes: attribute for y-Axis (bars)
+				range = ["#98abc5","#6b486b", "#ff8c00"]; //colors for bars
+	</script>
+	
+	
+	
 	<!--script to load asynchronous JavaScript, otherwise DOM is not ready when the script is loaded-->
     <script language="javascript" type="text/javascript">
       function loadScriptAfter() {
         /*var script = document.getElementById("diagram");
         script.src = "GeoViz_local/js/stacked_vertical_bar.js";
         document.body.appendChild(script);*/
-		drawStackedVerticalBar("#diagram");
+		drawStackedVerticalBar(div,filename,attributes,range);
       }
 
       if (window.addEventListener) {
