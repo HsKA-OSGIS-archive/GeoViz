@@ -1,4 +1,6 @@
-function drawGroupedVerticalBar(div) {
+function drawGroupedVerticalBar(div,filename,attributes,range) {
+/*div = div to append svg to, filename = csv-file with data to visualize, attributes = array with attribute names (fields in csv), range = colors for bars
+div,filenames,attribute_choropleth,attributes_tooltip,domain,range*/
 	
 var margin = {top: 40, right: 50, bottom: 200, left: 50},
     width = 1024 - margin.left - margin.right,
@@ -29,7 +31,7 @@ var tip = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-		var name = d.name;
+		/*var name = d.name;
 		if (d.name == "rl_eg") {
 			name = "<strong>Avg. msrmnt. on ground floor</strong>";
 		}
@@ -40,9 +42,10 @@ var tip = d3.tip()
 			name = "<strong>Avg. msrmnt. in basement</strong>";
 		}
 		var measurement = Math.round(d.value);
-		//return "<strong>Floor </strong>" + /*d.name*/ name +  "<strong>: </strong><span style='color:red'>" + d.y0 + "</span>";
-		return name +  "<strong>: </strong><span style='color:red'>" + measurement + "</span>";
-});
+		//return "<strong>Floor </strong>" + d.name name +  "<strong>: </strong><span style='color:red'>" + d.y0 + "</span>";
+		return name +  "<strong>: </strong><span style='color:red'>" + measurement + "</span>";*/
+		
+		return d.name + " " + d.value;  });
 
 var svg = d3.select(div).append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -55,15 +58,15 @@ svg.call(tip);
 d3.csv(filename, function(error, data) {
   if (error) throw error;
 
-  var petrograph = d3.keys(data[0]).filter(function(key) { return (key !== "geo") & (key != "petrograph"); });
+	var chart_keys = d3.keys(data[0]).filter(function(key) { return ((attributes.indexOf(key)>-1)& key != attributes[0] )});
 
   data.forEach(function(d) {
-    d.petro = petrograph.map(function(name) { return {name: name, value: +d[name]}; });
+    d.values = chart_keys.map(function(name) { return {name: name, value: +d[name]}; });
   });
 
-  x0.domain(data.map(function(d) { return d.petrograph; }));
-  x1.domain(petrograph).rangeRoundBands([0, x0.rangeBand()]);
-  y.domain([0, d3.max(data, function(d) { return d3.max(d.petro, function(d) { console.log(d.name); return d.value; }); })]);
+  x0.domain(data.map(function(d) { console.log(d[attributes[0]]); return d[attributes[0]]; }));
+  x1.domain(chart_keys).rangeRoundBands([0, x0.rangeBand()]);
+  y.domain([0, d3.max(data, function(d) { return d3.max(d.values, function(d) { console.log(d.name); console.log(d.value); return d.value; }); })]);
 
   svg.append("g")
 	  .attr("class", "x axis")
@@ -86,14 +89,15 @@ d3.csv(filename, function(error, data) {
       .style("text-anchor", "end")
       .text("Radon [Bq m-3]");
 
-  var petro = svg.selectAll(".petro")
+  var chart = svg.selectAll(".chart")
       .data(data)
     .enter().append("g")
-      .attr("class", "petro")
-      .attr("transform", function(d) { return "translate(" + x0(d.petrograph) + ",0)"; });
+      //.attr("class", "chart")
+	  .attr("class", "g")
+      .attr("transform", function(d) { console.log(d[attributes[0]]); return "translate(" + x0(d[attributes[0]]) + ",0)"; });
 
-  petro.selectAll("rect")
-      .data(function(d) { return d.petro; })
+  chart.selectAll("rect")
+      .data(function(d) { return d.values; })
     .enter().append("rect")
       .attr("width", x1.rangeBand())
       .attr("x", function(d) { return x1(d.name); })
@@ -105,7 +109,7 @@ d3.csv(filename, function(error, data) {
       .on('mouseout', tip.hide);										// event for tooltip
 
   var legend = svg.selectAll(".legend")
-      .data(petrograph.slice().reverse())
+      .data(chart_keys.slice().reverse())
     .enter().append("g")
       .attr("class", "legend")
       .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
@@ -122,7 +126,7 @@ d3.csv(filename, function(error, data) {
       .attr("dy", ".35em")
       .style("text-anchor", "end")
       .text(function(d) { 
-	    var name = "";
+	    /*var name = "";
 		if (d == "rl_ke") {
 			name = "Msrmnt. in basement";
 		}
@@ -132,7 +136,7 @@ d3.csv(filename, function(error, data) {
 		if (d == "rl_eg") {
 			name = "Msrmnt. on ground floor";
 		}
-		return name; });
-
+		return name; });*/
+		return d;});
 });
 }

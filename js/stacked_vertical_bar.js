@@ -143,6 +143,5 @@ d3.csv(filename, function(error, data) {
 		}
 		return name; */
 		return d;});
-
 });
 }
