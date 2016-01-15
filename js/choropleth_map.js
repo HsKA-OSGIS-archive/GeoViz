@@ -8,50 +8,48 @@ function drawChoroplethMap(div,filenames,attribute_choropleth,attributes_tooltip
   var b, s, t;
   //var sparkline = d3.charts.sparkline().height(50).width(138);
   var map = void 0; // update global
-  
-  /*// New function
-  var zoomed = function () {
-    map.attr("transform", "translate("+ d3.event.translate + ")scale(" + d3.event.scale + ")");
-  };
-
-  // New function
-  var zoom = d3.behavior.zoom()
-    .scaleExtent([1, 8])
-    .on("zoom", zoomed);*/
-
-  /*var setDb = function(data) {
-    data.forEach(function(d) {
-      db.set(d.ID_2, [ //COUNT_BL,AVG_MW_BL,COUNT_ODL,AVG_MW_ODL,COUNT_RL,AVG_MW_RL
-        {"x": 1, "y": +d.AVG_MW_BL},
-        {"x": 2, "y": +d.AVG_MW_ODL},
-        {"x": 3, "y": +d.AVG_MW_RL}
-	  ]);
-    });
-  };*/
 
   var geoID = function(d) {
 	console.log(d.properties.id);
     return d.properties.id;
   };
-
-  /*var hover = function(d) {
-    var div = document.getElementById('tooltip');
-    div.style.left = event.pageX +'px';
-    div.style.top = event.pageY + 'px';
-    div.innerHTML = d.properties.name;
-	console.log(d.properties.id);
-
-    var id = geoID(d);
-    d3.select("#tooltip").datum(db.get(id)).call(sparkline.draw);
-  };*/
 	
   var color = d3.scale.threshold().domain(domain)
 			.range(range); //<-A
-			//["#0a6e01", "#40ff05", "#E4FF05", "#FFDB00", "#ff6700", "#ff0000"]
-			//.range(["#f2f0f7", "#dadaeb", "#bcbddc", "#9e9ac8", "#756bb1", "#54278f"]); //<-A
-			//.range(["#000", "#222", "#333", "#444", "#555", "#666"]);
 			
   var path = d3.geo.path().projection(projection);
+  
+  //Tooltip:
+  /*var divs_tooltip = [];
+  for (i=0; i<attributes_tooltip.length;i++) {	//attributes_tooltip.length <=6
+	//tooltip.append('div').attr('class', attributes_tooltip[i]);
+	divs_tooltip[i] = "." + attributes_tooltip[i];
+  }*/
+   var tip = d3.tip()
+	.attr('class', 'd3-tip')
+	.offset([-10, 0])
+	.html(function(d) {
+		var tooltip = "";
+		if (attributes_tooltip.length >= 1) {
+			tooltip += attributes_tooltip[0] + ": " + d[attributes_tooltip[0]] + "<br>";
+		}
+        if (attributes_tooltip.length >= 2) {
+			tooltip += attributes_tooltip[1] + ": " + d[attributes_tooltip[1]] + "<br>";
+		}
+		if (attributes_tooltip.length >= 3) {
+			tooltip += attributes_tooltip[2] + ": " + d[attributes_tooltip[2]] + "<br>";
+		}
+		if (attributes_tooltip.length >= 4) {
+			tooltip += attributes_tooltip[3] + ": " + d[attributes_tooltip[3]] + "<br>";
+		}
+		if (attributes_tooltip.length >= 5) {
+			tooltip += attributes_tooltip[4] + ": " + d[attributes_tooltip[4]] + "<br>";
+		}
+		if (attributes_tooltip.length = 6) {
+			tooltip += attributes_tooltip[5] + ": " + d[attributes_tooltip[5]];
+		}
+		return tooltip;
+  });
 
   var svg = d3.select(div)
       .append("svg")
@@ -64,59 +62,43 @@ function drawChoroplethMap(div,filenames,attribute_choropleth,attributes_tooltip
     svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
   }
   
-  var tooltip = d3.select(div);
-  tooltip.append('div').attr('class','tooltip');
+  svg.call(tip);
   
-  var divs_tooltip = [];
-  for (i=0; i<attributes_tooltip.length;i++) {
-	tooltip.append('div').attr('class', attributes_tooltip[i]);
-	divs_tooltip[i] = "." + attributes_tooltip[i];
-  }
-  /*var tooltip = d3.select(div)                               // NEW
-          .append('div')                                                // NEW
-          .attr('class', 'tooltip');                                    // NEW
-                      
-        tooltip.append('div')                                           // NEW
-          .attr('class', 'hausart');                                      // NEW
-		  
-		  tooltip.append('div')                                           // NEW
-          .attr('class', 'bauweise');                                      // NEW
-             
-        tooltip.append('div')                                           // NEW
-          .attr('class', 'mw_avg');                                      // NEW
-
-        tooltip.append('div')                                           // NEW
-          .attr('class', 'mw_1g');                                    // NEW
-		  
-		  tooltip.append('div')                                           // NEW
-          .attr('class', 'mw_eg');                                    // NEW
-		  
-		  tooltip.append('div')                                           // NEW
-          .attr('class', 'mw_ke');                                    // NEW*/
+  
+  
+  /*if (divs_tooltip.length > 0 & attributes_tooltip.length > 0) {
+	var tooltip = d3.select(div);
+	tooltip.append('div').attr('class','tooltip');
+	//var tooltip = d3.select(div).append('div').attr('class', 'tooltip');
+		if (divs_tooltip.length >= 1) {
+			tooltip.append('div').attr('class', divs_tooltip[0]);
+		}
+        if (divs_tooltip.length >= 2) {
+			tooltip.append('div').attr('class', divs_tooltip[1]);
+		}
+		if (divs_tooltip.length >= 3) {
+			tooltip.append('div').attr('class', divs_tooltip[2]);
+		}
+		if (divs_tooltip.length >= 4) {
+			tooltip.append('div').attr('class', divs_tooltip[3]);
+		}
+		if (divs_tooltip.length >= 5) {
+			tooltip.append('div').attr('class', divs_tooltip[4]);
+		}
+		if (divs_tooltip.length = 6) {
+			tooltip.append('div').attr('class', divs_tooltip[5]);
+		}
+  }*/
+  
 
   d3.json(filenames[0], function(data) {
 	d3.csv(filenames[1], function(statistics) {
-	
-		//CSV:
-		//setDb(statistics);
-		//for hover with sparkline...
-		/*var setDb = function(data) {
-			data.forEach(function(d) {
-				db.set(d.ID_2, [ //COUNT_BL,AVG_MW_BL,COUNT_ODL,AVG_MW_ODL,COUNT_RL,AVG_MW_RL
-					{"x": 1, "y": +d.AVG_MW_BL},
-					{"x": 2, "y": +d.AVG_MW_ODL},
-					{"x": 3, "y": +d.AVG_MW_RL}
-				]);
-			});
-		};
-		setDb(statistics);*/
 		
 		//get color for choropleth map:
 		var rateByAVG = {};
 				
         statistics.forEach(function (d) { // <-B
                 rateByAVG[d[attribute_choropleth[0]]] = Math.round( d[attribute_choropleth[1]] );
-				//console.log(d[attribute_choropleth[0]], d[attribute_choropleth[1]], rateByAVG[d[attribute_choropleth[0]]);
 		});	
 		
 		//change also later to get lates topojson from PostGIS database?
@@ -143,7 +125,7 @@ function drawChoroplethMap(div,filenames,attribute_choropleth,attributes_tooltip
 						var col = color(rateByAVG[d.properties.id]);
 						console.log(col);
 						return col; // <-C
-                    });
+        });
 
 		counties_var.exit().remove();
 
@@ -188,6 +170,9 @@ function drawChoroplethMap(div,filenames,attribute_choropleth,attributes_tooltip
 	
 	d3.csv(filenames[2], function(raumluft_data) {
       var raumluftPoints = svg.selectAll('circle').data(raumluft_data);
+	  /* console.log("Bevor saveTooltips");
+	  Get Tooltips for measurements:
+	  var tooltip_dictionary = saveTooltips(raumluft_data,attributes_tooltip);*/
 
       raumluftPoints.enter()
           .append('circle')
@@ -196,45 +181,60 @@ function drawChoroplethMap(div,filenames,attribute_choropleth,attributes_tooltip
           .attr('r', 4)
           .attr('fill', 'steelblue')
 		  .attr('stroke', 'black')
-		  .on('mouseover', function(d) {                            // NEW
-			for (i=0;divs_tooltip.length;i++) {
-				tooltip.select(divs_tooltip[i]).html(d[attributes_tooltip[i]]);
-			}
-            /*tooltip.select('.hausart').html(d[attributes_tooltip[0]]);                // NEW
-			tooltip.select('.bauweise').html(d[attributes_tooltip[0]]);                // NEW
-            tooltip.select('.mw_avg').html(Math.round(d[attributes_tooltip[0]]));                // NEW
-            tooltip.select('.mw_1g').html(Math.round(d[attributes_tooltip[0]]);             // NEW
-			tooltip.select('.mw_eg').html(Math.round(d[attributes_tooltip[0]]));             // NEW
-			tooltip.select('.mw_ke').html(Math.round(d[attributes_tooltip[0]]));*/             // NEW
-            tooltip.style('display', 'block');                          // NEW
-          });                                                           // NEW
-          
+		  //new tooltip:
+		  .on('mouseover', tip.show)			// event for tooltip
+		  .on('mouseout', tip.hide);			// event for tooltip
+		  /*.on('mouseover', function(d) {
+				console.log("inMouseOver");
+				if (divs_tooltip.length >= 1) {
+					console.log(d[attributes_tooltip[0]]);
+					tooltip.select(divs_tooltip[0]).html(d[attributes_tooltip[0]]);
+				}
+				if (divs_tooltip.length >= 2) {
+					tooltip.select(divs_tooltip[1]).html(d[attributes_tooltip[1]]);
+				}
+				if (divs_tooltip.length >= 3) {
+					tooltip.select(divs_tooltip[2]).html(d[attributes_tooltip[2]]);
+				}
+				if (divs_tooltip.length >= 4) {
+					tooltip.select(divs_tooltip[3]).html(d[attributes_tooltip[3]]);
+				}
+				if (divs_tooltip.length >= 5) {
+					tooltip.select(divs_tooltip[4]).html(d[attributes_tooltip[4]]);
+				}
+				if (divs_tooltip.length = 6) {
+					tooltip.select(divs_tooltip[5]).html(d[attributes_tooltip[5]]);
+				}
+				tooltip.style('display', 'block');
+          }); 
+		  
           raumluftPoints.on('mouseout', function() {                              // NEW
-            tooltip.style('display', 'none');                           // NEW
-          });  
+            tooltip.style('display', 'none');
+          });*/  
     
 	});
 	
-	/*d3.json('../data/processed_data/bfs/project_area_4326_topo.json', function(pa_data) {
-		var project_area = topojson.feature(pa_data, pa_data.objects.project);
-		
-		var project_var = map.selectAll('path').data(project_area.features);
-		
-		project_var.enter()
-			.append('path')
-			.attr('d', path)
-			.attr('stroke', '#999');
-			
-		svg.append("rect")
-			.attr("class", "overlay")
-			.attr("width", width)
-			.attr("height", height)
-			.call(zoom);
-		
-	
-	});*/
 	});	
 	
   });
- 
 }
+
+/*function saveTooltips(d,attributes_tooltip) {
+	//console.log(d);
+	var tooltip_dictionary = {};
+	
+	d.forEach(function(data) {
+		tooltip = "";
+		for (i=0;attributes_tooltip.length;i++) {
+			tooltip += attributes_tooltip[i] + ": " +  data[attributes_tooltip[i]] + "<br>";
+		}
+		console.log(tooltip);
+		tooltip_dictionary[data] = tooltip;
+	});
+	
+	/*for (i=0;attributes_tooltip.length;i++) {
+		console.log(tooltip);
+		tooltip += attributes_tooltip[i] + ": " +  d[attributes_tooltip[i]] + "<br>";
+	}*/
+	/*return tooltip_dictionary;
+}*/

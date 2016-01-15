@@ -5,51 +5,12 @@
 <head>
 <meta charset="utf-8">
 <title>Choropleth Map</title>
-<style>
-    .boundary {
-      fill: none;
-      stroke: #888;
-      stroke-linejoin: round;
-    }
-    svg {
-      border-style: solid;
-      border-width: 1px;
-      border-color: #ccc;
-      background: #fff;
-    }
-	
-	.tooltip {                                                        /* NEW */
-        background: #eee;                                               /* NEW */
-        box-shadow: 0 0 5px #999999;                                    /* NEW */
-        color: #333;                                                    /* NEW */
-        display: none;                                                  /* NEW */
-        font-size: 12px;                                                /* NEW */
-        left: 650px;                                                    /* NEW */
-        padding: 10px;                                                  /* NEW */
-        position: absolute;                                             /* NEW */
-        text-align: center;                                             /* NEW */
-        top: 200px;                                                      /* NEW */
-        width: 80px;                                                    /* NEW */
-        z-index: 10;                                                    /* NEW */
-      } 
-	  
-	  .d3-tip {
-			line-height: 1;
-			font-weight: bold;
-			padding: 12px;
-			background: rgba(0, 0, 0, 0.8);
-			color: #fff;
-			border-radius: 2px;
-		}
-	
-	/* New class for the overlay zoom */
-    .overlay {
-      fill: none;
-      pointer-events: all;
-    }
-</style>
+<link rel="stylesheet" 
+          href="../css/style_choropleth_map.css" 
+          type="text/css">
 <script src="../lib/d3.min.js" charset="utf-8"></script>
 <script src="../lib/d3.js" charset="utf-8"></script>
+<script src="../lib/d3.tip.v0.6.3.js" charset="utf-8"></script>
 <script src="../lib/topojson.v1.min.js"" charset="utf-8"></script>
 <script src="../lib/base.js" charset="utf-8"></script>
 <script src="../lib/sparkline.js" charset="utf-8"></script>
@@ -57,12 +18,16 @@
 </head>
 <body>
 	<div id="diagram"></div>
-	<div id="tooltip"></div>
+	<!--<div id="tooltip"></div>-->
 	
 	<!--script to introduce necessary variables to pass to function drawSortableBarChart:-->
 	<script>
-		var div = "#diagram", filenames = ["../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics2_topo.json","../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv",'../data/processed_data/bfs/raumluft_4326_statistics_attributes_total_csv.csv'],
-			attribute_choropleth = ["ID_2","AVG_MW_RL"],attributes_tooltip = ["HAUSART","BAUWEISE","AVG_MW","MESSW_1G","MESSW_EG","MESSW_KE"], domain = [75, 150, 220, 300],range=["#1a9641", "#a6d96a", "#ffffc0", "#d7191c", "#1a9641"]; //check domain, add 6th class?
+		var		div = "#diagram",
+				filenames = ["../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics2_topo.json","../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv",'../data/processed_data/bfs/raumluft_4326_statistics_attributes_total_csv.csv'],
+				attribute_choropleth = ["ID_2","AVG_MW_RL"],
+				attributes_tooltip = ["HAUSART","BAUWEISE","AVG_MW","MESSW_1G","MESSW_EG","MESSW_KE"],
+				domain = [60, 100, 150, 250, 350],
+				range = ["#0a6e01", "#40ff05", "#E4FF05", "#FFDB00", "#ff6700", "#ff0000"]; //check domain, add 6th class?
 	</script>
 	
 	<!--script to load asynchronous JavaScript, otherwise DOM is not ready when the script is loaded-->
