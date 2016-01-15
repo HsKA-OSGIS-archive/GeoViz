@@ -1,5 +1,8 @@
 <!DOCTYPE html>
+<html>
+<head>
 <meta charset="utf-8">
+<title>Sortable Bar Chart</title>
 <style>
 
 body {
@@ -65,298 +68,82 @@ label {
   left: 0;
 }
 
-
-
 </style>
+<script src="../lib/jquery.min.js" charset="utf-8"></script>
+<script src="../lib/d3.min.js" charset="utf-8"></script>
+<script src="../lib/d3.tip.v0.6.3.js" charset="utf-8"></script>
+<script src="../js/sortable_bar_chart.js"></script>
+</head>
 <body>
-<!--<div id="Raumluft">
-    <input name="updateButton_raumluft" 
-           type="button" 
-           value="Raumluft" 
-           onclick="updateData(this.id)" />   
-</div>
-<div id="Bodenluft">
-    <input name="updateButton_bodenluft" 
-           type="button" 
-           value="Bodenluft" 
-           onclick="updateData(this.id)" />   
-</div>
-<div id="ODL">
-    <input name="updateButton_odl" 
-           type="button" 
-           value="ODL" 
-           onclick="updateData(this.id)" />   
-</div>-->
-<button id="button_rl" onClick="updateData(this.id)">Raumluft</button>
-<button id="button_bl" onClick="updateData(this.id)">Bodenluft</button>
-<button id="button_odl" onClick="updateData(this.id)">ODL</button>
-<label><input type="checkbox"> Sort values</label>
-<script src="/GeoViz_local/lib/d3.min.js"></script>
-<script src="/GeoViz_local/lib/d3.tip.v0.6.3.js"></script>
-<script>
-//based on: http://bl.ocks.org/mbostock/3885705
-
-var margin = {top: 20, right: 20, bottom: 100, left: 40},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
-
-//var formatyAxis = d3.format(".0%");
-var formatyAxis = d3.format(".4n");
-
-var x = d3.scale.ordinal()
-    .rangeRoundBands([0, width], .1, 1);
-
-var y = d3.scale.linear()
-    .range([height, 0]);
-
-var xAxis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom");
-
-var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient("left")
-    .tickFormat(formatyAxis);
+	<!--Define buttons and div for d3 chart-->
+	<button id="button_rl" onClick="updateData(this.id)">Raumluft</button>
+	<button id="button_bl" onClick="updateData(this.id)">Bodenluft</button>
+	<button id="button_odl" onClick="updateData(this.id)">ODL</button>
 	
-// Tooltip:
-var tip = d3.tip()
-  .attr('class', 'd3-tip')
-  .offset([-10, 0])
-  .html(function(d) {
-    return "<strong>AVG RL MW in </strong>" + d.name +  "<strong>: </strong><span style='color:red'>" + d.value + "</span>";
-  });
-
- // create an SVG element (appended to body)
-// set size
-// add a "g" element (think "group")
-// annoying d3 gotcha - the 'svg' variable here is a 'g' element
-// the final line sets the transform on <g>, not on <svg>
-var svg = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	<!--Define Checkbox to sort values-->
+	<label><input type="checkbox"> Sort values</label>
 	
-svg.call(tip);
+	<div id="diagram"></div>
+	
+	<!--Define variable to control the type of the drawn chart-->
+	<script>
+		var arrayDrawTypes = ["raumluft","bodenluft","odl"];
+		console.log(arrayDrawTypes[0]);
+		var drawType = arrayDrawTypes[0];
+		var arrayButtons = ['button_rl','button_bl','button_odl'];
+		var boolean_clearDiv = false;
+	</script>
+	
+	<!--script to load asynchronous JavaScript, otherwise DOM is not ready when the script is loaded-->
+    <script language="javascript" type="text/javascript">
+      function loadScriptAfter() {
+        /*var script = document.getElementById("diagram");
+        script.src = "GeoViz_local/js/stacked_vertical_bar.js";
+        document.body.appendChild(script);*/
+		drawSortableBarChart("#diagram",drawType,boolean_clearDiv);
+		console.log(drawType);
+		document.getElementById('button_rl').disabled = true;
+		document.getElementById('button_bl').disabled = false;
+		document.getElementById('button_odl').disabled = false;	
+      }
 
-var testvariable = "raumluft";
-
-d3.csv("/GeoViz_local/data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv", type, function(error, data) {
-
-  x.domain(data.map(function(d) { return d.name; }));
-  y.domain([0, d3.max(data, function(d) { return d.value; })]);
-
-  svg.append("g")
-	.attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis) //;
-	  //new:
-	  .selectAll("text")
-      .style("text-anchor", "end")
-      .attr("dx", "-.8em")
-      .attr("dy", ".15em")
-      .attr("transform", "rotate(-50)");
-
-  svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-    .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      //.text("Frequency");
-	  .text("Average Raumluft value [Bq m-3]");
-
-  svg.selectAll(".bar")
-      .data(data)
-	  .enter().append("rect")
-      .attr("class", "bar")
-	  .attr("x", function(d) { return x(d.name); })
-      .attr("width", x.rangeBand())
-      .attr("y", function(d) { return y(d.value); })
-      .attr("height", function(d) { return height - y(d.value); })
-	  //new tooltip:
-      .on('mouseover', tip.show)										// event for tooltip
-      .on('mouseout', tip.hide);										// event for tooltip
-  
-  /*//Exit:	 <-- causes tooltips to not be centered 
-  bars.exit().remove();*/
-
-  d3.select("input").on("change", change);
-
-  var sortTimeout = setTimeout(function() {
-    d3.select("input").property("checked", true).each(change);
-  }, 2000);
-
-  function change() {
-    clearTimeout(sortTimeout);
-
-    // Copy-on-write since tweens are evaluated after a delay.
-    var x0 = x.domain(data.sort(this.checked
-		/*? function(a, b) { return b.frequency - a.frequency; }
-        : function(a, b) { return d3.ascending(a.letter, b.letter); })
-        .map(function(d) { return d.letter; }))
-        .copy();*/
-        ? function(a, b) { return b.value - a.value; }
-        : function(a, b) { return d3.ascending(a.name, b.name); })
-        .map(function(d) { return d.name; }))
-        .copy();
-
-    svg.selectAll(".bar")
-		//.sort(function(a, b) { return x0(a.letter) - x0(b.letter); });
-        .sort(function(a, b) { return x0(a.name) - x0(b.name); });
-
-    var transition = svg.transition().duration(750),
-        delay = function(d, i) { return i * 50; };
-
-    transition.selectAll(".bar")
-        .delay(delay)
-		//.attr("x", function(d) { return x0(d.letter); });
-        .attr("x", function(d) { return x0(d.name); });
-
-    //Update x-axis:
-	transition.select("g.x.axis")
-        .call(xAxis)
-		.selectAll("text")
-        .style("text-anchor", "end")
-        .attr("dx", "-.8em")
-        .attr("dy", ".15em")
-        .attr("transform", "rotate(-50)")
-      .selectAll("g")
-        .delay(delay);
-  }
-});
-
-function type(d) {
-  console.log(testvariable);
-  if (testvariable == "raumluft") {
-	d.value = +d.AVG_MW_RL;
-  } else if (testvariable == "bodenluft") {
-	d.value = +d.AVG_MW_BL;
-  } else {
-	d.value = +d.AVG_MW_ODL;
-  }
-  d.name = d.NAME_2
-  return d;
-}
-
-// ** Update data section (Called from the onclick)
-function updateData(clicked_buttonid) {
-	var label_yAxis = "";
-	console.log("inUpdateData");
-	console.log(clicked_buttonid);
-	if (clicked_buttonid == "button_rl") {
-		testvariable = "raumluft";
-	} else if (clicked_buttonid == "button_bl") {
-		testvariable = "bodenluft";
-	} else {
-		testvariable = "odl";
-	}
-    // Get the data again
-    d3.csv("/GeoViz_local/data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv", type, function(error, data) {
-
-		x.domain(data.map(function(d) { return d.name; }));
-		if (clicked_buttonid == "button_rl") {
-			y.domain([0, d3.max(data, function(d) { return d.value; })]);
-			label_yAxis = "Average Raumluft value [Bq m-3]";
-		} else if (clicked_buttonid == "button_bl") {
-			y.domain([0, d3.max(data, function(d) { return d.value; })]);
-			label_yAxis = "Average Bodenluft value [kBq m-3]";
-		} else {
-			y.domain([0, d3.max(data, function(d) { return d.value; })]);
-			label_yAxis = "Average ODL value [nSv h-1]";
+      if (window.addEventListener) {
+        window.addEventListener("load", loadScriptAfter);
+      } else if (window.attachEvent) {
+        window.attachEvent("onload", loadScriptAfter);
+      } else {
+        window.onload = loadScriptAfter;
+      }
+    </script>
+	
+	<!--Interaction with the buttons-->
+	<script>
+	function updateData(clicked_buttonid) {
+		
+		//Disable clicked button and change drawType as well as enable other buttons:
+		for (i = 0; i<arrayButtons.length; i++) {
+			if (clicked_buttonid == arrayButtons[i]) {
+				//Disable clicked button:
+				document.getElementById(clicked_buttonid).disabled = true; 
+				
+				//Change drawType:
+				drawType = arrayDrawTypes[i];
+				 
+			} else {
+				//Enable other buttons:
+				document.getElementById(arrayButtons[i]).disabled = false;			
+			}
 		}
-		
-		// Select the section we want to apply our changes to
-		var svg = d3.select("body").transition();
-		
-		svg.select(".bar")   // change the line
-            .duration(750)
-			.attr("class", "bar")
-			.attr("x", function(d) { return x(d.name); })
-			.attr("width", x.rangeBand())
-			.attr("y", function(d) { console.log(d.value); return y(d.value); })
-			.attr("height", function(d) { return height - y(d.value); });
+		boolean_clearDiv = true;
+		console.log(drawType);	
+		loadScriptAfter;	
+		//Call loadScriptAfter?	
+		//Change drawType:
 			
-		svg.select(".x.axis") // change the x axis
-            .duration(750)
-            .call(xAxis)
-			.selectAll("text")
-			.style("text-anchor", "end")
-			.attr("dx", "-.8em")
-			.attr("dy", ".15em")
-			.attr("transform", "rotate(-50)");
-        svg.select(".y.axis") // change the y axis
-            .duration(750)
-            .call(yAxis)
-			.selectAll("text")
-			//.attr("transform", "rotate(-90)")
-			.attr("y", 6)
-			.attr("dy", ".71em")
-			.style("text-anchor", "end")
-			//.text("Frequency");
-			.text(label_yAxis);
-  
-  
-    /*// Select the section we want to apply our changes to
-    var svg = d3.select("body").transition();
-    // Make the changes
-	if (clicked_buttonid == "button_rl") {
-		svg.select(".bar")   // change the line
-            .duration(750)
-			.attr("class", "bar")
-			.attr("x", function(d) { return x(d.NAME_2); })
-			.attr("width", x.rangeBand())
-			.attr("y", function(d) { return y(d.value); })
-			.attr("height", function(d) { return height - y(d.value); });
-			/*///new tooltip:
-			//.on('mouseover', tip_rl.show)										// event for tooltip
-			//.on('mouseout', tip_rl.hide);									// event for tooltip*/
-		  // the "UPDATE" set:
-			/*bars.transition().duration(300).attr("x", function(d) { return x(d.NAME_2); }) // (d) is one item from the data array, x is the scale object from above
-				.attr("width", x.rangeBand()) // constant, so no callback function(d) here
-				.attr("y", function(d) { return y(d.value); })
-				.attr("height", function(d) { return height - y(d.value); }); // flip the height, because y's domain is bottom up, but SVG renders top down*/
+    };
 
-	/*} else if (clicked_buttonid == "button_bl") {
-		/*svg.select(".bar")   // change the line
-            .duration(750)
-			.attr("class", "bar")
-			.attr("x", function(d) { return x(d.NAME_2); })
-			.attr("width", x.rangeBand())
-			.attr("y", function(d) { return y(d.AVG_MW_BL); })
-			.attr("height", function(d) { return height - y(d.AVG_MW_BL); });
-			//new tooltip:
-			/*.on('mouseover', tip_bl.show)										// event for tooltip
-			.on('mouseout', tip_bl.hide);										// event for tooltip*/
-			/*svg.select(".bar").transition().duration(300).attr("x", function(d) { return x(d.NAME_2); }) // (d) is one item from the data array, x is the scale object from above
-				.attr("width", x.rangeBand()) // constant, so no callback function(d) here
-				.attr("y", function(d) { return y(d.AVG_MW_BL); })
-				.attr("height", function(d) { return height - y(d.AVG_MW_BL); });
-				// flip the height, because y's domain is bottom up, but SVG renders top down
+	function refreshDiv(div) {
+		$(div).load("quote.html");
 	}
-        
-        svg.select(".x.axis") // change the x axis
-            .duration(750)
-            .call(xAxis)
-			.selectAll("text")
-			.style("text-anchor", "end")
-			.attr("dx", "-.8em")
-			.attr("dy", ".15em")
-			.attr("transform", "rotate(-50)");
-        svg.select(".y.axis") // change the y axis
-            .duration(750)
-            .call(yAxis)
-			.selectAll("text")
-			//.attr("transform", "rotate(-90)")
-			.attr("y", 6)
-			.attr("dy", ".71em")
-			.style("text-anchor", "end")
-			//.text("Frequency");
-			.text(label_yAxis);*/
-    });
-	
-}
-
-</script>
+	</script>
+</body>
