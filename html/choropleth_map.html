@@ -12,8 +12,6 @@
 <script src="../lib/d3.js" charset="utf-8"></script>
 <script src="../lib/d3.tip.v0.6.3.js" charset="utf-8"></script>
 <script src="../lib/topojson.v1.min.js"" charset="utf-8"></script>
-<script src="../lib/base.js" charset="utf-8"></script>
-<script src="../lib/sparkline.js" charset="utf-8"></script>
 <script src="../js/choropleth_map.js"></script>
 </head>
 <body>
@@ -23,10 +21,15 @@
 	<!--script to introduce necessary variables to pass to function drawSortableBarChart:-->
 	<script>
 		var		div = "#diagram",
-				filenames = ["../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics2_topo.json","../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv",'../data/processed_data/bfs/raumluft_4326_statistics_attributes_total_csv.csv'],
+				/*filenames = ["../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics2_topo.json","../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv",'../data/processed_data/bfs/raumluft_4326_statistics_attributes_total_csv.csv'],
 				attribute_choropleth = ["ID_2","AVG_MW_RL"],
 				attributes_tooltip = ["HAUSART","BAUWEISE","AVG_MW","MESSW_1G","MESSW_EG","MESSW_KE"],
 				domain = [60, 100, 150, 250, 350],
+				range = ["#0a6e01", "#40ff05", "#E4FF05", "#FFDB00", "#ff6700", "#ff0000"]; //check domain, add 6th class?*/
+				filenames = ["../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics2_topo.json","../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv",'../data/processed_data/bfs/bodenluft_4326_statistics_attributes_total_csv.csv'],
+				attribute_choropleth = ["ID_2","AVG_MW_BL"],
+				attributes_tooltip = ["MESSW_BL"],
+				domain = [25, 85, 150, 200, 250],
 				range = ["#0a6e01", "#40ff05", "#E4FF05", "#FFDB00", "#ff6700", "#ff0000"]; //check domain, add 6th class?
 	</script>
 	
