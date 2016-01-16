@@ -35,7 +35,7 @@ if (boolean_clearDiv == true) {
 	clearDiv(div);
 }*/
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select(div).append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
