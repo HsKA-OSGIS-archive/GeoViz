@@ -88,8 +88,9 @@
 		//Dual_Scale:
 		var 	dual_div = "#dual_scale",
 				dual_filename = "../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv",
-				dual_attributes = ["NAME_2", "AVG_MW_RL", "AVG_MW_ODL"];	//first: attribute for x-Axis, second: attribute for y-Axis (left bars), second: attribute for y-Axis (right bars
-		//drawDualScaleBarChart(dual_div,dual_filename,dual_attributes);
+				dual_attributes = ["NAME_2", "AVG_MW_RL", "UNIT_RL", "AVG_MW_ODL", "UNIT_OD"] //;	//first: attribute for x-Axis, second: attribute for y-Axis (left bars), second: attribute for y-Axis (right bars
+				dual_legend_notation = ["Average Room air measurement [Bq m-3]", "Average ODL measurement [nSv m-1]"];
+		//drawDualScaleBarChart(dual_div,dual_filename,dual_attributes,dual_legend_notation);
 		
 		//Sortable:
 		var sortable_div = "#sortable_bar",
@@ -108,7 +109,7 @@
 		drawChoroplethMap(choro_div,choro_filenames,choro_attribute_choropleth,choro_attributes_tooltip,choro_domain,choro_range);//tooltip versetzt...
 		drawGroupedVerticalBar(grouped_div,grouped_filename,grouped_attributes,grouped_range);
 		drawStackedVerticalBar(stacked_div,stacked_filename,stacked_attributes,stacked_range);
-		drawDualScaleBarChart(dual_div,dual_filename,dual_attributes);
+		drawDualScaleBarChart(dual_div,dual_filename,dual_attributes,dual_legend_notation);
 		drawSortableBarChart(sortable_div,sortable_filename,sortable_attributes);
 		
 		/*$('#choropleth').hide();

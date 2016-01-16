@@ -21,7 +21,8 @@
 	<script>
 		var 	div = "#diagram",
 				filename = "../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv",
-				attributes = ["NAME_2", "AVG_MW_RL", "AVG_MW_ODL"];	//first: attribute for x-Axis, second: attribute for y-Axis (left bars), second: attribute for y-Axis (right bars)
+				attributes = ["NAME_2", "AVG_MW_RL", "UNIT_RL", "AVG_MW_ODL", "UNIT_OD"]	//;	first: attribute for x-Axis, second: attribute for y-Axis (left bars), second: attribute for y-Axis (right bars)
+				legend_notation = ["Average Room air measurement [Bq m-3]", "Average ODL measurement [nSv m-1]"];
 	</script>
 	
 	<!--script to load asynchronous JavaScript, otherwise DOM is not ready when the script is loaded-->
@@ -30,7 +31,7 @@
         /*var script = document.getElementById("diagram");
         script.src = "GeoViz_local/js/stacked_vertical_bar.js";
         document.body.appendChild(script);*/
-		drawDualScaleBarChart(div,filename,attributes);
+		drawDualScaleBarChart(div,filename,attributes,legend_notation);
       }
 
       if (window.addEventListener) {
