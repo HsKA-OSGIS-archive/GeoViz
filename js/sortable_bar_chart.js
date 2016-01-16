@@ -93,12 +93,12 @@ d3.csv(filename, type, function(error, data) {
 
   d3.select("input").on("change", change);
 
-  var sortTimeout = setTimeout(function() {
+  /*var sortTimeout = setTimeout(function() {
     d3.select("input").property("checked", true).each(change);
-  }, 2000);
+  }, 2000);*/
 
   function change() {
-    clearTimeout(sortTimeout);
+    //clearTimeout(sortTimeout);
 
     // Copy-on-write since tweens are evaluated after a delay.
     var x0 = x.domain(data.sort(this.checked
