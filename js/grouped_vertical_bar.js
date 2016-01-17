@@ -1,4 +1,4 @@
-function drawGroupedVerticalBar(div,filename,attributes,range) {
+function drawGroupedVerticalBar(div,filename,attributes,attributes_tooltip,range,y_axis_annotation) {
 /*div = div to append svg to, filename = csv-file with data to visualize, attributes = array with attribute names (fields in csv), range = colors for bars
 div,filenames,attribute_choropleth,attributes_tooltip,domain,range*/
 	
@@ -44,8 +44,20 @@ var tip = d3.tip()
 		var measurement = Math.round(d.value);
 		//return "<strong>Floor </strong>" + d.name name +  "<strong>: </strong><span style='color:red'>" + d.y0 + "</span>";
 		return name +  "<strong>: </strong><span style='color:red'>" + measurement + "</span>";*/
+		var type = "";
+		var unit = "";
+		for (i=0; i<attributes_tooltip.length;i++) {	//e.g. [["rl_ke","Room air in basement", "Bq m-3"], ["rl_eg",...], ["rl_1g",...]]
+			array_type = attributes_tooltip[i];
+			if (d.name == array_type[0]) {				//e.g. "rl_ke"=="rl_ke"
+				type = array_type[1];					//-> type = "Room air in basement"
+				unit = array_type[2];					//-> unit = "Bq m-3"
+			}
+		}
 		
-		return d.name + " " + d.value;  });
+		/*console.log(type);
+		console.log(unit);
+		return d.name + ": " + d.value;  });*/
+		return type + ": " + d.value + " " + unit; });
 
 var svg = d3.select(div).append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -87,7 +99,7 @@ d3.csv(filename, function(error, data) {
       .attr("y", 6)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
-      .text("Radon [Bq m-3]");
+      .text(y_axis_annotation);
 
   var chart = svg.selectAll(".chart")
       .data(data)
@@ -125,18 +137,19 @@ d3.csv(filename, function(error, data) {
       .attr("y", 9)
       .attr("dy", ".35em")
       .style("text-anchor", "end")
-      .text(function(d) { 
-	    /*var name = "";
-		if (d == "rl_ke") {
-			name = "Msrmnt. in basement";
+      .text(function(d,attributes_tooltip) { 
+	    /*var type = "";
+		console.log("line142");
+		console.log(attributes_tooltip_legend.length);
+		for (i=0; i<attributes_tooltip_legend.length;i++) {	//e.g. [["rl_ke","Room air in basement", "Bq m-3"], ["rl_eg",...], ["rl_1g",...]]
+			array_type = attributes_tooltip_legend[i];
+			console.log(array_type);
+			console.log(array_type[0]);
+			if (d == array_type[0]) {				//e.g. "rl_ke"=="rl_ke"
+				type = array_type[1];					//-> type = "Room air in basement"
+			}
 		}
-		if (d == "rl_1g") {
-			name = "Msrmnt. on first floor";
-		}
-		if (d == "rl_eg") {
-			name = "Msrmnt. on ground floor";
-		}
-		return name; });*/
+		return type; });*/
 		return d;});
 });
 }

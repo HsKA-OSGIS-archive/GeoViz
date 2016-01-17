@@ -1,4 +1,4 @@
-function drawStackedVerticalBar(div,filename,attributes,range) { 
+function drawStackedVerticalBar(div,filename,attributes,attributes_tooltip,range,y_axis_annotation) { 
 /*div = div to append svg to, filename = csv-file with data to visualize, attributes = array with attribute names (fields in csv), range = colors for bars
 div,filenames,attribute_choropleth,attributes_tooltip,domain,range*/
 var margin = {top: 50, right: 20, bottom: 350, left: 125},
@@ -42,7 +42,20 @@ var tip = d3.tip()
     return "<strong>Floor </strong>" + d.name name +  "<strong>: </strong><span style='color:red'>" + d.y0 + "</span>";
 	return name +  "<strong>: </strong><span style='color:red'>" + measurement + "</span>";*/
 	var measurement = Math.round(d.y1-d.y0);		//explanation: look below!
-	return d.name + " " + measurement;  });
+	var type = "";
+		var unit = "";
+		for (i=0; i<attributes_tooltip.length;i++) {	//e.g. [["rl_ke","Room air in basement", "Bq m-3"], ["rl_eg",...], ["rl_1g",...]]
+			array_type = attributes_tooltip[i];
+			if (d.name == array_type[0]) {				//e.g. "rl_ke"=="rl_ke"
+				type = array_type[1];					//-> type = "Room air in basement"
+				unit = array_type[2];					//-> unit = "Bq m-3"
+			}
+		}
+		
+		/*console.log(type);
+		console.log(unit);
+		return d.name + ": " + d.value;  });*/
+		return type + ": " + measurement + " " + unit; });
 
 var svg = d3.select(div).append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -94,7 +107,7 @@ d3.csv(filename, function(error, data) {
       .attr("y", 6)
 	  .attr("dy", "-4em")
       .style("text-anchor", "end")
-      .text("Radon [Bq m-3]");
+      .text(y_axis_annotation);
 
   var chart = svg.selectAll(".chart")
       .data(data)

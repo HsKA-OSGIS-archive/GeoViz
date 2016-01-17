@@ -1,4 +1,4 @@
-function drawDualScaleBarChart(div,filename,attributes,attributes_tooltip,y_axis_annotation) { 
+function drawDualScaleBarChart(div,filename,attributes,y_axis_annotation) { 
 /*div to append the svg element to, filename of the data, attributes to visualize [x-axis and y-axis; first: attribute for x-Axis, second: attribute for y-Axis (left bars), second: attribute for y-Axis (right bars)]*/
 	
 var margin = {top: 50, right: 80, bottom: 200, left: 120},
@@ -23,8 +23,7 @@ var tip_lb = d3.tip()
   .offset([-10, 0])
   .html(function(d) {
     //return "<strong>Value in </strong>" + d.value_x +  "<strong>: </strong><span style='color:red'>" + d.value_y1 + "</span>" + "<strong> kBq m-3 </strong>";
-	//return d.value_x + ": " + d.value_y1 + " " + d.value_unit1;
-	return attributes_tooltip[0][0] + ": " + d.value_y1 + " " + attributes_tooltip[0][1];
+	return d.value_x + ": " + d.value_y1 + " " + d.value_unit1;
   });
 
 // Tooltip for right bars:
@@ -33,23 +32,7 @@ var tip_rb = d3.tip()
   .offset([-10, 0])
   .html(function(d) {
     //return "<strong>Value in </strong>" + d.value_x +  "<strong>: </strong><span style='color:red'>" + d.value_y2 + "</span>" + "<strong> Bq m-3 </strong>";
-	//return d.value_x + ": " + d.value_y2 + " " + d.value_unit2;
-	/*var type = "";
-		var unit = "";
-		for (i=0; i<attributes_tooltip.length;i++) {	//e.g. [["rl_ke","Room air in basement", "Bq m-3"], ["rl_eg",...], ["rl_1g",...]]
-			array_type = attributes_tooltip[i];
-			if (d.name == array_type[0]) {				//e.g. "rl_ke"=="rl_ke"
-				type = array_type[1];					//-> type = "Room air in basement"
-				unit = array_type[2];					//-> unit = "Bq m-3"
-			}
-		}
-		
-		/*console.log(type);
-		console.log(unit);
-		return d.name + ": " + d.value;  });*/
-		//return type + ": " + d.value + " " + unit; });*/
-		//array_right_bars = attributes_tooltip
-		return attributes_tooltip[1][0] + ": " + d.value_y2 + " " + attributes_tooltip[1][1];
+	return d.value_x + ": " + d.value_y2 + " " + d.value_unit2;
   });
   
 var svg = d3.select(div).append("svg")
@@ -125,7 +108,9 @@ d3.csv(filename, type, function(error, data) {
 function type(d) {
   d.value_x = d[attributes[0]];
   d.value_y1 = +d[attributes[1]];
-  d.value_y2 = +d[attributes[2]];
+  d.value_unit1 = d[attributes[2]];
+  d.value_y2 = +d[attributes[3]];
+  d.value_unit2 = d[attributes[4]];
   return d;
 }
 }

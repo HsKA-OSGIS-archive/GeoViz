@@ -1,5 +1,5 @@
 //based on: http://bl.ocks.org/mbostock/3885705
-function drawSortableBarChart(div,filename,attributes) { //div to append the svg element to, filename of the data, attributes to visualize (x-axis and y-axis)
+function drawSortableBarChart(div,filename,attributes,attributes_tooltip,y_axis_annotation) { //div to append the svg element to, filename of the data, attributes to visualize (x-axis and y-axis)
 var margin = {top: 70, right: 50, bottom: 100, left: 80},
     width = 960 - margin.left - margin.right,
     height = 550 - margin.top - margin.bottom;
@@ -27,7 +27,7 @@ var tip = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-    return "<strong>AVG MW in </strong>" + d.value_x + "<strong>: </strong><span style='color:red'>" + d.value_y + "</span>";
+    return attributes_tooltip[0] + " in " + d.value_x + ": " + d.value_y + " " + attributes_tooltip[1];
   });
 
 /*If div already contains a svg element -> clear it:
@@ -73,7 +73,7 @@ d3.csv(filename, type, function(error, data) {
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       //.text("Frequency");
-	  .text("Average Radon value [Bq m-3]");
+	  .text(y_axis_annotation);
 
   svg.selectAll(".bar")
       .data(data)
