@@ -41,10 +41,10 @@
 </head>
 <body>
 	<!--Define buttons and div for d3 chart-->
-	<button id="button_choro" onClick="updateData(this.id)">Choropleth</button>
-	<button id="button_grouped" onClick="updateData(this.id)">Grouped</button>
-	<button id="button_stacked" onClick="updateData(this.id)">Stacked</button>
-	<button id="button_dual" onClick="updateData(this.id)">Dual Scale (BL & ODL)</button>
+	<button id="button_choro" onClick="updateData(this.id)">Choropleth (AVG)</button>
+	<button id="button_grouped" onClick="updateData(this.id)">Grouped (AVG)</button>
+	<button id="button_stacked" onClick="updateData(this.id)">Stacked (AVG)</button>
+	<button id="button_dual" onClick="updateData(this.id)">Dual Scale (RL / BL)</button>
 	<button id="button_sortable" onClick="updateData(this.id)">Sortable Bar</button>
 	
 	<div id="choropleth" visibility:"hidden"></div>
@@ -65,37 +65,48 @@
 		
 		//Choropleth:
 		var 	choro_div = "#choropleth",
-				choro_filenames = ["../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics2_topo.json","../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv",'../data/processed_data/bfs/bodenluft_4326_statistics_attributes_total_csv.csv'],
-				choro_attribute_choropleth = ["ID_2","AVG_MW_BL"],
-				choro_attributes_tooltip = ["STANDORT","PETROGRAPH","MESSW_BL"],
-				choro_domain = [25, 85, 150, 200, 250],
+				choro_filenames = ["../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics2_topo.json","../php/DEU_counties_statistics_php.csv",'../php/Raumluft_4326_statistics_php.csv'],
+				choro_attribute_choropleth = ["ID_2","AVG_MW_RL"],
+				choro_attributes_tooltip = ["HAUSART","BAUWEISE","AVG_MW","MESSW_1G","MESSW_EG","MESSW_KE"],
+				choro_domain = [60, 100, 150, 250, 350],
 				choro_range = ["#0a6e01", "#40ff05", "#E4FF05", "#FFDB00", "#ff6700", "#ff0000"]; //check domain, add 6th class?
 		
+		//check grouped and stacked -> error in bars - max and avg not correct!
 		//Grouped:
 		var 	grouped_div = "#grouped",
-				grouped_filename = "../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv",
-				grouped_attributes = ["NAME_2","AVG_MW_BL","AVG_MW_ODL","AVG_MW_RL"],	//first: attribute for x-Axis, the following attributes: attribute for y-Axis (bars)
-				grouped_range = ["#98abc5","#6b486b", "#ff8c00"]; //colors for bars
+				grouped_filename = "../php/Raumluft_4326_statistics_petrograph_php.csv",
+				//grouped_attributes = ["petrograph","rl_avg","rl_min","rl_max"],	//first: attribute for x-Axis, the following attributes: attribute for y-Axis (bars)
+				grouped_attributes = ["PETROGRAPH","RL_AVG","RL_MIN","RL_MAX"],	//first: attribute for x-Axis, the following attributes: attribute for y-Axis (bars)
+				grouped_attributes_tooltip = [["RL_AVG","Average room air measurement", "Bq m-3"], ["RL_MIN","Minimum room air measurement", "Bq m-3"], ["RL_MAX","Maximum room air measurement", "Bq m-3"]],
+				grouped_range = ["#98abc5","#6b486b", "#ff8c00"] //; //colors for bars
+				grouped_y_axis_annotation = "Radon in room air [Bq m-3]";
 		//drawGroupedVerticalBar(grouped_div,grouped_filename,grouped_attributes,grouped_range);
 		
 		//Stacked:
 		var 	stacked_div = "#stacked",
-				stacked_filename = "../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv",
-				stacked_attributes = ["NAME_2","AVG_MW_BL","AVG_MW_ODL","AVG_MW_RL"],	//first: attribute for x-Axis, the following attributes: attribute for y-Axis (bars)
-				stacked_range = ["#98abc5","#6b486b", "#ff8c00"]; //colors for bars
+				stacked_filename = "../php/Raumluft_4326_statistics_petrograph_php.csv",
+				stacked_attributes = ["PETROGRAPH","RL_AVG","RL_MIN","RL_MAX"],	//first: attribute for x-Axis, the following attributes: attribute for y-Axis (bars)
+				stacked_attributes_tooltip = [["RL_AVG","Average room air measurement", "Bq m-3"], ["RL_MIN","Minimum room air measurement", "Bq m-3"], ["RL_MAX","Maximum room air measurement", "Bq m-3"]],
+				stacked_range = ["#98abc5","#6b486b", "#ff8c00"] //; //colors for bars
+				stacked_y_axis_annotation = "Radon in room air [Bq m-3]";
 		//drawStackedVerticalBar(stacked_div,stacked_filename,stacked_attributes,stacked_range);
 		
 		//Dual_Scale:
 		var 	dual_div = "#dual_scale",
 				dual_filename = "../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv",
-				dual_attributes = ["NAME_2", "AVG_MW_BL", "AVG_MW_ODL"];	//first: attribute for x-Axis, second: attribute for y-Axis (left bars), second: attribute for y-Axis (right bars
-		//drawDualScaleBarChart(dual_div,dual_filename,dual_attributes);
+				//dual_attributes = ["NAME_2", "AVG_MW_RL", "UNIT_RL", "AVG_MW_ODL", "UNIT_OD"] //;	//first: attribute for x-Axis, second: attribute for y-Axis (left bars), second: attribute for y-Axis (right bars
+				dual_attributes = ["NAME_2", "AVG_MW_RL", "AVG_MW_ODL"] //;	//first: attribute for x-Axis, second: attribute for y-Axis (left bars), second: attribute for y-Axis (right bars,
+				dual_attributes_tooltip = [["Average msrmnt. in room air", "Bq m-3"], ["Average ODL msrmnt.", "nSv h-1"]],
+				dual_y_axis_annotation = ["Average Room air measurement [Bq m-3]", "Average ODL measurement [nSv m-1]"];
+		//drawDualScaleBarChart(dual_div,dual_filename,dual_attributes,dual_legend_notation);
 		
 		//Sortable:
 		var sortable_div = "#sortable_bar",
 			sortable_filename = "../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv",
-			sortable_attributes = ["NAME_2", "AVG_MW_BL"];	//first: attribute for x-Axis, second: attribute for y-Axis (left bars), second: attribute for y-Axis (right bars)
+			sortable_attributes = ["NAME_2", "AVG_MW_RL"] //;	//first: attribute for x-Axis, second: attribute for y-Axis (left bars), second: attribute for y-Axis (right bars)
 		//drawSortableBarChart(sortable_div,sortable_filename,sortable_attributes);
+			sortable_attributes_tooltip = ["Average Room Air Measurement", "Bq m-3"],
+			sortable_y_axis_annotation = "Average Radon value in room air [Bq m-3]";
 	</script>
 	
 	<!--script to load asynchronous JavaScript, otherwise DOM is not ready when the script is loaded-->
@@ -106,10 +117,10 @@
         document.body.appendChild(script);*/
 		
 		drawChoroplethMap(choro_div,choro_filenames,choro_attribute_choropleth,choro_attributes_tooltip,choro_domain,choro_range);//tooltip versetzt...
-		drawGroupedVerticalBar(grouped_div,grouped_filename,grouped_attributes,grouped_range);
-		drawStackedVerticalBar(stacked_div,stacked_filename,stacked_attributes,stacked_range);
-		drawDualScaleBarChart(dual_div,dual_filename,dual_attributes);
-		drawSortableBarChart(sortable_div,sortable_filename,sortable_attributes);
+		drawGroupedVerticalBar(grouped_div,grouped_filename,grouped_attributes,grouped_attributes_tooltip,grouped_range,grouped_y_axis_annotation);
+		drawStackedVerticalBar(stacked_div,stacked_filename,stacked_attributes,stacked_attributes_tooltip,stacked_range,stacked_y_axis_annotation);
+		drawDualScaleBarChart(dual_div,dual_filename,dual_attributes,dual_attributes_tooltip,dual_y_axis_annotation);
+		drawSortableBarChart(sortable_div,sortable_filename,sortable_attributes,sortable_attributes_tooltip,sortable_y_axis_annotation);
 		
 		/*$('#choropleth').hide();
 		$('#grouped').hide();

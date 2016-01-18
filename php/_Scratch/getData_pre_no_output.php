@@ -1,11 +1,11 @@
-<!--<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 
 <html>
 
   <head></head>
 
   <body>
--->
+
 <?php
 
 ini_set('display_errors', 1); // show errors
@@ -171,6 +171,7 @@ while($row = pg_fetch_assoc($result)) {
 		$line .= $comma . str_replace($replace,'', $value);
         $comma = ",";
     }
+	echo $line . "<br />";
 	
     $line .= "\n";
 	
@@ -280,6 +281,7 @@ while($row = pg_fetch_assoc($result)) {
 		$line .= $comma . str_replace($replace,'', $value);
         $comma = ",";
     }
+	echo $line . "<br />";
 	
     $line .= "\n";
 	
@@ -300,7 +302,7 @@ pg_free_result($result);
 pg_close($dbh);
 
 ?>
-<!--
+
   </body>
 
-</html>-->
+</html>
