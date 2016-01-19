@@ -90,3 +90,7 @@ $(document).ready(function(){
     $(this).children("a").toggleClass("closed open"); // wechselt beim Klick auf "dt" die Klasse des enthaltenen a-Tags von "closed" zu "open". 
   });
 });
+
+//############### PHP part ###############//
+$.ajax("./php/getData.php");
+		
