@@ -20,9 +20,11 @@ if (!$dbh) {
 
     die("Error in connection: " . pg_last_error());
 
-} /*else {
-	echo "Connection successful" . "<p />";
-}*/
+} else {
+	//echo "Connection successful" . "<p />";
+	$output = "<script>console.log( 'Connection to db geoviz successfull!' );</script>";
+	echo $output;
+}
 
 // Bodenluft:			exlusion of lon / lat since only X and Y coordinates are necessary? // problem with ö,ä,ü in field petrograph?
 // execute query:
@@ -75,6 +77,9 @@ fclose($fp);
 // free memory
 
 pg_free_result($result);
+
+$output = "<script>console.log( 'Writing Bodenluft data in csv finished!' );</script>";
+echo $output;
 
 // end of Bodenluft!
 
@@ -130,6 +135,8 @@ fclose($fp);
 
 pg_free_result($result);
 
+$output = "<script>console.log( 'Writing ODL data in csv finished!' );</script>";
+echo $output;
 // end of ODL!
 
 // Raumluft:
@@ -184,6 +191,8 @@ fclose($fp);
 
 pg_free_result($result);
 
+$output = "<script>console.log( 'Writing Raumluft data in csv finished!' );</script>";
+echo $output;
 // end of Raumluft!
 
 // DEU2_adm_statistics = counties:
@@ -238,6 +247,8 @@ fclose($fp);
 
 pg_free_result($result);
 
+$output = "<script>console.log( 'Writing DEU2_adm counties data in csv finished!' );</script>";
+echo $output;
 // end of DEU2_adm_statistics = counties!
 
 // Raumluft - Petrograph
@@ -293,6 +304,8 @@ fclose($fp);
 
 pg_free_result($result);
 
+$output = "<script>console.log( 'Writing Raumluft Petrograph data in csv finished!' );</script>";
+echo $output;
 // end of Raumluft - Petrograph!
 
 // close connection
