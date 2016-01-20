@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-Copyright (c) 2016 University of applied Science - Open Source GIS
+Copyright (c) 2016 Karlsruhe University of Applied Science - Open Source GIS
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +19,22 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+PostgreSQL 9.5
+http://www.postgresql.org/about/licence/
+
+GeoServer 2.8.1
+http://docs.geoserver.org/stable/en/user/introduction/license.html
+
+Apache Tomcat 9.0
+http://tomcat.apache.org/
+
+QGIS 2.12.1-Lyon
+https://www.qgis.org/en/site/about/
+
+OpenLayers 3.0
+http://openlayers.org/
+
+
+GitHub Desktop v3.0.11
+https://desktop.github.com/eula/
