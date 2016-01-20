@@ -106,6 +106,8 @@ var layerOSM = new ol.layer.Tile({
 });
 map.addLayer(layerOSM);	
 
+
+//localhost:8080/geoserver/geoviz/wms?service=WMS&version=1.1.0&request=GetMap&layers=geoviz:project_area_4326&styles=&bbox=11.5250616073608,49.3506469726563,12.6620655059814,50.3767127990723&width=768&height=693&srs=EPSG:4326&format=application/openlayers
 //OpenLayers Tile WMS layer (Project Area):
 var layer_project_area = new ol.layer.Tile({
 	source: new ol.source.TileWMS({
@@ -220,33 +222,31 @@ map.addLayer(layer_odl_points);
 
 //############### Get legend images for Legend part: ###############//
 document.getElementById("image_legend_rl").src = "http://localhost:8080/geoserver/geoviz/wms?REQUEST=GetLegendGraphic&VERSION=1.1.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=geoviz:raumluft_4326&STYLE=geoviz:geoviz_point_raumluft";
-//document.getElementById("label_legend_rl").style.display = "inline";
-//document.getElementById("image_legend_rl").style.display = "inline";
+document.getElementById("label_legend_rl").style.display = "inline";
+document.getElementById("image_legend_rl").style.display = "inline";
 
 document.getElementById("image_legend_bl").src = "http://localhost:8080/geoserver/geoviz/wms?REQUEST=GetLegendGraphic&VERSION=1.1.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=geoviz:bodenluft_4326&STYLE=geoviz:geoviz_point_bodenluft";
-//document.getElementById("label_legend_bl").style.display = "inline";
-//document.getElementById("image_legend_bl").style.display = "inline";
+document.getElementById("label_legend_bl").style.display = "inline";
+document.getElementById("image_legend_bl").style.display = "inline";
 
 document.getElementById("image_legend_odl").src = "http://localhost:8080/geoserver/geoviz/wms?REQUEST=GetLegendGraphic&VERSION=1.1.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=geoviz:odl_4326&STYLE=geoviz:geoviz_point_odl";
-//document.getElementById("label_legend_odl").style.display = "inline";
-//document.getElementById("image_legend_odl").style.display = "inline";
+document.getElementById("label_legend_odl").style.display = "inline";
+document.getElementById("image_legend_odl").style.display = "inline";
 
 document.getElementById("image_legend_rl_grid").src = "http://localhost:8080/geoserver/geoviz/wms?REQUEST=GetLegendGraphic&VERSION=1.1.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=geoviz:raumluft_4326_grid_combined&STYLE=geoviz:geoviz_grid_raumluft";
-//document.getElementById("label_legend_rl_grid").style.display = "inline";
-//document.getElementById("image_legend_rl_grid").style.display = "inline";
+document.getElementById("label_legend_rl_grid").style.display = "inline";
+document.getElementById("image_legend_rl_grid").style.display = "inline";
 
 document.getElementById("image_legend_bl_grid").src = "http://localhost:8080/geoserver/geoviz/wms?REQUEST=GetLegendGraphic&VERSION=1.1.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=geoviz:bodenluft_4326_grid&STYLE=geoviz:geoviz_grid_bodenluft";
-//document.getElementById("label_legend_bl_grid").style.display = "inline";
-//document.getElementById("image_legend_bl_grid").style.display = "inline";
+document.getElementById("label_legend_bl_grid").style.display = "inline";
+document.getElementById("image_legend_bl_grid").style.display = "inline";
 
 document.getElementById("image_legend_odl_grid").src = "http://localhost:8080/geoserver/geoviz/wms?REQUEST=GetLegendGraphic&VERSION=1.1.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=geoviz:odl_4326_grid&STYLE=geoviz:geoviz_grid_odl";
-//document.getElementById("label_legend_odl_grid").style.display = "inline";
-//document.getElementById("image_legend_odl_grid").style.display = "inline";
-
-document.getElementById("label_legend_pa").src = "http://localhost:8080/geoserver/geoviz/wms?REQUEST=GetLegendGraphic&VERSION=1.1.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=geoviz:project_area_4326&STYLE=geoviz:geoviz_polygon_project_area";
+document.getElementById("label_legend_odl_grid").style.display = "inline";
+document.getElementById("image_legend_odl_grid").style.display = "inline";
 
 //############### Preparation for Layer Selection ###############//
-/*var array_layer = [
+var array_layer = [
 					["label_ls_rl",raumluft_points_visible,layer_raumluft_points,["label_legend_rl","image_legend_rl"]],
 					["label_ls_bl",bodenluft_points_visible,layer_bodenluft_points,["label_legend_bl","image_legend_bl"]],
 					["label_ls_odl",odl_points_visible,layer_odl_points,["label_legend_odl","image_legend_odl"]],
@@ -254,15 +254,6 @@ document.getElementById("label_legend_pa").src = "http://localhost:8080/geoserve
 					["label_ls_bl_grid",bodenluft_grid_visible,layer_bodenluft_grid,["label_legend_bl_grid","image_legend_bl_grid"]],
 					["label_ls_odl_grid",odl_grid_visible,layer_odl_grid,["label_legend_odl_grid","image_legend_odl_grid"]],
 					["label_ls_pa",project_area_visible,layer_project_area]
-				  ]*/
-var array_layer = [
-					["label_ls_rl",raumluft_points_visible,layer_raumluft_points,["legend_rl","label_legend_rl","image_legend_rl"]],
-					["label_ls_bl",bodenluft_points_visible,layer_bodenluft_points,["legend_bl","label_legend_bl","image_legend_bl"]],
-					["label_ls_odl",odl_points_visible,layer_odl_points,["legend_odl","label_legend_odl","image_legend_odl"]],
-					["label_ls_rl_grid",raumluft_grid_visible,layer_raumluft_grid,["legend_rl_grid","label_legend_rl_grid","image_legend_rl_grid"]],
-					["label_ls_bl_grid",bodenluft_grid_visible,layer_bodenluft_grid,["legend_bl_grid","label_legend_bl_grid","image_legend_bl_grid"]],
-					["label_ls_odl_grid",odl_grid_visible,layer_odl_grid,["legend_odl_grid","label_legend_odl_grid","image_legend_odl_grid"]],
-					["label_ls_pa",project_area_visible,layer_project_area,["legend_pa","label_legend_pa","image_legend_pa"]]
 				  ]
 //############### Layer Selection part ###############//
 //############### a) bind function to button: ###############//
@@ -287,31 +278,21 @@ function layerSelection(id_clicked_label) {
 				clicked_layer = subarray_layer[2];
 				clicked_layer.setVisible(false);
 				subarray_layer[2].setVisible(false);
-				//$(document.getElementById(subarray_layer[3])).hide();
-				subarray_legend = subarray_layer[3];
-				for (j = 0; j<subarray_legend.length; j++) {
-					$(document.getElementById(subarray_legend[j])).hide();
-				}
-				/*if (subarray_layer[0] != "label_ls_pa") {
+				if (subarray_layer[0] != "label_ls_pa") {
 					subarray_legend = subarray_layer[3];
 					document.getElementById(subarray_legend[0]).style.display="none";
 					document.getElementById(subarray_legend[1]).style.display="none";
-				}*/
+				}
 			} else {
 				subarray_layer[1] = "true";	//set to false
 				//subarray_layer[2].setVisible(true);
 				clicked_layer = subarray_layer[2];
 				clicked_layer.setVisible(true);
-				//$(document.getElementById(subarray_layer[3])).show();
-				subarray_legend = subarray_layer[3];
-				for (j = 0; j<subarray_legend.length; j++) {
-					$(document.getElementById(subarray_legend[j])).show();
-				}
-				/*if (subarray_layer[0] != "label_ls_pa") {
+				if (subarray_layer[0] != "label_ls_pa") {
 					subarray_legend = subarray_layer[3];
 					document.getElementById(subarray_legend[0]).style.display="inline";
 					document.getElementById(subarray_legend[1]).style.display="inline";
-				}*/
+				}
 			}
 		}
 	}  
