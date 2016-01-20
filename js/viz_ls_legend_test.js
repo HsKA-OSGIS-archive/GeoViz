@@ -3,8 +3,8 @@
 /**
  * Define a namespace for the application.
  */
-window.app = {};
-var app = window.app;
+//window.app = {};
+//var app = window.app;
 
 
 //
@@ -18,7 +18,7 @@ var app = window.app;
  * @extends {ol.control.Control}
  * @param {Object=} opt_options Control options.
  */
-app.RotateNorthControl = function(opt_options) {
+/*app.RotateNorthControl = function(opt_options) {
 
   var options = opt_options || {};
   console.log("basic parameters of the function to create button");
@@ -52,26 +52,25 @@ app.RotateNorthControl = function(opt_options) {
   });
 
 };
-ol.inherits(app.RotateNorthControl, ol.control.Control);
+ol.inherits(app.RotateNorthControl, ol.control.Control);*/
 
 
 //
 // Create map, giving it a rotate to north control.
 //
 
-
 var map = new ol.Map({
-  controls: ol.control.defaults({
-    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+	//controls: new ol.control.Control({}),
+  /*controls: ol.control.defaults({
+    attributionOptions: /** @type {olx.control.AttributionOptions} */ /*({
       collapsible: false
     })
   }).extend([
     new app.RotateNorthControl()
-  ]),
+  ]),*/
+  controls: [],
   target: 'map',
   view: new ol.View({
-    /*center: [49, 8],
-    zoom: 3,*/
 	center: ol.proj.transform([12, 49.8], 'EPSG:4326', 'EPSG:3857'),
 	zoom: 9,
     rotation: 0
@@ -169,6 +168,8 @@ var layer_bodenluft_grid = new ol.layer.Tile({
 });
 bodenluft_grid_visible = "true";
 map.addLayer(layer_bodenluft_grid);
+
+
 		
 //OpenLayers Tile WMS layer (Raumluft):
 var layer_raumluft_points = new ol.layer.Tile({
