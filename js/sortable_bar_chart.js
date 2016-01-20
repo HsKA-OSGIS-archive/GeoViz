@@ -1,5 +1,38 @@
+/**
+Arguments:
+----------
+div:
+id of div-tag the svg element should be appended to (including '#') as string, e.g. '#svg'
+
+filenames:
+csv-file with data to visualize, e.g. "../data/file.csv"
+
+attributes:
+array with three (!) attribute names (fields in csv) that are used to create the chart,
+first entry is always used for the x-axis
+the other two entries are used to create the two bars
+[2. entry = left bar, 3. entry = right bar]
+e.g. ["NAME","Value1","Value2"] [limited to 2 bars]
+advantage of this chart: attributes with different units can be properly displayed in one chart!
+
+attributes_tooltip:
+Needed for the tooltip of the bars, array of two arrays,
+these subarrays always consist of two entries:
+1.) string for tooltip of bars
+2.) string of unit
+e.g.[["Value 1 Average", "m"], ["Value 2 Average", "km"]]
+
+domain:
+array of the maximum value of both fields,
+e.g. [max. value of "Value1", max. value of "Value2"]
+
+y_axis_annotation:
+array of string for the annotation of the y-Axis,
+first entry: left bar = left y-Axis, second entry: right bar = right y-Axis
+in this case e.g. ["Average Value 1 [m]", "Average Value 2 [km]"]
+**/
 //based on: http://bl.ocks.org/mbostock/3885705
-function drawSortableBarChart(div,filename,attributes,attributes_tooltip,y_axis_annotation) { //div to append the svg element to, filename of the data, attributes to visualize (x-axis and y-axis)
+function drawSortableBarChart(div,filename,attributes,attributes_tooltip,y_axis_annotation) {
 var margin = {top: 70, right: 50, bottom: 100, left: 80},
     width = 960 - margin.left - margin.right,
     height = 550 - margin.top - margin.bottom;

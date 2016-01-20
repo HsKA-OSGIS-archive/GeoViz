@@ -253,8 +253,7 @@ echo $output;
 
 // Raumluft - Petrograph
 // execute query:
-//$sql = "SELECT COUNT(DISTINCT geo), geo, petrograph, messw_ke AS rl_ke, messw_eg AS rl_eg, messw_1g AS rl_1G FROM public.raumluft_4326 GROUP BY geo, petrograph HAVING COUNT(DISTINCT geo) >= 20 ORDER BY geo";
-$sql = "SELECT geo, petrograph, AVG(avg_mw) AS rl_avg, MIN(min_mw) AS rl_min, MAX(max_mw) AS rl_max, AVG(messw_ke) AS rl_avg_ke, AVG(messw_eg) AS rl_avg_eg, AVG(messw_1g) AS rl_avg_1g, COUNT(*) AS rl_max FROM public.raumluft_4326 GROUP BY geo, petrograph  HAVING COUNT(*) >= 25 ORDER BY GEO";
+$sql = "SELECT geo, petrograph, AVG(avg_mw) AS rl_avg, MIN(min_mw) AS rl_min, MAX(max_mw) AS rl_max, AVG(messw_ke) AS rl_avg_ke, AVG(messw_eg) AS rl_avg_eg, AVG(messw_1g) AS rl_avg_1g, COUNT(*) FROM public.raumluft_4326 GROUP BY geo, petrograph  HAVING COUNT(*) >= 25 ORDER BY GEO";
 $result = pg_query($dbh, $sql);
 
 if (!$result) {
@@ -307,6 +306,118 @@ pg_free_result($result);
 $output = "<script>console.log( 'Writing Raumluft Petrograph data in csv finished!' );</script>";
 echo $output;
 // end of Raumluft - Petrograph!
+
+// Bodenluft - Petrograph
+// execute query:
+$sql = "SELECT geo, petrograph, AVG(messw_bl) AS bl_avg, MIN(messw_bl) AS bl_min, MAX(messw_bl) AS bl_max, COUNT(*) FROM public.bodenluft_4326 GROUP BY geo, petrograph  HAVING COUNT(*) >= 25 ORDER BY GEO";
+$result = pg_query($dbh, $sql);
+
+if (!$result) {
+
+    die("Error in SQL query: " . pg_last_error());
+
+}
+
+$filename = 'Bodenluft_4326_statistics_petrograph_php.csv';
+$fp = fopen($filename, "w+");
+
+// fetch a row and write the column names (!) out to the file -> first line of CSV
+$row = pg_fetch_assoc($result);
+$line = "";
+$comma = "";
+foreach($row as $name => $value) {
+	$line .= strtoupper($comma . str_replace('"', '""', $name));	//letters to uppercase and ',' and ' ' are "deleted"
+    $comma = ",";
+}
+$line .= "\n";
+fputs($fp, $line);
+
+// remove the result pointer back to the start
+pg_result_seek($result, 0);
+
+// and loop through the actual data
+while($row = pg_fetch_assoc($result)) {
+
+    $line = "";
+    $comma = "";
+	$replace = array(","," ");
+	
+    foreach($row as $value) {
+		$line .= $comma . str_replace($replace,'', $value);
+        $comma = ",";
+    }
+	
+    $line .= "\n";
+	
+    fputs($fp, $line);
+
+}
+
+fclose($fp);
+
+// free memory
+
+pg_free_result($result);
+
+$output = "<script>console.log( 'Writing Bodenluft Petrograph data in csv finished!' );</script>";
+echo $output;
+// end of Bodenluft - Petrograph!
+
+// ODL - Petrograph
+// execute query:
+$sql = "SELECT geo, petrograph, AVG(messw_odl) AS odl_avg, MIN(messw_odl) AS odl_min, MAX(messw_odl) AS odl_max, COUNT(*) FROM public.odl_4326 GROUP BY geo, petrograph  HAVING COUNT(*) >= 25 ORDER BY GEO";
+$result = pg_query($dbh, $sql);
+
+if (!$result) {
+
+    die("Error in SQL query: " . pg_last_error());
+
+}
+
+$filename = 'ODL_4326_statistics_petrograph_php.csv';
+$fp = fopen($filename, "w+");
+
+// fetch a row and write the column names (!) out to the file -> first line of CSV
+$row = pg_fetch_assoc($result);
+$line = "";
+$comma = "";
+foreach($row as $name => $value) {
+	$line .= strtoupper($comma . str_replace('"', '""', $name));	//letters to uppercase and ',' and ' ' are "deleted"
+    $comma = ",";
+}
+$line .= "\n";
+fputs($fp, $line);
+
+// remove the result pointer back to the start
+pg_result_seek($result, 0);
+
+// and loop through the actual data
+while($row = pg_fetch_assoc($result)) {
+
+    $line = "";
+    $comma = "";
+	$replace = array(","," ");
+	
+    foreach($row as $value) {
+		$line .= $comma . str_replace($replace,'', $value);
+        $comma = ",";
+    }
+	
+    $line .= "\n";
+	
+    fputs($fp, $line);
+
+}
+
+fclose($fp);
+
+// free memory
+
+pg_free_result($result);
+
+$output = "<script>console.log( 'Writing ODL Petrograph data in csv finished!' );</script>";
+echo $output;
+// end of ODL - Petrograph!
 
 // close connection
 

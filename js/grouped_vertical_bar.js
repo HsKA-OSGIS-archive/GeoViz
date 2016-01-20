@@ -1,8 +1,39 @@
+/**
+Arguments:
+----------
+div:
+id of div-tag the svg element should be appended to (including '#') as string, e.g. '#svg'
+
+filenames:
+csv-file with data to visualize, e.g. "../data/file.csv"
+
+attributes:
+array with attribute names (fields in csv) that are used to create the chart,
+first entry is always used for the x-axis
+the other entries are used to create the different bars
+e.g. ["NAME","Value1","Value2","Value3"] [no limitation of number of bars!]
+
+attributes_tooltip:
+Needed for the tooltip of the bars, array of (multiple) array(s),
+these subarray always consist of three entries:
+1.) name of attribute [order corresponding to entries in attributes array!]
+2.) string for tooltip of bars
+3.) string of unit
+e.g.[["Value1","Value 1 Average", "m"], ["Value2","Value 2 Average", "m"], ["Value3","Value 3 Average", "m"]]
+
+range:
+color values in hex-code to visualize different bars, important: number of colors must always be the same as number of bars
+e.g. ["#98abc5","#6b486b", "#ff8c00"]
+
+y_axis_annotation:
+string for the annotation of the y-Axis,
+in this case e.g. "Average length [m]"
+**/
 function drawGroupedVerticalBar(div,filename,attributes,attributes_tooltip,range,y_axis_annotation) {
 /*div = div to append svg to, filename = csv-file with data to visualize, attributes = array with attribute names (fields in csv), range = colors for bars
 div,filenames,attribute_choropleth,attributes_tooltip,domain,range*/
 	
-var margin = {top: 40, right: 50, bottom: 200, left: 50},
+var margin = {top: 40, right: 50, bottom: 225, left: 50},
     width = 1024 - margin.left - margin.right,
     height = 800 - margin.top - margin.bottom;
 
@@ -31,19 +62,6 @@ var tip = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-		/*var name = d.name;
-		if (d.name == "rl_eg") {
-			name = "<strong>Avg. msrmnt. on ground floor</strong>";
-		}
-		if (d.name == "rl_1g") {
-			name = "<strong>Avg. msrmnt. on first floor</strong>";
-		}
-		if (d.name == "rl_ke") {
-			name = "<strong>Avg. msrmnt. in basement</strong>";
-		}
-		var measurement = Math.round(d.value);
-		//return "<strong>Floor </strong>" + d.name name +  "<strong>: </strong><span style='color:red'>" + d.y0 + "</span>";
-		return name +  "<strong>: </strong><span style='color:red'>" + measurement + "</span>";*/
 		var type = "";
 		var unit = "";
 		for (i=0; i<attributes_tooltip.length;i++) {	//e.g. [["rl_ke","Room air in basement", "Bq m-3"], ["rl_eg",...], ["rl_1g",...]]
@@ -53,10 +71,6 @@ var tip = d3.tip()
 				unit = array_type[2];					//-> unit = "Bq m-3"
 			}
 		}
-		
-		/*console.log(type);
-		console.log(unit);
-		return d.name + ": " + d.value;  });*/
 		return type + ": " + d.value + " " + unit; });
 
 var svg = d3.select(div).append("svg")

@@ -1,5 +1,37 @@
-function drawDualScaleBarChart(div,filename,attributes,attributes_tooltip,y_axis_annotation) { 
-/*div to append the svg element to, filename of the data, attributes to visualize [x-axis and y-axis; first: attribute for x-Axis, second: attribute for y-Axis (left bars), second: attribute for y-Axis (right bars)]*/
+/**
+Arguments:
+----------
+div:
+id of div-tag the svg element should be appended to (including '#') as string, e.g. '#svg'
+
+filenames:
+csv-file with data to visualize, e.g. "../data/file.csv"
+
+attributes:
+array with three (!) attribute names (fields in csv) that are used to create the chart,
+first entry is always used for the x-axis
+the other two entries are used to create the two bars
+[2. entry = left bar, 3. entry = right bar]
+e.g. ["NAME","Value1","Value2"] [limited to 2 bars]
+advantage of this chart: attributes with different units can be properly displayed in one chart!
+
+attributes_tooltip:
+Needed for the tooltip of the bars, array of two arrays,
+these subarrays always consist of two entries:
+1.) string for tooltip of bars
+2.) string of unit
+e.g.[["Value 1 Average", "m"], ["Value 2 Average", "km"]]
+
+domain:
+array of the maximum value of both fields,
+e.g. [max. value of "Value1", max. value of "Value2"]
+
+y_axis_annotation:
+array of string for the annotation of the y-Axis,
+first entry: left bar = left y-Axis, second entry: right bar = right y-Axis
+in this case e.g. ["Average Value 1 [m]", "Average Value 2 [km]"]
+**/
+function drawDualScaleBarChart(div,filename,attributes,attributes_tooltip,domain,y_axis_annotation) {
 	
 var margin = {top: 50, right: 80, bottom: 200, left: 120},
     width = 900 - margin.left - margin.right,
@@ -7,8 +39,8 @@ var margin = {top: 50, right: 80, bottom: 200, left: 120},
 var x = d3.scale.ordinal()
     .rangeRoundBands([0, width], .1);
 //var y0 = d3.scale.linear().domain([300, 1100]).range([height, 0]),
-var y0 = d3.scale.linear().domain([0, 450]).range([height, 0]),
-y1 = d3.scale.linear().domain([0, 350]).range([height, 0]);
+var y0 = d3.scale.linear().domain([0, domain[0]]).range([height, 0]),
+y1 = d3.scale.linear().domain([0, domain[1]]).range([height, 0]);
 var xAxis = d3.svg.axis()
     .scale(x)
     .orient("bottom");
@@ -22,8 +54,6 @@ var tip_lb = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-    //return "<strong>Value in </strong>" + d.value_x +  "<strong>: </strong><span style='color:red'>" + d.value_y1 + "</span>" + "<strong> kBq m-3 </strong>";
-	//return d.value_x + ": " + d.value_y1 + " " + d.value_unit1;
 	return attributes_tooltip[0][0] + ": " + d.value_y1 + " " + attributes_tooltip[0][1];
   });
 
@@ -32,23 +62,6 @@ var tip_rb = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-    //return "<strong>Value in </strong>" + d.value_x +  "<strong>: </strong><span style='color:red'>" + d.value_y2 + "</span>" + "<strong> Bq m-3 </strong>";
-	//return d.value_x + ": " + d.value_y2 + " " + d.value_unit2;
-	/*var type = "";
-		var unit = "";
-		for (i=0; i<attributes_tooltip.length;i++) {	//e.g. [["rl_ke","Room air in basement", "Bq m-3"], ["rl_eg",...], ["rl_1g",...]]
-			array_type = attributes_tooltip[i];
-			if (d.name == array_type[0]) {				//e.g. "rl_ke"=="rl_ke"
-				type = array_type[1];					//-> type = "Room air in basement"
-				unit = array_type[2];					//-> unit = "Bq m-3"
-			}
-		}
-		
-		/*console.log(type);
-		console.log(unit);
-		return d.name + ": " + d.value;  });*/
-		//return type + ": " + d.value + " " + unit; });*/
-		//array_right_bars = attributes_tooltip
 		return attributes_tooltip[1][0] + ": " + d.value_y2 + " " + attributes_tooltip[1][1];
   });
   
@@ -64,7 +77,7 @@ svg.call(tip_rb);
 
 d3.csv(filename, type, function(error, data) {
   x.domain(data.map(function(d) { return d.value_x; }));
-  y0.domain([0, d3.max(data, function(d) { return d.value_y1; })]); //average raumluft measurement in county
+  y0.domain([0, d3.max(data, function(d) { return d.value_y1; })]);
   
   svg.append("g")
       .attr("class", "x axis")

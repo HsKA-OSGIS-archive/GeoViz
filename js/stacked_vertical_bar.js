@@ -1,6 +1,35 @@
-function drawStackedVerticalBar(div,filename,attributes,attributes_tooltip,range,y_axis_annotation) { 
-/*div = div to append svg to, filename = csv-file with data to visualize, attributes = array with attribute names (fields in csv), range = colors for bars
-div,filenames,attribute_choropleth,attributes_tooltip,domain,range*/
+/**
+Arguments:
+----------
+div:
+id of div-tag the svg element should be appended to (including '#') as string, e.g. '#svg'
+
+filenames:
+csv-file with data to visualize, e.g. "../data/file.csv"
+
+attributes:
+array with attribute names (fields in csv) that are used to create the chart,
+first entry is always used for the x-axis
+the other entries are used to create the different bars
+e.g. ["NAME","Value1","Value2","Value3"] [no limitation of number of bars!]
+
+attributes_tooltip:
+Needed for the tooltip of the bars, array of (multiple) array(s),
+these subarray always consist of three entries:
+1.) name of attribute [order corresponding to entries in attributes array!]
+2.) string for tooltip of bars
+3.) string of unit
+e.g.[["Value1","Value 1 Average", "m"], ["Value2","Value 2 Average", "m"], ["Value3","Value 3 Average", "m"]]
+
+range:
+color values in hex-code to visualize different bars, important: number of colors must always be the same as number of bars
+e.g. ["#98abc5","#6b486b", "#ff8c00"]
+
+y_axis_annotation:
+string for the annotation of the y-Axis,
+in this case e.g. "Average length [m]"
+**/
+function drawStackedVerticalBar(div,filename,attributes,attributes_tooltip,range,y_axis_annotation) {
 var margin = {top: 50, right: 20, bottom: 350, left: 125},
     width = 1024 - margin.left - margin.right,
     height = 900 - margin.top - margin.bottom;
