@@ -25,12 +25,12 @@
           <se:PointSymbolizer>
             <se:Graphic>
               <se:Mark>
-                <se:WellKnownName>circle</se:WellKnownName>
+                <se:WellKnownName>triangle</se:WellKnownName>
                 <se:Fill>
                   <se:SvgParameter name="fill">#1a9641</se:SvgParameter>
                 </se:Fill>
                 <se:Stroke>
-                  <se:SvgParameter name="stroke">#0000ef</se:SvgParameter>
+                  <se:SvgParameter name="stroke">#adaea9</se:SvgParameter>
                 </se:Stroke>
               </se:Mark>
               <se:Size>11</se:Size>
@@ -57,12 +57,12 @@
           <se:PointSymbolizer>
             <se:Graphic>
               <se:Mark>
-                <se:WellKnownName>circle</se:WellKnownName>
+                <se:WellKnownName>triangle</se:WellKnownName>
                 <se:Fill>
                   <se:SvgParameter name="fill">#89cb61</se:SvgParameter>
                 </se:Fill>
                 <se:Stroke>
-                  <se:SvgParameter name="stroke">#0000ef</se:SvgParameter>
+                  <se:SvgParameter name="stroke">#adaea9</se:SvgParameter>
                 </se:Stroke>
               </se:Mark>
               <se:Size>11</se:Size>
@@ -89,12 +89,12 @@
           <se:PointSymbolizer>
             <se:Graphic>
               <se:Mark>
-                <se:WellKnownName>circle</se:WellKnownName>
+                <se:WellKnownName>triangle</se:WellKnownName>
                 <se:Fill>
                   <se:SvgParameter name="fill">#dbef9d</se:SvgParameter>
                 </se:Fill>
                 <se:Stroke>
-                  <se:SvgParameter name="stroke">#0000ef</se:SvgParameter>
+                  <se:SvgParameter name="stroke">#adaea9</se:SvgParameter>
                 </se:Stroke>
               </se:Mark>
               <se:Size>11</se:Size>
@@ -121,12 +121,12 @@
           <se:PointSymbolizer>
             <se:Graphic>
               <se:Mark>
-                <se:WellKnownName>circle</se:WellKnownName>
+                <se:WellKnownName>triangle</se:WellKnownName>
                 <se:Fill>
                   <se:SvgParameter name="fill">#fede9a</se:SvgParameter>
                 </se:Fill>
                 <se:Stroke>
-                  <se:SvgParameter name="stroke">#0000ef</se:SvgParameter>
+                  <se:SvgParameter name="stroke">#adaea9</se:SvgParameter>
                 </se:Stroke>
               </se:Mark>
               <se:Size>11</se:Size>
@@ -153,12 +153,12 @@
           <se:PointSymbolizer>
             <se:Graphic>
               <se:Mark>
-                <se:WellKnownName>circle</se:WellKnownName>
+                <se:WellKnownName>triangle</se:WellKnownName>
                 <se:Fill>
                   <se:SvgParameter name="fill">#f59053</se:SvgParameter>
                 </se:Fill>
                 <se:Stroke>
-                  <se:SvgParameter name="stroke">#0000ef</se:SvgParameter>
+                  <se:SvgParameter name="stroke">#adaea9</se:SvgParameter>
                 </se:Stroke>
               </se:Mark>
               <se:Size>11</se:Size>
@@ -185,12 +185,12 @@
           <se:PointSymbolizer>
             <se:Graphic>
               <se:Mark>
-                <se:WellKnownName>circle</se:WellKnownName>
+                <se:WellKnownName>triangle</se:WellKnownName>
                 <se:Fill>
                   <se:SvgParameter name="fill">#d7191c</se:SvgParameter>
                 </se:Fill>
                 <se:Stroke>
-                  <se:SvgParameter name="stroke">#0000ef</se:SvgParameter>
+                  <se:SvgParameter name="stroke">#adaea9</se:SvgParameter>
                 </se:Stroke>
               </se:Mark>
               <se:Size>11</se:Size>

@@ -25,7 +25,7 @@
           <se:PointSymbolizer>
             <se:Graphic>
               <se:Mark>
-                <se:WellKnownName>circle</se:WellKnownName>
+                <se:WellKnownName>square</se:WellKnownName>
                 <se:Fill>
                   <se:SvgParameter name="fill">#1a9641</se:SvgParameter>
                 </se:Fill>
@@ -57,7 +57,7 @@
           <se:PointSymbolizer>
             <se:Graphic>
               <se:Mark>
-                <se:WellKnownName>circle</se:WellKnownName>
+                <se:WellKnownName>square</se:WellKnownName>
                 <se:Fill>
                   <se:SvgParameter name="fill">#89cb61</se:SvgParameter>
                 </se:Fill>
@@ -89,7 +89,7 @@
           <se:PointSymbolizer>
             <se:Graphic>
               <se:Mark>
-                <se:WellKnownName>circle</se:WellKnownName>
+                <se:WellKnownName>square</se:WellKnownName>
                 <se:Fill>
                   <se:SvgParameter name="fill">#dbef9d</se:SvgParameter>
                 </se:Fill>
@@ -121,7 +121,7 @@
           <se:PointSymbolizer>
             <se:Graphic>
               <se:Mark>
-                <se:WellKnownName>circle</se:WellKnownName>
+                <se:WellKnownName>square</se:WellKnownName>
                 <se:Fill>
                   <se:SvgParameter name="fill">#fede9a</se:SvgParameter>
                 </se:Fill>
@@ -153,7 +153,7 @@
           <se:PointSymbolizer>
             <se:Graphic>
               <se:Mark>
-                <se:WellKnownName>circle</se:WellKnownName>
+                <se:WellKnownName>square</se:WellKnownName>
                 <se:Fill>
                   <se:SvgParameter name="fill">#f59053</se:SvgParameter>
                 </se:Fill>
@@ -185,7 +185,7 @@
           <se:PointSymbolizer>
             <se:Graphic>
               <se:Mark>
-                <se:WellKnownName>circle</se:WellKnownName>
+                <se:WellKnownName>square</se:WellKnownName>
                 <se:Fill>
                   <se:SvgParameter name="fill">#d7191c</se:SvgParameter>
                 </se:Fill>
