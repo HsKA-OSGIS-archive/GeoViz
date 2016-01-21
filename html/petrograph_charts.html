@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>ODL Charts</title>
+<title>Petrograph Charts</title>
 <link rel="stylesheet" 
           href="../css/style_charts.css" 
           type="text/css">
@@ -21,13 +21,13 @@
 </head>
 <body>
 	<!--Define buttons and div for d3 chart-->
-	<button id="button_choro" onClick="updateData(this.id)">Choropleth (AVG)</button>
 	<button id="button_grouped" onClick="updateData(this.id)">Grouped (AVG)</button>
+	<button id="button_stacked" onClick="updateData(this.id)">Stacked (AVG)</button>
 	<button id="button_dual" onClick="updateData(this.id)">Dual Scale (RL / BL)</button>
 	<button id="button_sortable" onClick="updateData(this.id)">Sortable Bar</button>
 	
-	<div id="choropleth" visibility:"hidden"></div>
 	<div id="grouped"></div>
+	<div id="stacked"></div>
 	<div id="dual_scale"></div>
 	<div id="sortable_bar"></div>
 	<label id="label_checkbox"><input type="checkbox" id="checkbox">Sort values</label>
@@ -36,50 +36,49 @@
 	<script>
 	
 		//Array to realize changing of visualizations with buttons consisting of button-id as well as div-id:
-		var arrayChartsData = [['button_choro', 'choropleth'],['button_grouped','grouped'],['button_dual','dual_scale'],['button_sortable','sortable_bar']];
+		var arrayChartsData = [['button_grouped','grouped'],['button_stacked','stacked'],['button_dual','dual_scale'],['button_sortable','sortable_bar']];
 		
-		//Choropleth:
-		var 	choro_div = "#choropleth",
-				choro_filenames = ["../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics2_topo.json","../php/DEU_counties_statistics_php.csv",'../php/ODL_4326_statistics_php.csv'],
-				choro_attributes_topojson = ["counties","id"],
-				choro_attribute_choropleth = ["ID_2","AVG_MW_ODL"],
-				choro_attributes_tooltip = ["STANDORT","MESSW_ODL","PETROGRAPH"],
-				choro_domain = [18,35,53,71,88],
-				choro_range = ["#1a9641", "#89cb61", "#dbef9d", "#fede9a", "#f59053", "#d7191c"] //gradient now better?
+		//Problem with these charts: number of measurements per Petrograph not the same, some at least 25,
+		//but other not...however still showing that e.g. Granit with the highest values!
 		
 		//Grouped:
 		var 	grouped_div = "#grouped",
-				grouped_filename = "../php/ODL_4326_statistics_petrograph_php.csv",
-				grouped_attributes = ["PETROGRAPH","ODL_AVG","ODL_MIN","ODL_MAX"],	//first: attribute for x-Axis, the following attributes: attribute for y-Axis (bars)
-				grouped_attributes_tooltip = [["ODL_AVG","average value of ODL", "nSv h-1"], ["ODL_MIN","minimum value of ODL", "nSv h-1"], ["ODL_MAX","maximum value of ODL", "nSv h-1"]],
+				grouped_filename = "../php/Geo_petrograph_statistics_total_php.csv",
+				grouped_attributes = ["PETROGRAPH","RL_AVG","BL_AVG","ODL_AVG"],	//first: attribute for x-Axis, the following attributes: attribute for y-Axis (bars)
+				grouped_attributes_tooltip = [["RL_AVG","average value in room air", "Bq m-3"], ["BL_AVG","average value in bottom air", "kBq m-3"], ["ODL_AVG","average value of ODL", "nSv h-1"]],
 				grouped_range = ["#98abc5","#6b486b", "#ff8c00"] //; //colors for bars
-				grouped_y_axis_annotation = "ODL msrmnt. [nSv h-1]";
+				grouped_y_axis_annotation = "Average msrmnts. [Bq m-3, kBq m-3, nSv h-1]";
+		
+		//Stacked:
+		var 	stacked_div = "#stacked",
+				stacked_filename = "../php/Geo_petrograph_statistics_total_php.csv",
+				stacked_attributes = ["PETROGRAPH","RL_AVG","BL_AVG","ODL_AVG"],	//first: attribute for x-Axis, the following attributes: attribute for y-Axis (bars)
+				stacked_attributes_tooltip = [["RL_AVG","average value in room air", "Bq m-3"], ["BL_AVG","average value in bottom air", "kBq m-3"], ["ODL_AVG","average value of ODL", "nSv h-1"]],
+				stacked_range = ["#98abc5","#6b486b", "#ff8c00"] //; //colors for bars
+				stacked_y_axis_annotation = "Average msrmnts. [Bq m-3, kBq m-3, nSv h-1]";
 		
 		//Dual_Scale:
 		var 	dual_div = "#dual_scale",
-				dual_filename = "../php/DEU_counties_statistics_php.csv",
-				dual_attributes = ["NAME_2", "AVG_MW_ODL", "AVG_MW_RL"] //;	//first: attribute for x-Axis, second: attribute for y-Axis (left bars), second: attribute for y-Axis (right bars,
-				dual_attributes_tooltip = [["average value of ODL", "nSv h-1"], ["average value in room air", "Bq m-3"]],
-				dual_domain = [125,400];
-				dual_y_axis_annotation = ["Average ODL msrmnt. [nSv h-1]", "Average Radon msrmnt. in room air [Bq m-3]"];
+				dual_filename = "../php/Geo_petrograph_statistics_total_php.csv",
+				dual_attributes = ["PETROGRAPH", "RL_AVG", "ODL_AVG"] //;	//first: attribute for x-Axis, second: attribute for y-Axis (left bars), second: attribute for y-Axis (right bars,
+				dual_attributes_tooltip = [["average value in room air", "Bq m-3"], ["average value of ODL", "nSv h-1"]],
+				dual_domain = [350,150];
+				dual_y_axis_annotation = ["Average Radon msrmnt. in room air [Bq m-3]", "Average ODL msrmnt. [nSv m-1]"];
 		
 		//Sortable:
 		var sortable_div = "#sortable_bar",
-			sortable_filename = "../php/DEU_counties_statistics_php.csv",
-			sortable_attributes = ["NAME_2", "AVG_MW_ODL"],
-			sortable_attributes_tooltip = ["average value of ODL", "nSv h-1"],
-			sortable_y_axis_annotation = "Average ODL msrmnt. [nSv h-1]";
+			sortable_filename = "../php/Geo_petrograph_statistics_total_php.csv",
+			sortable_attributes = ["PETROGRAPH", "RL_AVG"],
+			sortable_attributes_tooltip = ["average value in room air", "Bq m-3"],
+			sortable_y_axis_annotation = "Average Radon msrmnt. in room air [Bq m-3]";
 	</script>
 	
 	<!--script to load asynchronous JavaScript, otherwise DOM is not ready when the script is loaded-->
     <script language="javascript" type="text/javascript">
       function loadScriptAfter() {
-        /*var script = document.getElementById("diagram");
-        script.src = "GeoViz_local/js/stacked_vertical_bar.js";
-        document.body.appendChild(script);*/
-		
-		drawChoroplethMap(choro_div,choro_filenames,choro_attributes_topojson,choro_attribute_choropleth,choro_attributes_tooltip,choro_domain,choro_range);
+       
 		drawGroupedVerticalBar(grouped_div,grouped_filename,grouped_attributes,grouped_attributes_tooltip,grouped_range,grouped_y_axis_annotation);
+		drawStackedVerticalBar(stacked_div,stacked_filename,stacked_attributes,stacked_attributes_tooltip,stacked_range,stacked_y_axis_annotation);
 		drawDualScaleBarChart(dual_div,dual_filename,dual_attributes,dual_attributes_tooltip,dual_domain,dual_y_axis_annotation);
 		drawSortableBarChart(sortable_div,sortable_filename,sortable_attributes,sortable_attributes_tooltip,sortable_y_axis_annotation);
 		
@@ -89,22 +88,16 @@
 		$('#dual_scale').hide();
 		$('#sortable_bar').hide();*/
 		//button settings when loading the page:
-		document.getElementById('button_choro').disabled = true; 
-		document.getElementById('button_grouped').disabled = false;
+		document.getElementById('button_grouped').disabled = true; 
+		document.getElementById('button_stacked').disabled = false; 
 		document.getElementById('button_dual').disabled = false; 
 		document.getElementById('button_sortable').disabled = false; 
 		document.getElementById('label_checkbox').style.visibility="hidden"; 
 		//$(document.getElementById('label_checkbox')).hidden();
 		document.getElementById('checkbox').checked = false;
 		
-		//div display settings when loading the page:
-		/*document.getElementById('choropleth').style.display = true; 	
-		document.getElementById('grouped').style.display = false; 
-		document.getElementById('stacked').style.display = false; 
-		document.getElementById('dual_scale').style.display = false; 
-		document.getElementById('sortable_bar').style.display = false; */
-		$(document.getElementById('choropleth')).show();
-		$(document.getElementById('grouped')).hide();
+		$(document.getElementById('grouped')).show();
+		$(document.getElementById('stacked')).hide();
 		$(document.getElementById('dual_scale')).hide();
 		$(document.getElementById('sortable_bar')).hide();
       }

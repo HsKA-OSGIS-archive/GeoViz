@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>ODL Charts</title>
+<title>Bodenluft Charts</title>
 <link rel="stylesheet" 
           href="../css/style_charts.css" 
           type="text/css">
@@ -40,35 +40,35 @@
 		
 		//Choropleth:
 		var 	choro_div = "#choropleth",
-				choro_filenames = ["../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics2_topo.json","../php/DEU_counties_statistics_php.csv",'../php/ODL_4326_statistics_php.csv'],
+				choro_filenames = ["../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics2_topo.json","../php/DEU_counties_statistics_php.csv",'../php/Bodenluft_4326_statistics_php.csv'],
 				choro_attributes_topojson = ["counties","id"],
-				choro_attribute_choropleth = ["ID_2","AVG_MW_ODL"],
-				choro_attributes_tooltip = ["STANDORT","MESSW_ODL","PETROGRAPH"],
-				choro_domain = [18,35,53,71,88],
+				choro_attribute_choropleth = ["ID_2","AVG_MW_BL"],
+				choro_attributes_tooltip = ["STANDORT","MESSW_BL","PETROGRAPH"],
+				choro_domain = [52, 105, 157, 210, 262],
 				choro_range = ["#1a9641", "#89cb61", "#dbef9d", "#fede9a", "#f59053", "#d7191c"] //gradient now better?
 		
 		//Grouped:
 		var 	grouped_div = "#grouped",
-				grouped_filename = "../php/ODL_4326_statistics_petrograph_php.csv",
-				grouped_attributes = ["PETROGRAPH","ODL_AVG","ODL_MIN","ODL_MAX"],	//first: attribute for x-Axis, the following attributes: attribute for y-Axis (bars)
-				grouped_attributes_tooltip = [["ODL_AVG","average value of ODL", "nSv h-1"], ["ODL_MIN","minimum value of ODL", "nSv h-1"], ["ODL_MAX","maximum value of ODL", "nSv h-1"]],
+				grouped_filename = "../php/Bodenluft_4326_statistics_petrograph_php.csv",
+				grouped_attributes = ["PETROGRAPH","BL_AVG","BL_MIN","BL_MAX"],	//first: attribute for x-Axis, the following attributes: attribute for y-Axis (bars)
+				grouped_attributes_tooltip = [["BL_AVG","average value in bottom air", "kBq m-3"], ["BL_MIN","minimum value in bottom air", "kBq m-3"], ["BL_MAX","maximum value in bottom air", "kBq m-3"]],
 				grouped_range = ["#98abc5","#6b486b", "#ff8c00"] //; //colors for bars
-				grouped_y_axis_annotation = "ODL msrmnt. [nSv h-1]";
+				grouped_y_axis_annotation = "Radon msrmnt. in bottom air [kBq m-3]";
 		
 		//Dual_Scale:
 		var 	dual_div = "#dual_scale",
 				dual_filename = "../php/DEU_counties_statistics_php.csv",
-				dual_attributes = ["NAME_2", "AVG_MW_ODL", "AVG_MW_RL"] //;	//first: attribute for x-Axis, second: attribute for y-Axis (left bars), second: attribute for y-Axis (right bars,
-				dual_attributes_tooltip = [["average value of ODL", "nSv h-1"], ["average value in room air", "Bq m-3"]],
-				dual_domain = [125,400];
-				dual_y_axis_annotation = ["Average ODL msrmnt. [nSv h-1]", "Average Radon msrmnt. in room air [Bq m-3]"];
+				dual_attributes = ["NAME_2", "AVG_MW_BL", "AVG_MW_RL"] //;	//first: attribute for x-Axis, second: attribute for y-Axis (left bars), second: attribute for y-Axis (right bars,
+				dual_attributes_tooltip = [["average value in bottom air", "kBq m-3"], ["average value of ODL", "nSv h-1"]],
+				dual_domain = [325,400];
+				dual_y_axis_annotation = ["Average Radon msrmnt. in bottom air [kBq m-3]", "Average ODL msrmnt. [nSv m-1]"];
 		
 		//Sortable:
 		var sortable_div = "#sortable_bar",
 			sortable_filename = "../php/DEU_counties_statistics_php.csv",
-			sortable_attributes = ["NAME_2", "AVG_MW_ODL"],
-			sortable_attributes_tooltip = ["average value of ODL", "nSv h-1"],
-			sortable_y_axis_annotation = "Average ODL msrmnt. [nSv h-1]";
+			sortable_attributes = ["NAME_2", "AVG_MW_BL"],
+			sortable_attributes_tooltip = ["average value in bottom air", "kBq m-3"],
+			sortable_y_axis_annotation = "Average Radon msrmnt. in bottom air [kBq m-3]";
 	</script>
 	
 	<!--script to load asynchronous JavaScript, otherwise DOM is not ready when the script is loaded-->

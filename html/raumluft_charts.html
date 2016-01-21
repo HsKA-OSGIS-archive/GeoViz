@@ -32,7 +32,7 @@
 	<div id="stacked"></div>
 	<div id="dual_scale"></div>
 	<div id="sortable_bar"></div>
-	<label id="label_checkbox"><input type="checkbox" id="checkbox"> Sort values</label>
+	<label id="label_checkbox"><input type="checkbox" id="checkbox">Sort values</label>
 	
 	<!--Define variable to control the type of the drawn chart-->
 	<script>
@@ -40,13 +40,13 @@
 		//Array to realize changing of visualizations with buttons consisting of button-id as well as div-id:
 		var arrayChartsData = [['button_choro', 'choropleth'],['button_grouped','grouped'],['button_stacked','stacked'],['button_dual','dual_scale'],['button_sortable','sortable_bar']];
 		
-		//Choropleth:
+		//Choropleth: would be nice if two additional choropleth maps (min and max) could be created and chosen using buttonset...but only if you like @Sebastian :D
 		var 	choro_div = "#choropleth",
 				choro_filenames = ["../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics2_topo.json","../php/DEU_counties_statistics_php.csv",'../php/Raumluft_4326_statistics_php.csv'],
 				choro_attributes_topojson = ["counties","id"],
 				choro_attribute_choropleth = ["ID_2","AVG_MW_RL"],
 				choro_attributes_tooltip = ["HAUSART","BAUWEISE","AVG_MW","MESSW_1G","MESSW_EG","MESSW_KE"],
-				choro_domain = [52, 105, 157, 210, 262],
+				choro_domain = [65, 129, 194, 259, 323],
 				choro_range = ["#1a9641", "#89cb61", "#dbef9d", "#fede9a", "#f59053", "#d7191c"] //gradient now better?
 		
 		//Grouped:
@@ -67,10 +67,10 @@
 		
 		//Dual_Scale:
 		var 	dual_div = "#dual_scale",
-				dual_filename = "../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv",
+				dual_filename = "../php/DEU_counties_statistics_php.csv",
 				dual_attributes = ["NAME_2", "AVG_MW_RL", "AVG_MW_ODL"] //;	//first: attribute for x-Axis, second: attribute for y-Axis (left bars), second: attribute for y-Axis (right bars,
 				dual_attributes_tooltip = [["average value in room air", "Bq m-3"], ["average value of ODL", "nSv h-1"]],
-				dual_domain = [450,350];
+				dual_domain = [400,325];
 				dual_y_axis_annotation = ["Average Radon msrmnt. in room air [Bq m-3]", "Average ODL msrmnt. [nSv m-1]"];
 		
 		//Sortable:

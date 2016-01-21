@@ -33,7 +33,7 @@ in this case e.g. ["Average Value 1 [m]", "Average Value 2 [km]"]
 **/
 //based on: http://bl.ocks.org/mbostock/3885705
 function drawSortableBarChart(div,filename,attributes,attributes_tooltip,y_axis_annotation) {
-var margin = {top: 70, right: 50, bottom: 100, left: 80},
+var margin = {top: 70, right: 50, bottom: 230, left: 80},
     width = 960 - margin.left - margin.right,
     height = 550 - margin.top - margin.bottom;
 

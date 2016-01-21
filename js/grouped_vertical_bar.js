@@ -141,29 +141,17 @@ d3.csv(filename, function(error, data) {
       .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
   legend.append("rect")
-      .attr("x", width - 18)
+      .attr("x", width + 20)
       .attr("width", 18)
       .attr("height", 18)
       .style("fill", color);
 
   legend.append("text")
-      .attr("x", width - 24)
+      .attr("x", width + 15)
       .attr("y", 9)
       .attr("dy", ".35em")
       .style("text-anchor", "end")
-      .text(function(d,attributes_tooltip) { 
-	    /*var type = "";
-		console.log("line142");
-		console.log(attributes_tooltip_legend.length);
-		for (i=0; i<attributes_tooltip_legend.length;i++) {	//e.g. [["rl_ke","Room air in basement", "Bq m-3"], ["rl_eg",...], ["rl_1g",...]]
-			array_type = attributes_tooltip_legend[i];
-			console.log(array_type);
-			console.log(array_type[0]);
-			if (d == array_type[0]) {				//e.g. "rl_ke"=="rl_ke"
-				type = array_type[1];					//-> type = "Room air in basement"
-			}
-		}
-		return type; });*/
+      .text(function(d,attributes_tooltip) {
 		return d;});
 });
 }
