@@ -1,0 +1,607 @@
+<!--######################### place for notes ############################
+
+here you can put notes. for the release candidate this will be deleted
+
+please use tabs to structre the code properly! so you can easily find out which element contains which element
+
+the stuff within the accordion has to be sortet!
+
+
+Source of the examples
+Open Layers: http://openlayers.org/en/v3.5.0/examples/custom-controls.html
+Sidebar: http://jillix.github.io/jQuery-sidebar/
+
+###########################################################################-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!-- title -->
+    <title>radon measurements</title>
+
+    <!-- external libraries with css code -->
+      <!-- jQuery -->
+      <script src="./lib/jquery-1.11.2.min.js"></script>
+
+      <!-- bootstrap -->
+      <link rel="stylesheet" 
+          href="./css/bootstrap.min.css" 
+          type="text/css">
+ <!--     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">-->
+      <script src="./lib/bootstrap.min.js"></script>
+ <!--     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>-->
+
+      <!-- Open Layers -->
+      <link rel="stylesheet" href="./css/ol.css" type="text/css">
+  <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.5.0/ol.js"></script>-->
+      <script src="./lib/ol.js"></script>
+
+      <!-- Sidebar -->
+      <link href="./css/sidebar.css" rel="stylesheet">
+  <!--    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>-->
+      <script src="./js/jquery.sidebar.js"></script>
+  <!--    <script src="http://jillix.github.io/jQuery-sidebar/js/handlers.js"></script>-->
+      <script src="./js/handlers.js"></script>
+    <!-- the own js files is loaded on the bottom of the file -->
+
+    <!-- own CSS -->
+    <link rel="stylesheet" 
+          href="./css/style.css" 
+          type="text/css">
+  </head>
+  <body>
+    <!-- map part -->
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span12">
+          <div id="map" class="map"></div>
+        </div>
+      </div>
+    </div>
+    <div id="control_panel">
+      <table align="center">
+        <tr>
+          <td>
+            <a href="">
+              <img src="./img/zoom_in.png"
+                   alt="zoom in"
+                   width="30" 
+                   height="30" 
+                   border="0" />
+            </a>
+          </td>
+          <td>
+            <a href="">
+              <img src="./img/zoom_out.png"
+                   alt="zoom in"
+                   width="30" 
+                   height="30" 
+                   border="0" />
+            </a>
+          </td>
+          <td>
+            <input type="text" 
+                   class="search_bar_2" 
+                   value="Search"/>
+          </td>
+          <td>
+            <a href="#" 
+               class="btn btn-primary" 
+               data-action="toggle" 
+               data-side="left">
+              <img src="./img/zoom_out.png"
+                   alt="zoom in"
+                   width="44" 
+                   height="30" 
+                   border="0" />
+            </a>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Sidebar part -->
+    <div class="sidebars">
+      <div class="sidebar left">
+        <a href="#" class="btn btn-danger" data-action="close" data-side="left">
+          <img src="./img/collapse_left.png"
+               alt="close sidebar"
+               width="30" 
+               height="30" 
+               border="0" />
+        </a>
+        <br>
+        <input type="text" class="search_bar" value="Search"/>
+        <br>
+        <div id="basic_controls">
+          <table align="center">
+            <tr>
+              <td>
+                <a href="">
+                  <img src="./img/zoom_in.png"
+                       alt="zoom in"
+                       width="30" 
+                       height="30" 
+                       border="0" />
+                </a>
+              </td>
+              <td>
+                <a href="">
+                  <img src="./img/zoom_out.png"
+                       alt="zoom in"
+                       width="30" 
+                       height="30" 
+                       border="0" />
+                </a>
+              </td>
+              <td>
+                <a href="">
+                  <img src="./img/language_de.png"
+                       alt="zoom in"
+                       width="30" 
+                       height="30" 
+                       border="0" />
+                </a>
+              </td>
+              <td>
+                <a href="">
+                  <img src="./img/print.png"
+                       alt="zoom in"
+                       width="30" 
+                       height="30" 
+                       border="0" />
+                </a>
+              </td>
+              <td>
+                <a href="">
+                  <img src="./img/help.png"
+                       alt="zoom in"
+                       width="30" 
+                       height="30" 
+                       border="0" />
+                </a>
+              </td>
+            </tr>
+          </table>
+        </div><!--basic controls-->
+
+        <!-- Accordion part -->
+        <dl>
+          <dt>
+            <img src="./img/bar.png"
+                 alt="---------------------------"
+                 width= "100%" 
+                 height="4" 
+                 border="0"/>
+            <table>
+              <tr>
+                <td>
+                  Layer Selection
+                </td>
+                <td>
+                  <a href="#" 
+                     class="closed">
+                    <img src="./img/collapse_top_1.png"
+                         alt="open"
+                         width= "20" 
+                         height="20" 
+                         border="0"/>
+                  </a>
+                </td>
+            </table>
+          </dt>
+          <dd>
+            <div id="layer_selection">
+              <!-- content of this accordion -->
+              <div class="layer">
+                <div class="layer_name">
+                  <label for="dots" id="label_ls_osm">OSM Basemap</label>
+					</div>
+						<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">
+						<img src="./img/properties.png"
+						alt="properties"
+						width= "20" 
+						height="20" 
+						border="0"/></button>
+						<div class="modal fade" id="myModal" role="dialog" data-backdrop="static" data-keyboard="false">
+						<div class="modal-dialog">
+						<div class="modal-content">
+						<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">OSM Basemap</h4>
+						</div>
+						<div class="modal-body">
+						<p>Map is displayed.</p>
+						</div>
+						<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+      
+					</div>
+				</div>			
+              </div>
+              <br>
+              <div class="layer">
+                <div class="layer_name">
+                  <label for="dots" id="label_ls_rl">Radon in room air</label>
+					</div>
+						<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">
+						<img src="./img/properties.png"
+						alt="properties"
+						width= "20" 
+						height="20" 
+						border="0"/></button>
+					   <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" data-keyboard="false">
+					   <div class="modal-dialog">
+						<div class="modal-content">
+						<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Radon in room air</h4>
+						</div>
+					<div class="modal-body">
+					<p>Map is displayed.</p>
+						</div>
+						<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+      
+					</div>
+				</div>				
+              </div>
+			  <br>
+			  <div class="layer">
+                <div class="layer_name">
+                  <label for="dots" id="label_ls_bl">Radon in bottom air</label>
+                </div>
+					<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">
+                  <img src="./img/properties.png"
+                       alt="properties"
+                       width= "20" 
+                       height="20" 
+                       border="0"/></button>
+					   <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" data-keyboard="false">
+						<div class="modal-dialog">
+						<div class="modal-content">
+						<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Radon in bottom air</h4>
+						</div>
+						<div class="modal-body">
+						<p>Map is displayed.</p>
+						</div>
+						<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+      
+					</div>
+				</div>	
+	
+              </div>
+			  <br>
+			  <div class="layer">
+                <div class="layer_name">
+                  <label for="dots" id="label_ls_odl">ODL</label>
+                </div>
+                <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">
+                  <img src="./img/properties.png"
+                       alt="properties"
+                       width= "20" 
+                       height="20" 
+                       border="0"/></button>
+					   <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" data-keyboard="false">
+						<div class="modal-dialog">
+						<div class="modal-content">
+						<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">ODL</h4>
+						</div>
+						<div class="modal-body">
+						<p>Map is displayed.</p>
+						</div>
+						<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+      
+					</div>
+				</div>	
+              </div>
+			  <br>
+			  <div class="layer">
+                <div class="layer_name">
+                  <label for="dots" id="label_ls_rl_grid">Room air grid</label>
+                </div>
+                <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">
+                  <img src="./img/properties.png"
+                       alt="properties"
+                       width= "20" 
+                       height="20" 
+                       border="0"/></button>
+					   <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" data-keyboard="false">
+						<div class="modal-dialog">
+						<div class="modal-content">
+						<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Room air grid</h4>
+						</div>
+						<div class="modal-body">
+						<p>Map is displayed.</p>
+						</div>
+						<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+      
+					</div>
+				</div>	
+              </div>
+			  <br>
+			  <div class="layer">
+                <div class="layer_name">
+                  <label for="dots" id="label_ls_bl_grid">Bottom air grid</label>
+                </div>
+                <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">
+                  <img src="./img/properties.png"
+                       alt="properties"
+                       width= "20" 
+                       height="20" 
+                       border="0"/></button>
+					   <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" data-keyboard="false">
+						<div class="modal-dialog">
+						<div class="modal-content">
+						<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Bottom air grid</h4>
+						</div>
+						<div class="modal-body">
+						<p>Map is displayed.</p>
+						</div>
+						<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+      
+					</div>
+				</div>	
+				
+              </div>
+			  <br>
+			  <div class="layer">
+                <div class="layer_name">
+                  <label for="dots" id="label_ls_odl_grid">ODL grid</label>
+                </div>
+                <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">
+                  <img src="./img/properties.png"
+                       alt="properties"
+                       width= "20" 
+                       height="20" 
+                       border="0"/></button>
+					   <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" data-keyboard="false">
+						<div class="modal-dialog">
+					 <div class="modal-content">
+						<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">ODL grid</h4>
+						</div>
+						<div class="modal-body">
+						<p>Map is displayed.</p>
+						</div>
+						<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+      
+					</div>
+				</div>	
+              </div>
+			  <br>
+			  <div class="layer">
+                <div class="layer_name">
+                  <label for="dots" id="label_ls_pa">Project Area</label>
+                </div>
+                <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">
+                  <img src="./img/properties.png"
+						alt="properties"
+						width= "20" 
+						height="20" 
+						border="0"/></button>
+					   <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" data-keyboard="false">
+						<div class="modal-dialog">
+						<div class="modal-content">
+						<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Project Area</h4>
+						</div>
+						<div class="modal-body">
+						<p>Map is displayed.</p>
+						</div>
+						<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+      
+					</div>
+				</div>	
+				
+              </div>
+              <!-- end of this accordion content -->
+            </div><!--layer selection-->
+          </dd>       
+          <dt>
+            <img src="./img/bar.png"
+                 alt="---------------------------"
+                 width= "100%" 
+                 height="4" 
+                 border="0"/>
+            <table>
+              <tr>
+                <td>
+                  Legend
+                </td>
+                <td>
+                  <a href="#" 
+                     class="closed">
+                    <img src="./img/collapse_top_1.png"
+                         alt="open"
+                         width= "20" 
+                         height="20" 
+                         border="0"/>
+                  </a>
+                </td>
+            </table>
+          </dt>
+          <dd>
+            <div id="legend">
+              <!-- content of this accordion -->
+              <!--put here content for the legend-->
+              <!-- end of this accordion content -->
+			  <div class="legend_rl">
+                  <label for="dots" id="label_legend_rl">Room air [Bq m-3]:</label>
+				  <br>
+				  <img id="image_legend_rl">
+              </div>
+			  <br>
+			  <div class="legend_bl">
+                  <label for="dots" id="label_legend_bl">Bottom air [kBq m-3]:</label>
+				  <br>
+				  <img id="image_legend_bl">
+              </div>
+			  <br>
+			  <div class="legend_odl">
+                  <label for="dots" id="label_legend_odl">ODL [nSv h-1]:</label>
+				  <br>
+				  <img id="image_legend_odl">
+              </div>
+			  <br>
+			  <div class="legend_rl_grid">
+                  <label for="dots" id="label_legend_rl_grid">Room air (grid) [Bq m-3]:</label>
+				  <br>
+				  <img id="image_legend_rl_grid">
+              </div>
+			  <br>
+			  <div class="legend_bl_grid">
+                  <label for="dots" id="label_legend_bl_grid">Bottom air (grid) [kBq m-3]:</label>
+				  <br>
+				  <img id="image_legend_bl_grid">
+              </div>
+			  <br>
+			  <div class="legend_odl_grid">
+                  <label for="dots" id="label_legend_odl_grid">ODL (grid) [nSv h-1]:</label>
+				  <br>
+				  <img id="image_legend_odl_grid" >
+              </div>
+			  <div class="legend_pa">
+                  <label for="dots" id="label_legend_pa">Project Area:</label>
+				  <br>
+				  <img id="image_legend_pa" >
+              </div>
+            </div><!--legend-->
+          </dd>
+          <dt>
+            <img src="./img/bar.png"
+                 alt="---------------------------"
+                 width= "100%" 
+                 height="4" 
+                 border="0"/>
+            <table>
+              <tr>
+                <td>
+                  Thematic Information
+                </td>
+                <td>
+                  <a href="#" 
+                     class="closed">
+                    <img src="./img/collapse_top_1.png"
+                         alt="open"
+                         width= "20" 
+                         height="20" 
+                         border="0"/>
+                  </a>
+                </td>
+            </table>
+          </dt>
+          <dd>
+            <div id="flexible">
+              <!-- content of this accordion -->
+              put here some flexible content
+              <!-- end of this accordion content -->
+            </div><!--flexible-->
+          </dd>
+        </dl>
+      </div>
+    </div>
+
+    <!--script to load asynchronous JavaScript, otherwise DOM is not ready when the script is loaded-->
+    <script language="javascript" type="text/javascript">
+      var map = new ol.Map({
+            target: 'map',
+            layers: [],
+            view: new ol.View({
+                center: ol.proj.transform([12, 49.8], 'EPSG:4326', 'EPSG:3857'),
+				zoom: 9
+            })
+        });
+	  function loadScriptAfter() {
+        var script = document.createElement("script");
+        script.src = "./js/viz_ls_legend_test.js";
+        document.body.appendChild(script);
+      }
+
+      if (window.addEventListener) {
+        window.addEventListener("load", loadScriptAfter);
+      } else if (window.attachEvent) {
+        window.attachEvent("onload", loadScriptAfter);
+      } else {
+        window.onload = loadScriptAfter;
+      }
+	  
+	  var label_ls_osm = new ol.layer.Tile({
+                source: new ol.source.OSM(),
+				visible: true
+            });
+		var label_ls_osm_visible = "true";
+		map.addLayer(label_ls_osm);
+		
+		var label_ls_rl = new ol.layer.Tile({
+        visible: false,
+        source: new ol.source.TileWMS({
+          url: 'http://localhost:8081/geoserver/geoviz/wms?service=WMS&version=1.1.0&request=GetMap&layers=geoviz:raumluft_4326&styles=&bbox=11.6536092758179,49.5072250366211,12.5467891693115,50.2793502807617&width=768&height=663&srs=EPSG:4326&format=application/openlayers',
+          params: {'FORMAT': 'image/png', 
+                   'VERSION': '1.1.1',
+                   tiled: true,
+                LAYERS: 'geoviz:raumluft_4326',
+                STYLES: '',
+          }
+        }),
+		visible: true
+      });
+		
+		label_ls_rl_visible = "true";
+		map.addLayer(label_ls_rl);
+		
+		var sidebar = $('#sidebars').sidebar();
+		$('#label_ls_osm').on('click', function() {
+				if (label_ls_osm_visible == "true") {
+					label_ls_osm.setVisible(false);
+					label_ls_osm_visible = "false";
+				} else {
+					label_ls_osm.setVisible(true);
+					label_ls_osm_visible = "true";
+				}   
+        });
+		$('#label_ls_rl').on('click', function() {
+                if (label_ls_rl_visible == "true") {
+					label_ls_rl.setVisible(false);
+					label_ls_rl_visible = "false";
+				} else {
+					label_ls_rl.setVisible(true);
+					label_ls_rl_visible = "true";
+				}
+        });
+    </script>
+  </body>
+</html>
