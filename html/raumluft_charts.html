@@ -1,28 +1,8 @@
-<!--based on: http://bl.ocks.org/bentrm/562ad975d599badf2822 / https://gist.github.com/bentrm/562ad975d599badf2822 -->
-<!-- as well as: Learning d3.js mapping - Chapter 5 Example 2 and d3 cookbook - Chapter 12 Example Choropleth map -->
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <title>Raumluft Charts</title>
-<!--<link rel="stylesheet" 
-          href="../css/style_choropleth_map.css" 
-          type="text/css">
-<link rel="stylesheet" 
-          href="../css/style_grouped_vertical_bar.css" 
-          type="text/css">
-<link rel="stylesheet" 
-          href="../css/style_dual_scale_bar_chart.css" 
-          type="text/css">
-<link rel="stylesheet" 
-          href="../css/style_stacked_vertical_bar.css" 
-          type="text/css">
-<link rel="stylesheet" 
-          href="../css/style_sortable_bar_chart.css" 
-          type="text/css">
-<link rel="stylesheet" 
-          href="../css/style_tooltip.css" 
-          type="text/css">-->
 <link rel="stylesheet" 
           href="../css/style_charts.css" 
           type="text/css">
@@ -56,55 +36,49 @@
 	
 	<!--Define variable to control the type of the drawn chart-->
 	<script>
-		//var arrayDrawTypes = ["raumluft_avg","raumluft_min","raumluft_max","bodenluft","odl"];
-		//console.log(arrayDrawTypes[0]);
-		//var drawType = arrayDrawTypes[0];
-		
-		//Array to realize changing of visualizations with buttons:
+	
+		//Array to realize changing of visualizations with buttons consisting of button-id as well as div-id:
 		var arrayChartsData = [['button_choro', 'choropleth'],['button_grouped','grouped'],['button_stacked','stacked'],['button_dual','dual_scale'],['button_sortable','sortable_bar']];
 		
 		//Choropleth:
 		var 	choro_div = "#choropleth",
-				choro_filenames = ["../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics2_topo.json","../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv",'../data/processed_data/bfs/raumluft_4326_statistics_attributes_total_csv.csv'],
+				choro_filenames = ["../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics2_topo.json","../php/DEU_counties_statistics_php.csv",'../php/Raumluft_4326_statistics_php.csv'],
+				choro_attributes_topojson = ["counties","id"],
 				choro_attribute_choropleth = ["ID_2","AVG_MW_RL"],
 				choro_attributes_tooltip = ["HAUSART","BAUWEISE","AVG_MW","MESSW_1G","MESSW_EG","MESSW_KE"],
-				choro_domain = [60, 100, 150, 250, 350],
-				choro_range = ["#0a6e01", "#40ff05", "#E4FF05", "#FFDB00", "#ff6700", "#ff0000"]; //check domain, add 6th class?
+				choro_domain = [52, 105, 157, 210, 262],
+				choro_range = ["#1a9641", "#89cb61", "#dbef9d", "#fede9a", "#f59053", "#d7191c"] //gradient now better?
 		
 		//Grouped:
 		var 	grouped_div = "#grouped",
-				grouped_filename = "../data/processed_data/bfs/raumluft_4326_statistics_attributes_total_petrograph_stockwerke_csv.csv",
-				grouped_attributes = ["petrograph","rl_ke","rl_eg","rl_1g"],	//first: attribute for x-Axis, the following attributes: attribute for y-Axis (bars)
-				grouped_attributes_tooltip = [["rl_ke","Room air in basement", "Bq m-3"], ["rl_eg","Room air on ground floor", "Bq m-3"], ["rl_1g","Room air on first floor", "Bq m-3"]],
+				grouped_filename = "../php/Raumluft_4326_statistics_petrograph_php.csv",
+				grouped_attributes = ["PETROGRAPH","RL_AVG","RL_MIN","RL_MAX"],	//first: attribute for x-Axis, the following attributes: attribute for y-Axis (bars)
+				grouped_attributes_tooltip = [["RL_AVG","average value in room air", "Bq m-3"], ["RL_MIN","minimum value in room air", "Bq m-3"], ["RL_MAX","maximum value in room air", "Bq m-3"]],
 				grouped_range = ["#98abc5","#6b486b", "#ff8c00"] //; //colors for bars
-				grouped_y_axis_annotation = "Average Radon in room air [Bq m-3]";
-		//drawGroupedVerticalBar(grouped_div,grouped_filename,grouped_attributes,grouped_range);
+				grouped_y_axis_annotation = "Radon msrmnt. in room air [Bq m-3]";
 		
 		//Stacked:
 		var 	stacked_div = "#stacked",
-				stacked_filename = "../data/processed_data/bfs/raumluft_4326_statistics_attributes_total_petrograph_stockwerke_csv.csv",
-				stacked_attributes = ["petrograph","rl_eg","rl_1g","rl_ke"],	//first: attribute for x-Axis, the following attributes: attribute for y-Axis (bars)
-				stacked_attributes_tooltip = [["rl_ke","Room air in basement", "Bq m-3"], ["rl_eg","Room air on ground floor", "Bq m-3"], ["rl_1g","Room air on first floor", "Bq m-3"]],
+				stacked_filename = "../php/Raumluft_4326_statistics_petrograph_php.csv",
+				stacked_attributes = ["PETROGRAPH","RL_AVG_KE","RL_AVG_EG","RL_AVG_1G"],	//first: attribute for x-Axis, the following attributes: attribute for y-Axis (bars)
+				stacked_attributes_tooltip = [["RL_AVG_KE","average value in basement", "Bq m-3"], ["RL_AVG_EG","average value on ground floor", "Bq m-3"], ["RL_AVG_1G","average value on first floor", "Bq m-3"]],
 				stacked_range = ["#98abc5","#6b486b", "#ff8c00"] //; //colors for bars
-				stacked_y_axis_annotation = "Average Radon in room air [Bq m-3]";
-		//drawStackedVerticalBar(stacked_div,stacked_filename,stacked_attributes,stacked_range);
+				stacked_y_axis_annotation = "Average Radon msrmnt. in room air [Bq m-3]";
 		
 		//Dual_Scale:
 		var 	dual_div = "#dual_scale",
 				dual_filename = "../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv",
-				//dual_attributes = ["NAME_2", "AVG_MW_RL", "UNIT_RL", "AVG_MW_ODL", "UNIT_OD"] //;	//first: attribute for x-Axis, second: attribute for y-Axis (left bars), second: attribute for y-Axis (right bars
 				dual_attributes = ["NAME_2", "AVG_MW_RL", "AVG_MW_ODL"] //;	//first: attribute for x-Axis, second: attribute for y-Axis (left bars), second: attribute for y-Axis (right bars,
-				dual_attributes_tooltip = [["Average msrmnt. in room air", "Bq m-3"], ["Average ODL msrmnt.", "nSv h-1"]],
-				dual_y_axis_annotation = ["Average Room air measurement [Bq m-3]", "Average ODL measurement [nSv m-1]"];
-		//drawDualScaleBarChart(dual_div,dual_filename,dual_attributes,dual_legend_notation);
+				dual_attributes_tooltip = [["average value in room air", "Bq m-3"], ["average value of ODL", "nSv h-1"]],
+				dual_domain = [450,350];
+				dual_y_axis_annotation = ["Average Radon msrmnt. in room air [Bq m-3]", "Average ODL msrmnt. [nSv m-1]"];
 		
 		//Sortable:
 		var sortable_div = "#sortable_bar",
-			sortable_filename = "../data/processed_data/adm/DEU_adm2_pa_clip_total_statistics_fixed.csv",
-			sortable_attributes = ["NAME_2", "AVG_MW_RL"] //;	//first: attribute for x-Axis, second: attribute for y-Axis (left bars), second: attribute for y-Axis (right bars)
-		//drawSortableBarChart(sortable_div,sortable_filename,sortable_attributes);
-			sortable_attributes_tooltip = ["Average Room Air Measurement", "Bq m-3"],
-			sortable_y_axis_annotation = "Average Radon value in room air [Bq m-3]";
+			sortable_filename = "../php/DEU_counties_statistics_php.csv",
+			sortable_attributes = ["NAME_2", "AVG_MW_RL"],
+			sortable_attributes_tooltip = ["average value in room air", "Bq m-3"],
+			sortable_y_axis_annotation = "Average Radon msrmnt. in room air [Bq m-3]";
 	</script>
 	
 	<!--script to load asynchronous JavaScript, otherwise DOM is not ready when the script is loaded-->
@@ -114,10 +88,10 @@
         script.src = "GeoViz_local/js/stacked_vertical_bar.js";
         document.body.appendChild(script);*/
 		
-		drawChoroplethMap(choro_div,choro_filenames,choro_attribute_choropleth,choro_attributes_tooltip,choro_domain,choro_range);//tooltip versetzt...
+		drawChoroplethMap(choro_div,choro_filenames,choro_attributes_topojson,choro_attribute_choropleth,choro_attributes_tooltip,choro_domain,choro_range);
 		drawGroupedVerticalBar(grouped_div,grouped_filename,grouped_attributes,grouped_attributes_tooltip,grouped_range,grouped_y_axis_annotation);
 		drawStackedVerticalBar(stacked_div,stacked_filename,stacked_attributes,stacked_attributes_tooltip,stacked_range,stacked_y_axis_annotation);
-		drawDualScaleBarChart(dual_div,dual_filename,dual_attributes,dual_attributes_tooltip,dual_y_axis_annotation);
+		drawDualScaleBarChart(dual_div,dual_filename,dual_attributes,dual_attributes_tooltip,dual_domain,dual_y_axis_annotation);
 		drawSortableBarChart(sortable_div,sortable_filename,sortable_attributes,sortable_attributes_tooltip,sortable_y_axis_annotation);
 		
 		/*$('#choropleth').hide();
@@ -183,10 +157,7 @@
 					document.getElementById('label_checkbox').style.visibility="hidden"; 
 				}
 			}			
-		}			
-		//Call loadScriptAfter?	
-		//Change drawType:
-			
+		}	
     };	
 	</script>
 </body>

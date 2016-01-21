@@ -114,7 +114,7 @@ var layer_odl_points = new ol.layer.Tile({
             'VERSION': '1.1.1',
             tiled: true,
 			LAYERS: 'geoviz:odl_4326',
-			STYLES: 'geoviz:geoviz_point_odl',
+			STYLES: 'geoviz:geoviz_point_odl_gradient',
 		}
 	}),
 	visible: true
@@ -130,7 +130,7 @@ var layer_bodenluft_points = new ol.layer.Tile({
             'VERSION': '1.1.1',
             tiled: true,
 			LAYERS: 'geoviz:bodenluft_4326',
-			STYLES: 'geoviz:geoviz_point_bodenluft'
+			STYLES: 'geoviz:geoviz_point_bodenluft_gradient'
 		}
 	}),
 	visible: true
@@ -146,7 +146,7 @@ var layer_raumluft_points = new ol.layer.Tile({
             'VERSION': '1.1.0',
             tiled: true,
 			LAYERS: 'geoviz:raumluft_4326',
-			STYLES: 'geoviz:geoviz_point_raumluft'
+			STYLES: 'geoviz:geoviz_point_raumluft_gradient'
 		}
 	}),
 	visible: true
@@ -155,11 +155,11 @@ raumluft_points_visible = "true";
 map.addLayer(layer_raumluft_points);
 
 //############### Get legend images for Legend part: ###############//
-document.getElementById("image_legend_rl").src = "http://localhost:8080/geoserver/geoviz/wms?REQUEST=GetLegendGraphic&VERSION=1.1.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=geoviz:raumluft_4326&STYLE=geoviz:geoviz_point_raumluft";
+document.getElementById("image_legend_rl").src = "http://localhost:8080/geoserver/geoviz/wms?REQUEST=GetLegendGraphic&VERSION=1.1.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=geoviz:raumluft_4326&STYLE=geoviz:geoviz_point_raumluft_gradient";
 
-document.getElementById("image_legend_bl").src = "http://localhost:8080/geoserver/geoviz/wms?REQUEST=GetLegendGraphic&VERSION=1.1.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=geoviz:bodenluft_4326&STYLE=geoviz:geoviz_point_bodenluft";
+document.getElementById("image_legend_bl").src = "http://localhost:8080/geoserver/geoviz/wms?REQUEST=GetLegendGraphic&VERSION=1.1.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=geoviz:bodenluft_4326&STYLE=geoviz:geoviz_point_bodenluft_gradient";
 
-document.getElementById("image_legend_odl").src = "http://localhost:8080/geoserver/geoviz/wms?REQUEST=GetLegendGraphic&VERSION=1.1.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=geoviz:odl_4326&STYLE=geoviz:geoviz_point_odl";
+document.getElementById("image_legend_odl").src = "http://localhost:8080/geoserver/geoviz/wms?REQUEST=GetLegendGraphic&VERSION=1.1.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=geoviz:odl_4326&STYLE=geoviz:geoviz_point_odl_gradient";
 
 document.getElementById("image_legend_rl_grid").src = "http://localhost:8080/geoserver/geoviz/wms?REQUEST=GetLegendGraphic&VERSION=1.1.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=geoviz:raumluft_4326_grid_combined&STYLE=geoviz:geoviz_grid_raumluft";
 
