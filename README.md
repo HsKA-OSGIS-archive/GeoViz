@@ -20,6 +20,7 @@ In addition to the "classic" web application where the user can choose between d
 
 -	PostgreSQL 9.5
 -	GeoServer 2.8.1
+-	Geoserver 2.8.1 Printing-Plugin
 -	Apache Tomcat 9.0
 -	QGIS 2.12.1-Lyon
 -	Quercus 4.0.39
@@ -50,22 +51,26 @@ All datasets used in this project were derived from the following sources:
 
 1.PostgreSQL 9.5
 
-Download and install PostgreSQL 9.5 for windows. The package includes pgAdmin III and PostGIS 2.0 shapefile and DBF loader exporter.
+Download and install PostgreSQL 9.5 for windows.
+The package includes pgAdmin III and PostGIS 2.0 shapefile and DBF loader exporter.
 Install the required extensions.
 
 2. In pgAdmin III create a database
 
-Name: geoviz
-Port: 5432
-User: postgres
-Password: user
+- Name:		geoviz
+- Port:		5432
+- User:		postgres
+- Password:	user
 
 3. In PostGIS shapefile import/export manager 
 
 Connect to the database by PostGIS Connection and fill the name, password, port and database name.
 Now the database is connected.
-Add the files from the folder, the shapefile is shown in the import list. You can give the SRID as 4326. Then import the shapefiles. Now the shapefiles are imported to database geoviz.
-Moreover in the folder "data\processed_data" there are two backup-files (both contain the same data, just different formats) that can also be used to "restore" the shapefiles. Hence a manual import is hopefully not necessary.
+Add the files from the folder, the shapefile is shown in the import list.
+You can give the SRID as 4326. Then import the shapefiles.
+Now the shapefiles are imported to database geoviz.
+Moreover in the folder "data\processed_data" there are two backup-files (both contain the same data, just different formats) that can also be used to "restore" the shapefiles.
+Hence a manual import is hopefully not necessary.
 
 4. Geoserver 2.8.1
 
@@ -77,6 +82,12 @@ Now a workspace is created 'geoviz' and in 'stores' the workspace is connected t
 The layers from the database are now available in geoserver.
 The layers are published with publish button with respective feature types. During publishing the coordinate reference system is defined to EPSG:4326. 
 The styling is also given for the different features. The corresponding sld-files are stored in the "sld" folder of this project!
+
+Additionally, we are using the Geoserver printing plugin to be able to create PDF-files of our web map.
+Therefore, you have to extract the zip-file in the "printing_plugin" folder into the "webapps\geoserver\WEB-INF\lib" of your Geoserver folder.
+When you run Geoserver for the first time, e.g. by starting your local server, the plugin should be automatically detected and installed.
+If this is successful, you will find the file "config.yaml" in the folder "data_dir\printing" of Geoserver.
+This means that you now can you the plugin. If this is not the case, please use the available online documentation.
 
 5. Apache Tomcat 9.0
 
@@ -91,9 +102,9 @@ For this project we used version Quercus 4.0.39.war
 
 Installation guide:
 
-1.) Open War-file with e.g. WinRar and extract "quercus.jar" as well as "javamail-141.jar" to the \lib\ folder of Apache Tomcat.
+a) Open War-file with e.g. WinRar and extract "quercus.jar" as well as "javamail-141.jar" to the \lib\ folder of Apache Tomcat.
 
-2.) Add the following lines to the web.xml file in the \conf\ folder of Apache Tomcat:
+b) Add the following lines to the web.xml file in the \conf\ folder of Apache Tomcat:
 
 <!--Quercus stuff:-->
   <servlet>
@@ -146,7 +157,7 @@ Installation guide:
     <welcome-file>index.php</welcome-file>
   </welcome-file-list>
   
-3.) Uncommend these two extensions in the file "php.ini" in the folder of your php-installation, e.g. in the folder EnterpriseDB-ApachePHP that comes with PostgreSQL:
+c) Uncommend these two extensions in the file "php.ini" in the folder of your php-installation, e.g. in the folder EnterpriseDB-ApachePHP that comes with PostgreSQL:
 extension=php_pdo_pgsql.dll
 extension=php_pgsql.dll
 
