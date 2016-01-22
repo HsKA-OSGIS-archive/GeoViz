@@ -92,7 +92,9 @@ For this project we used version Quercus 4.0.39.war
 Installation guide:
 
 1.) Open War-file with e.g. WinRar and extract "quercus.jar" as well as "javamail-141.jar" to the \lib\ folder of Apache Tomcat.
+
 2.) Add the following lines to the web.xml file in the \conf\ folder of Apache Tomcat:
+
 <!--Quercus stuff:-->
   <servlet>
     <servlet-name>Quercus Servlet</servlet-name>
@@ -143,6 +145,7 @@ Installation guide:
   <welcome-file-list>
     <welcome-file>index.php</welcome-file>
   </welcome-file-list>
+  
 3.) Uncommend these two extensions in the file "php.ini" in the folder of your php-installation, e.g. in the folder EnterpriseDB-ApachePHP that comes with PostgreSQL:
 extension=php_pdo_pgsql.dll
 extension=php_pgsql.dll

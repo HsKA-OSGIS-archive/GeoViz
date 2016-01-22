@@ -3,15 +3,18 @@
 //
 // Create map object:
 //
-
+var view = new ol.View({
+	center: [1366999.813852092, 6405117.222184629],	//ol.proj.transform([12, 49.8], 'EPSG:4326', 'EPSG:3857'),
+	zoom: 9,
+	minZoom: 9,
+	maxZoom: 15,
+    rotation: 0
+  });
+  
 var map = new ol.Map({
   controls: [new ol.control.Attribution],	//to display source of baselayer
   target: 'map',
-  view: new ol.View({
-	center: ol.proj.transform([12, 49.8], 'EPSG:4326', 'EPSG:3857'),
-	zoom: 9,
-    rotation: 0
-  })
+  view: view
 });
 
 //############### accordion part ###############//
@@ -218,3 +221,116 @@ function layerSelection(id_clicked_label) {
 		}
 	}  
 }
+
+//############### Print functionality: ###############//
+$('#print_image').on('click', function() {print(view)});
+
+
+function print(view) {
+
+	//Configuration of OSM base layer:
+	printConfiguration.layers[0].baseURL='http://a.tile.openstreetmap.org';
+	printConfiguration.layers[0].type='OSM';
+	printConfiguration.layers[0].extension='png';
+
+	var zoom = view.getZoom();
+	
+	if (zoom==9){printConfiguration.pages[0].scale=1250000;}		//tested
+	else if (zoom==10){printConfiguration.pages[0].scale=850000;}	//tested
+	else if (zoom==11){printConfiguration.pages[0].scale=450000;}	//tested
+	else if (zoom==12){printConfiguration.pages[0].scale=250000;}	//tested
+	else if (zoom==13){printConfiguration.pages[0].scale=100000;}	//NOT tested!
+	else if (zoom==14){printConfiguration.pages[0].scale=80000;}	//NOT tested!
+	else if (zoom==15){printConfiguration.pages[0].scale=50000;}	//NOT tested!
+
+	/*Array of printable GeoServer layers as well as the corresponding styles:,
+	elements have to be in same order!:*/
+	var printableLayers = [layer_odl_grid,layer_bodenluft_grid,layer_raumluft_grid,layer_odl_points,layer_bodenluft_points,layer_raumluft_points,layer_project_area];
+	var array_styles = ["geoviz:geoviz_grid_odl","geoviz:geoviz_grid_bodenluft","geoviz:geoviz_grid_raumluft","geoviz:geoviz_point_odl_gradient","geoviz:geoviz_point_bodenluft_gradient","geoviz:geoviz_point_raumluft_gradient","geoviz:geoviz_polygon_project_area"]
+	
+	//empty arrays to store visible layers and their styles in:
+	var array_printLayer=[];
+	var array_layerStyles=[];
+	
+	//Iteration through GeoServer Layers:
+	for (j = 0; j <= printableLayers.length-1; j++){
+		var selectedlayer = printableLayers[j];
+		var booleanLayerVisible = selectedlayer.getVisible();
+
+		if(booleanLayerVisible==true){
+			//Get parameters of selected layer:
+			var layerParameters = printableLayers[j].getSource().getParams().LAYERS;
+			//Add parameters to array with all visible layers -> are printed!
+			array_printLayer.push(layerParameters);
+			//Add style name of selected layer:
+			array_layerStyles.push(array_styles[j]);
+		}
+		
+		//Configure overlay layers:
+		//a) add parameter array of layers:
+		printConfiguration.layers[1].layers=array_printLayer;
+		//b) add style array of layers:
+		printConfiguration.layers[1].styles = array_layerStyles;
+		printConfiguration.pages[0].center = view.getCenter();
+	}
+
+	printUrl= 'http://localhost:8080/geoserver/pdf/print.pdf?spec='+JSON.stringify(printConfiguration);
+	
+	$('#print_image').attr("href", printUrl);
+};
+
+//initialize the print function: (settings need to be available in config.yaml!):
+var printConfiguration = {
+ 
+    "layout":"A4 portrait",
+    "srs":"EPSG:3857",
+    "units":"m",
+    "dpi":200,
+    "outputFilename": "RadonByGeoViz.pdf",
+    "layers":[
+     {baseURL: 'http://a.tile.osm.org', 
+            singleTile: false, 
+	    opacity: 1,
+            type: 'OSM', 
+            maxExtent: [-20037508.3392,-20037508.3392,20037508.3392,20037508.3392], 
+            tileSize: [256, 256], 
+            extension: 'png',
+            resolutions: [156543.0339, 78271.51695, 39135.758475, 19567.8792375, 9783.93961875, 4891.969809375, 2445.9849046875, 1222.99245234375, 611.496226171875, 305.7481130859375, 152.87405654296876, 76.43702827148438, 38.21851413574219, 19.109257067871095, 9.554628533935547, 4.777314266967774, 2.388657133483887, 1.1943285667419434, 0.5971642833709717, 0.2985821416854859, 0.1492910708427430, 0.07464553542137148] 
+        },	
+
+	{"baseURL":"http://localhost:8080/geoserver/geoviz/wms",
+        "opacity":1,
+        "singleTile":true,
+        "customParams":{},
+        "type":"WMS",
+        layers:[],
+        "format":"image/png",
+        "styles":[],
+        "overview":true},        
+		    ],
+    "pages":[
+        {
+		"titlePage": false,
+        "center":[],
+        "mapTitle":"Radon measurements",
+        "comment":"by GeoViz",
+        "rotation":0,
+        "icon":""}],
+	"legends": [
+        {
+            "classes": [
+                {
+                    "icons": [
+                        ""
+                    ],
+                    "name": "",
+                    "iconBeforeName": true
+                }
+            ]
+        }
+    ]
+};
+
+//Run function once to initiale href:
+print(view);
+
