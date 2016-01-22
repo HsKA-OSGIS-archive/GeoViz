@@ -4,20 +4,20 @@ Visualizing Radon Measurements
 
 done by the virtual Company GeoViz Ltd. at the University of Applied Sciences Karlsruhe
 
-About:
+# About:
 
 The objective of this project is to visualize radon measurements in parts of Germany in a web application. Different measurements of radon over the study area can be spatially analysed, compared and visualized. This gives an overview of radon measurements in basements and inside houses and can also be studied further with different factors influencing the radon gas, for example "rock type" (=petrograph).  
 In addition to the "classic" web application where the user can choose between different layers, it is also possible to display further statistical information about the visualized datasets. These charts are created using d3 and are displayed in different modal windows.
 
 
-Authors:
+# Authors:
 
 Sebastian Lemstra
 Georg Stubenrauch
 Md Kamrul Ahsan
 Rajesh Mahalingam
 
-Software Used:
+# Software Used:
 
 PostgreSQL 9.5
 GeoServer 2.8.1
@@ -26,8 +26,14 @@ QGIS 2.12.1-Lyon
 Quercus 4.0.39
 GitHub Desktop v3.0.11
 
+# Data and data sources
+All datasets used in this project were derived from the following sources:
 
-Installation Procedure:
+- GADM database of Global Administrative Areas - Counties in Germany - http://www.gadm.org/
+- Radon measurements by Federal Office for Radiation Protection - http://www.bfs.de/EN/home/home_node.html
+- OSM Basemap - OpenStreetMap Tile Server - ODbl
+
+# Installation Procedure:
 
 1.PostgreSQL 9.5
 Download and install PostgreSQL 9.5 for windows. The package includes pgAdmin III and PostGIS 2.0 shapefile and DBF loader exporter.
@@ -45,7 +51,7 @@ Now the database is connected.
 Add the files from the folder, the shapefile is shown in the import list. You can give the SRID as 4326. Then import the shapefiles. Now the shapefiles are imported to database geoviz.
 Moreover in the folder "data\processed_data" there are two backup-files (both contain the same data, just different formats) that can also be used to "restore" the shapefiles. Hence a manual import is hopefully not necessary.
 
-Geoserver 2.8.1
+4. Geoserver 2.8.1
 
 Install Geoserver for windows and start geoserver.
 Run it as http://localhost:8080/geoserver/ in a web browser.
@@ -56,12 +62,12 @@ The layers from the database are now available in geoserver.
 The layers are published with publish button with respective feature types. During publishing the coordinate reference system is defined to EPSG:4326. 
 The styling is also given for the different features. The corresponding sld-files are stored in the "sld" folder of this project!
 
-Apache Tomcat 9.0
+5. Apache Tomcat 9.0
 
 Install the Apache Tomcat for windows and start it.
 All the files are stored in the Apache Tomcat and executed from the localhost.
 
-Quercus 4.0.39
+6. Quercus 4.0.39
 
 To be able to use php with Apache Tomcat we decided to use a Java implementation of PHP5 called Quercus.
 The latest version can be downloaded here: http://quercus.caucho.com/ and is released under the Open Source GPL license.
@@ -128,12 +134,15 @@ extension=php_pgsql.dll
 With the help of Quercus and by using PHP everytime the index.html file is loaded, the csv-files with the latest data are created.
 This way the different charts are always up-to-date.
 
-External Libraries:
+Hint: 	You could also use the OSGeo-Live 9.0 that can be downloaded here: http://live.osgeo.org/de/
+		In this case you would only need to install Quercus.
+
+# External Libraries:
 
 JqueryUI
 BootStrap
 OpenLayers 3.0
 D3.JS
 
-License:
+# License:
 Please refer the License file
