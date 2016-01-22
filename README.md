@@ -11,27 +11,27 @@ In addition to the "classic" web application where the user can choose between d
 
 # Authors:
 
-Sebastian Lemstra
-Georg Stubenrauch
-Md Kamrul Ahsan
-Rajesh Mahalingam
+-	Sebastian Lemstra
+-	Georg Stubenrauch
+-	Md Kamrul Ahsan
+-	Rajesh Mahalingam
 
 # Software Used:
 
-PostgreSQL 9.5
-GeoServer 2.8.1
-Apache Tomcat 9.0
-QGIS 2.12.1-Lyon
-Quercus 4.0.39
-GitHub Desktop v3.0.11
+-	PostgreSQL 9.5
+-	GeoServer 2.8.1
+-	Apache Tomcat 9.0
+-	QGIS 2.12.1-Lyon
+-	Quercus 4.0.39
+-	GitHub Desktop v3.0.11
 
 # Data and data sources
 
 All datasets used in this project were derived from the following sources:
 
-- GADM database of Global Administrative Areas - Counties in Germany - http://www.gadm.org/
-- Radon measurements by Federal Office for Radiation Protection - http://www.bfs.de/EN/home/home_node.html
-- OSM Basemap - OpenStreetMap Tile Server - ODbl
+-	GADM database of Global Administrative Areas - Counties in Germany - http://www.gadm.org/
+-	Radon measurements by Federal Office for Radiation Protection - http://www.bfs.de/EN/home/home_node.html
+-	OSM Basemap - OpenStreetMap Tile Server - ODbl
 
 # Strucutre of project folders:
 
