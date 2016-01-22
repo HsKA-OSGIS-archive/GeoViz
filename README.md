@@ -49,16 +49,19 @@ All datasets used in this project were derived from the following sources:
 # Installation Procedure:
 
 1.PostgreSQL 9.5
+
 Download and install PostgreSQL 9.5 for windows. The package includes pgAdmin III and PostGIS 2.0 shapefile and DBF loader exporter.
 Install the required extensions.
 
 2. In pgAdmin III create a database
+
 Name: geoviz
 Port: 5432
 User: postgres
 Password: user
 
 3. In PostGIS shapefile import/export manager 
+
 Connect to the database by PostGIS Connection and fill the name, password, port and database name.
 Now the database is connected.
 Add the files from the folder, the shapefile is shown in the import list. You can give the SRID as 4326. Then import the shapefiles. Now the shapefiles are imported to database geoviz.
@@ -150,7 +153,7 @@ This way the different charts are always up-to-date.
 Hint: 	You could also use the OSGeo-Live 9.0 that can be downloaded here: http://live.osgeo.org/de/
 		In this case you would only need to install Quercus.
 
-# External Libraries:
+# External libraries:
 
 JqueryUI
 BootStrap
