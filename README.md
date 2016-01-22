@@ -9,7 +9,6 @@ done by the virtual Company GeoViz Ltd. at the University of Applied Sciences Ka
 The objective of this project is to visualize radon measurements in parts of Germany in a web application. Different measurements of radon over the study area can be spatially analysed, compared and visualized. This gives an overview of radon measurements in basements and inside houses and can also be studied further with different factors influencing the radon gas, for example "rock type" (=petrograph).  
 In addition to the "classic" web application where the user can choose between different layers, it is also possible to display further statistical information about the visualized datasets. These charts are created using d3 and are displayed in different modal windows.
 
-
 # Authors:
 
 Sebastian Lemstra
@@ -27,11 +26,25 @@ Quercus 4.0.39
 GitHub Desktop v3.0.11
 
 # Data and data sources
+
 All datasets used in this project were derived from the following sources:
 
 - GADM database of Global Administrative Areas - Counties in Germany - http://www.gadm.org/
 - Radon measurements by Federal Office for Radiation Protection - http://www.bfs.de/EN/home/home_node.html
 - OSM Basemap - OpenStreetMap Tile Server - ODbl
+
+# Strucutre of project folders:
+
+- css:		contains all necessary css-files
+- fonts:	contains all necessary fonts
+- html:		contains all necessary html-files
+- img:		contains all necessary image-files, e.g. for the GUI
+- js:		contains all necessary javascript-files,
+			e.g. charts as well as OpenLayers implementation
+- lib:		contains all additional javascript libraries used
+- php:		contains the csv-files with the latest datasets for the charts
+			as well as the php-file that creates them
+- WEB-INF:	contains Quercus files to use PHP
 
 # Installation Procedure:
 
