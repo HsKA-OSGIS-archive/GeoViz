@@ -90,7 +90,7 @@ If there are errors during the restore process, you might have to add the tables
 Therefore start the PostGIS Shapefile Import/Export Manager and import the following shapefiles stored in the "\processed_data"-folder:
 
 |Name of shapefile|Folder|
-|:------|------|
+|:------|:------|
 |bodenluft_4326_attributes_total.shp|bfs|
 |odl_4326_attributes_total.shp|bfs|
 |project_area_4326.shp|bfs|
@@ -116,6 +116,7 @@ They are stored inside the folders of the different stores "data\geoviz\".
 Inside these files you have to fix the <url>-tag which stores the filepath of the tiff-files.
 
 When you now start Geoserver you should be able to see the following additions:
+
 |Count|Type|Name|Source|
 |:----|:---|:---|:-----|
 |1|Workspace|geoviz||
