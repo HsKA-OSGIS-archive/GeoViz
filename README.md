@@ -36,18 +36,18 @@ All datasets used in this project were derived from the following sources:
 
 # Strucutre of project folders:
 
-- css:				contains all necessary css-files
-- fonts:			contains all necessary fonts
-- geoserver:		workspace-folder for Geoserver
-- html:				contains all necessary html-files
-- img:				contains all necessary image-files, e.g. for the GUI
-- js:				contains all necessary javascript-files,
-					e.g. charts as well as OpenLayers implementation
-- lib:				contains all additional javascript libraries used
-- php:				contains the csv-files with the latest datasets for the charts
-					as well as the php-file that creates them
-- printing_plugin:	data for the installation of the printing plugin
-- WEB-INF:			contains Quercus files to use PHP
+|Folder name | Description |
+|:------------|:-------------|
+|css |contains all necessary css-files|
+|fonts|contains all necessary fonts|
+|geoserver|workspace-folder for Geoserver|
+|html|contains all necessary html-files
+|img|contains all necessary image-files, e.g. for the GUI|
+|js|contains all necessary javascript-files, e.g. charts as well as OpenLayers implementation|
+|lib|contains all additional javascript libraries used|
+|php|contains the csv-files with the latest datasets for the charts as well as the php-file that creates them|
+|printing_plugin|data for the installation of the printing plugin|
+|WEB-INF|contains Quercus files to use PHP|
 
 # Installation Procedure:
 
@@ -59,10 +59,12 @@ Install the required extensions.
 
 In pgAdmin III irst create a database with the following settings.
 
-- Name:		geoviz
-- Port:		5432
-- User:		postgres
-- Password:	user
+|Name|Setting|
+|:---|:------|
+|Name|geoviz|
+|Port|5432|
+|User|postgres|
+|Password|user|
 
 After you created the database add the extension PostGIS.
 The next step is to add the needed tables. There are two ways of doing that:
@@ -73,6 +75,7 @@ However, if you are using an other User/Password combination it might lead to pr
 You can restore our database by right-clicking it and choosing "Restore".
 In the folder "data\processed_data" there are two backup-files (both contain the same data, just different formats) that you can now choose from.
 After successfully restoring the database you should have 7 tables:
+
 -	bodenluft_4326
 -	deu_adm2_counties_statistics
 -	odl_4326
@@ -85,11 +88,15 @@ Adding the tables manually:
 
 If there are errors during the restore process, you might have to add the tables / shapefiles manually.
 Therefore start the PostGIS Shapefile Import/Export Manager and import the following shapefiles stored in the "\processed_data"-folder:
--	bodenluft_4326_attributes_total.shp				(bfs)
--	odl_4326_attributes_total.shp					(bfs)
--	project_area_4326.shp							(bfs)
--	raumluft_4326_statistics_attributes_total.shp	(bfs)
--	DEU_adm2_pa_clip_total_statistics_fixed.shp		(adm)
+
+|Name of shapefile|Folder|
+|:------|------|
+|bodenluft_4326_attributes_total.shp|bfs|
+|odl_4326_attributes_total.shp|bfs|
+|project_area_4326.shp|bfs|
+|raumluft_4326_statistics_attributes_total.shp|bfs|
+|DEU_adm2_pa_clip_total_statistics_fixed.shp|adm|
+
 Change the SRID to 4326 and then you can start importing the shapefiles.
 Now the shapefiles are imported to the database and are displayed as tables.
 
@@ -109,29 +116,12 @@ They are stored inside the folders of the different stores "data\geoviz\".
 Inside these files you have to fix the <url>-tag which stores the filepath of the tiff-files.
 
 When you now start Geoserver you should be able to see the following additions:
--	1 Workspace:	geoviz
-
--	4 Stores:		geoviz					PostGIS
-					geoviz_grid_bodenluft 	GeoTIFF
-					geoviz_grid_odl			GeoTIFF
-					geoviz_grid_raumluft	GeoTIFF
-					
--	8 Layers:		bodenluft_4326
-					deu_adm2_counties_statistics
-					odl_4326
-					project_area_4326
-					raumluft_4326
-					bodenluft_4326_grid
-					odl_4326_grid
-					raumluft_4326_grid_combined
-			
--	10 Styles:		geoviz_grid_bodenluft
-					geoviz_grid_odl
-					geoviz_grid_raumluft
-					geoviz_point_bodenluft / _gradient
-					geoviz_point_odl / _gradient
-					geoviz_point_raumluft / _gradient
-					geoviz_polygon_project_area
+|Count|Type|Name|Source|
+|:----|:---|:---|:-----|
+|1|Workspace|geoviz||
+|4|Stores|geoviz,geoviz_grid_bodenluft,geoviz_grid_odl,geoviz_grid_raumluft|PostGIS,GeoTIFF,GeoTIFF,GeoTIFF|
+|8|Layers|bodenluft_4326,deu_adm2_counties_statistics,odl_4326,project_area_4326,raumluft_4326,bodenluft_4326_grid,odl_4326_grid,raumluft_4326_grid_combined||
+|10|Styles|geoviz_grid_bodenluft,geoviz_grid_odl,geoviz_grid_raumluft,geoviz_point_bodenluft / _gradient,geoviz_point_odl / _gradient,geoviz_point_raumluft / _gradient,geoviz_polygon_project_area||
 
 If there are problems displaying the layers, you might have to manually add the styles to the layers (Layers -> click on layer -> publishing -> add styles).
 
@@ -224,7 +214,7 @@ extension=php_pgsql.dll
 With the help of Quercus and by using PHP everytime the index.html file is loaded, the csv-files with the latest data are created.
 This way the different charts are always up-to-date.
 
-Hint: 	You could also use the OSGeo-Live 9.0 that can be downloaded here: http://live.osgeo.org/de/
+Hint: 	You could also use the OSGeo-Live 9.0 that can be downloaded here:http://live.osgeo.org/de/
 		In this case you would only need to install Quercus.
 
 # External libraries:
