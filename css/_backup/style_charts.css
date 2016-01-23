@@ -15,7 +15,7 @@ body {
 }
 
 svg {
-    border-style: none;
+    border-style: solid;
     border-width: 1px;
     border-color: #ccc;
     background: #fff;
@@ -64,8 +64,6 @@ svg {
   font: 10px sans-serif;
 }
 
-
-
 .y.axisRight text {
     fill: orange;
 }
@@ -106,38 +104,4 @@ label {
   margin: -1px 0 0 0;
   top: 100%;
   left: 0;
-}
-
-/* Style for dashboard */
-path {  stroke: #fff; }
-path:hover {  opacity:0.9; }
-rect:hover {  fill:blue; }
-.axis {  font: 10px sans-serif; }
-.legend tr{    border-bottom:1px solid grey; }
-.legend tr:first-child{    border-top:1px solid grey; }
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.x.axis path {  display: none; }
-.pie{
-    margin-bottom: 175px;
-}
-.legend{
-    margin-bottom: 300px;
-    display:inline-block;
-    border-collapse: collapse;
-    border-spacing: 0px;
-}
-.legend td{
-    padding:4px 5px;
-    vertical-align:bottom;
-}
-.legendFreq, .legendPerc{
-    align:right;
-    width:50px;
 }

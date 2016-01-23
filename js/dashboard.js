@@ -1,61 +1,39 @@
-<!DOCTYPE html>
-<meta charset="utf-8">
-<style>
-body{
-    width:1060px;
-    margin:50px auto;
-}
-path {  stroke: #fff; }
-path:hover {  opacity:0.9; }
-rect:hover {  fill:blue; }
-.axis {  font: 10px sans-serif; }
-.legend tr{    border-bottom:1px solid grey; }
-.legend tr:first-child{    border-top:1px solid grey; }
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.x.axis path {  display: none; }
-.legend{
-    margin-bottom:76px;
-    display:inline-block;
-    border-collapse: collapse;
-    border-spacing: 0px;
-}
-.legend td{
-    padding:4px 5px;
-    vertical-align:bottom;
-}
-.legendFreq, .legendPerc{
-    align:right;
-    width:50px;
-}
-
-</style>
-<body>
-<div id='dashboard'>
-</div>
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script>
-function dashboard(id, fData){
+/**
+based on: http://bl.ocks.org/NPashaP/96447623ef4d342ee09b
+*/
+function drawDashboard(in_div, in_filename, in_attributes){
+	var attributes = in_attributes,
+		filename = in_filename,
+		div = in_div;
+		
+	//Function to draw Dashboard:
+	function draw(div,draw_data,attributes) {
+		console.log(div);
+		console.log(draw_data);
+		console.log(attributes);
     var barColor = 'steelblue';
-    function segColor(c){ return {low:"#807dba", mid:"#e08214",high:"#41ab5d"}[c]; }
-    
-    // compute total for each state.
-    fData.forEach(function(d){d.total=d.freq.low+d.freq.mid+d.freq.high;});
+
+	
+    function segColor(c){ 
+		var aa_data = {};
+		aa_data[attributes[1]] = "#807dba";
+		aa_data[attributes[2]] = "#e08214";
+		aa_data[attributes[3]] = "#41ab5d";
+		return aa_data[c];
+    }
+
+	// compute total for each data entry.
+    draw_data.forEach(function(d){d.total=parseInt(d.values_y[attributes[1]])+parseInt(d.values_y[attributes[2]])+parseInt(d.values_y[attributes[3]]);});
     
     // function to handle histogram.
     function histoGram(fD){
-        var hG={},    hGDim = {t: 60, r: 0, b: 30, l: 0};
-        hGDim.w = 500 - hGDim.l - hGDim.r, 
-        hGDim.h = 300 - hGDim.t - hGDim.b;
+        //var hG={},    hGDim = {t: 60, r: 0, b: 30, l: 0};
+		var hG={},    hGDim = {t: 30, r: 0, b: 200, l: 50};
+        hGDim.w = 700 - hGDim.l - hGDim.r, 
+        hGDim.h = 500 - hGDim.t - hGDim.b;
             
         //create svg for histogram.
-        var hGsvg = d3.select(id).append("svg")
+        var hGsvg = d3.select(div).append("svg")
             .attr("width", hGDim.w + hGDim.l + hGDim.r)
             .attr("height", hGDim.h + hGDim.t + hGDim.b).append("g")
             .attr("transform", "translate(" + hGDim.l + "," + hGDim.t + ")");
@@ -67,7 +45,13 @@ function dashboard(id, fData){
         // Add x-axis to the histogram svg.
         hGsvg.append("g").attr("class", "x axis")
             .attr("transform", "translate(0," + hGDim.h + ")")
-            .call(d3.svg.axis().scale(x).orient("bottom"));
+            .call(d3.svg.axis().scale(x).orient("bottom")) //;
+			//new:
+			.selectAll("text")
+			.style("text-anchor", "end")
+			.attr("dx", "-.8em")
+			.attr("dy", ".15em")
+			.attr("transform", "rotate(-50)");
 
         // Create function for y-axis map.
         var y = d3.scale.linear().range([hGDim.h, 0])
@@ -94,9 +78,9 @@ function dashboard(id, fData){
             .attr("text-anchor", "middle");
         
         function mouseover(d){  // utility function to be called on mouseover.
-            // filter for selected state.
-            var st = fData.filter(function(s){ return s.State == d[0];})[0],
-                nD = d3.keys(st.freq).map(function(s){ return {type:s, freq:st.freq[s]};});
+            // filter for selected value_x.
+            var st = draw_data.filter(function(s){ return s.value_x == d[0];})[0],
+                nD = d3.keys(st.values_y).map(function(s){ return {type:s, values_y:st.values_y[s]};});
                
             // call update functions of pie-chart and legend.    
             pC.update(nD);
@@ -133,11 +117,11 @@ function dashboard(id, fData){
     
     // function to handle pieChart.
     function pieChart(pD){
-        var pC ={},    pieDim ={w:250, h: 250};
+        var pC ={},    pieDim ={w:300, h: 300};
         pieDim.r = Math.min(pieDim.w, pieDim.h) / 2;
                 
         // create svg for pie chart.
-        var piesvg = d3.select(id).append("svg")
+        var piesvg = d3.select(div).append("svg").attr('class','pie')//;
             .attr("width", pieDim.w).attr("height", pieDim.h).append("g")
             .attr("transform", "translate("+pieDim.w/2+","+pieDim.h/2+")");
         
@@ -145,7 +129,7 @@ function dashboard(id, fData){
         var arc = d3.svg.arc().outerRadius(pieDim.r - 10).innerRadius(0);
 
         // create a function to compute the pie slice angles.
-        var pie = d3.layout.pie().sort(null).value(function(d) { return d.freq; });
+        var pie = d3.layout.pie().sort(null).value(function(d) { return d.values_y; });
 
         // Draw the pie slices.
         piesvg.selectAll("path").data(pie(pD)).enter().append("path").attr("d", arc)
@@ -161,14 +145,14 @@ function dashboard(id, fData){
         // Utility function to be called on mouseover a pie slice.
         function mouseover(d){
             // call the update function of histogram with new data.
-            hG.update(fData.map(function(v){ 
-                return [v.State,v.freq[d.data.type]];}),segColor(d.data.type));
+            hG.update(draw_data.map(function(v){ 
+                return [v.value_x,v.values_y[d.data.type]];}),segColor(d.data.type));
         }
         //Utility function to be called on mouseout a pie slice.
         function mouseout(d){
             // call the update function of histogram with all data.
-            hG.update(fData.map(function(v){
-                return [v.State,v.total];}), barColor);
+            hG.update(draw_data.map(function(v){
+                return [v.value_x,v.total];}), barColor);
         }
         // Animating the pie-slice requiring a custom function which specifies
         // how the intermediate paths should be drawn.
@@ -185,7 +169,7 @@ function dashboard(id, fData){
         var leg = {};
             
         // create table for legend.
-        var legend = d3.select(id).append("table").attr('class','legend');
+        var legend = d3.select(div).append("table").attr('class','legend');
         
         // create one row per segment.
         var tr = legend.append("tbody").selectAll("tr").data(lD).enter().append("tr");
@@ -200,7 +184,7 @@ function dashboard(id, fData){
 
         // create the third column for each segment.
         tr.append("td").attr("class",'legendFreq')
-            .text(function(d){ return d3.format(",")(d.freq);});
+            .text(function(d){ return d3.format(",")(d.values_y);});
 
         // create the fourth column for each segment.
         tr.append("td").attr("class",'legendPerc')
@@ -212,71 +196,55 @@ function dashboard(id, fData){
             var l = legend.select("tbody").selectAll("tr").data(nD);
 
             // update the frequencies.
-            l.select(".legendFreq").text(function(d){ return d3.format(",")(d.freq);});
+            l.select(".legendFreq").text(function(d){ return d3.format(",")(d.values_y);});
 
             // update the percentage column.
             l.select(".legendPerc").text(function(d){ return getLegend(d,nD);});        
         }
         
         function getLegend(d,aD){ // Utility function to compute percentage.
-            return d3.format("%")(d.freq/d3.sum(aD.map(function(v){ return v.freq; })));
+            return d3.format("%")(d.values_y/d3.sum(aD.map(function(v){ return v.values_y; })));
         }
 
         return leg;
     }
     
     // calculate total frequency by segment for all state.
-    var tF = ['low','mid','high'].map(function(d){ 
-        return {type:d, freq: d3.sum(fData.map(function(t){ return t.freq[d];}))}; 
+    var tF = [attributes[1],attributes[2],attributes[3]].map(function(d){ 
+        return {type:d, values_y: d3.sum(draw_data.map(function(t){ return t.values_y[d];}))}; 
     });    
     
     // calculate total frequency by state for all segment.
-    var sF = fData.map(function(d){return [d.State,d.total];});
+    var sF = draw_data.map(function(d){return [d.value_x,d.total];});
 
     var hG = histoGram(sF), // create the histogram.
         pC = pieChart(tF), // create the pie-chart.
         leg= legend(tF);  // create the legend.
-}
-</script>
-<script>
-var freqData=[
-{State:'AL',freq:{low:4786, mid:1319, high:249}}
-,{State:'AZ',freq:{low:1101, mid:412, high:674}}
-,{State:'CT',freq:{low:932, mid:2149, high:418}}
-,{State:'DE',freq:{low:832, mid:1152, high:1862}}
-,{State:'FL',freq:{low:4481, mid:3304, high:948}}
-,{State:'GA',freq:{low:1619, mid:167, high:1063}}
-,{State:'IA',freq:{low:1819, mid:247, high:1203}}
-,{State:'IL',freq:{low:4498, mid:3852, high:942}}
-,{State:'IN',freq:{low:797, mid:1849, high:1534}}
-,{State:'KS',freq:{low:162, mid:379, high:471}}
-];
-
-//d3.csv test:
-d3.csv(".../php/DEU_counties_statistics_php.csv", function(error, data) {
-  if (error) throw error;
-  
-  var list_data = [];
-  
-  var attributes = ["NAME_2", "AVG_MW_RL", "AVG_MW_BL", "AVG_MW_ODL"];
-  
-  data.forEach(function(d) {
-	var aa_data = {};	//associativeArray
-	var aa_values_y = {};
 	
-	for (i = 0; i<attributes.length; i++) {
-		if (i==0) {
-			aa_data["value_x"] = d[attributes[i]];
-		} else {
-			aa_values_y[attributes[i]] = d[attributes[i]];
-		}
-		aa_data["values_y"] = aa_values_y;
 	}
-	list_data.push(aa_data);
-  });
+	
+	d3.csv(filename, function(error, data) {
+		if (error) throw error;
   
- console.log(list_data);
- console.log(freqData);	
-});  
-dashboard('#dashboard',freqData);
-</script>
+		var list_data = [];
+  
+		//var attributes = ["NAME_2", "AVG_MW_RL", "AVG_MW_BL", "AVG_MW_ODL"];
+  
+		data.forEach(function(d) {
+			var aa_data = {};	//associativeArray
+			var aa_values_y = {};
+	
+			for (i = 0; i<attributes.length; i++) {
+				if (i==0) {
+					aa_data["value_x"] = d[attributes[i]];
+				} else {
+					aa_values_y[attributes[i]] = parseInt(d[attributes[i]]);
+				}
+				aa_data["values_y"] = aa_values_y;
+			}
+			list_data.push(aa_data);
+		});
+		draw(div,list_data,attributes);
+	});
+}
+
