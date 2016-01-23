@@ -93,7 +93,6 @@ Therefore start the PostGIS Shapefile Import/Export Manager and import the follo
 Change the SRID to 4326 and then you can start importing the shapefiles.
 Now the shapefiles are imported to the database and are displayed as tables.
 
-
 -	Geoserver 2.8.1
 
 Install Geoserver and if possible use 8080 as the port, otherwise you would need to change it in the "\js\viz.js" file where all the OpenLayers and Geoserver settings
