@@ -1,0 +1,26 @@
+<layer>
+  <name>raumluft_4326</name>
+  <id>LayerInfoImpl-33e4aab7:15236747c6a:-7ff3</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--570ae188:124761b8d78:-7fdf</id>
+  </defaultStyle>
+  <styles class="linked-hash-set">
+    <style>
+      <id>StyleInfoImpl--570ae188:124761b8d78:-7fdf</id>
+    </style>
+    <style>
+      <id>StyleInfoImpl--d59d0c3:15265131273:-7d84</id>
+    </style>
+    <style>
+      <id>StyleInfoImpl-5427b6d7:1523703055b:-7ffa</id>
+    </style>
+  </styles>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-33e4aab7:15236747c6a:-7ff4</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+</layer>

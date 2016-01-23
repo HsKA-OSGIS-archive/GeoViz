@@ -1,0 +1,20 @@
+<layer>
+  <name>raumluft_4326_grid_combined</name>
+  <id>LayerInfoImpl-24f13134:15236dab81b:-7ff9</id>
+  <type>RASTER</type>
+  <defaultStyle>
+    <id>StyleInfoImpl--570ae188:124761b8d78:-7fe2</id>
+  </defaultStyle>
+  <styles class="linked-hash-set">
+    <style>
+      <id>StyleInfoImpl-24f13134:15236dab81b:-7ff8</id>
+    </style>
+  </styles>
+  <resource class="coverage">
+    <id>CoverageInfoImpl-24f13134:15236dab81b:-7ffa</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+</layer>

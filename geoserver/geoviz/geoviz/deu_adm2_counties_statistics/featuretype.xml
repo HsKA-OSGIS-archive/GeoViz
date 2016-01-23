@@ -1,0 +1,46 @@
+<featureType>
+  <id>FeatureTypeInfoImpl-33e4aab7:15236747c6a:-7ffd</id>
+  <name>deu_adm2_counties_statistics</name>
+  <nativeName>deu_adm2_counties_statistics</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl--2f946fda:1523028e050:-7ffe</id>
+  </namespace>
+  <title>deu_adm2_counties_statistics</title>
+  <keywords>
+    <string>deu_adm2_counties_statistics</string>
+    <string>features</string>
+  </keywords>
+  <srs>EPSG:4326</srs>
+  <nativeBoundingBox>
+    <minx>11.5250616073608</minx>
+    <maxx>12.6620655059814</maxx>
+    <miny>49.3506469726563</miny>
+    <maxy>50.3767127990723</maxy>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>11.5250616073608</minx>
+    <maxx>12.6620655059814</maxx>
+    <miny>49.3506469726563</miny>
+    <maxy>50.3767127990723</maxy>
+    <crs>GEOGCS[&quot;WGS84(DD)&quot;, &#xd;
+  DATUM[&quot;WGS84&quot;, &#xd;
+    SPHEROID[&quot;WGS84&quot;, 6378137.0, 298.257223563]], &#xd;
+  PRIMEM[&quot;Greenwich&quot;, 0.0], &#xd;
+  UNIT[&quot;degree&quot;, 0.017453292519943295], &#xd;
+  AXIS[&quot;Geodetic longitude&quot;, EAST], &#xd;
+  AXIS[&quot;Geodetic latitude&quot;, NORTH]]</crs>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <metadata>
+    <entry key="cachingEnabled">false</entry>
+  </metadata>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl--2f946fda:1523028e050:-7ffd</id>
+  </store>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+  <overridingServiceSRS>false</overridingServiceSRS>
+  <skipNumberMatched>false</skipNumberMatched>
+  <circularArcPresent>false</circularArcPresent>
+</featureType>

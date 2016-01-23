@@ -1,0 +1,46 @@
+<featureType>
+  <id>FeatureTypeInfoImpl-33e4aab7:15236747c6a:-8000</id>
+  <name>bodenluft_4326</name>
+  <nativeName>bodenluft_4326</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl--2f946fda:1523028e050:-7ffe</id>
+  </namespace>
+  <title>bodenluft_4326</title>
+  <keywords>
+    <string>bodenluft_4326</string>
+    <string>features</string>
+  </keywords>
+  <srs>EPSG:4326</srs>
+  <nativeBoundingBox>
+    <minx>11.6082859039307</minx>
+    <maxx>12.5727205276489</maxx>
+    <miny>49.4478569030762</miny>
+    <maxy>50.2500839233398</maxy>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>11.6082859039307</minx>
+    <maxx>12.5727205276489</maxx>
+    <miny>49.4478569030762</miny>
+    <maxy>50.2500839233398</maxy>
+    <crs>GEOGCS[&quot;WGS84(DD)&quot;, &#xd;
+  DATUM[&quot;WGS84&quot;, &#xd;
+    SPHEROID[&quot;WGS84&quot;, 6378137.0, 298.257223563]], &#xd;
+  PRIMEM[&quot;Greenwich&quot;, 0.0], &#xd;
+  UNIT[&quot;degree&quot;, 0.017453292519943295], &#xd;
+  AXIS[&quot;Geodetic longitude&quot;, EAST], &#xd;
+  AXIS[&quot;Geodetic latitude&quot;, NORTH]]</crs>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <metadata>
+    <entry key="cachingEnabled">false</entry>
+  </metadata>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl--2f946fda:1523028e050:-7ffd</id>
+  </store>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+  <overridingServiceSRS>false</overridingServiceSRS>
+  <skipNumberMatched>false</skipNumberMatched>
+  <circularArcPresent>false</circularArcPresent>
+</featureType>

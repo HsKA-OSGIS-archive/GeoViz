@@ -1,0 +1,12 @@
+<coverageStore>
+  <id>CoverageStoreInfoImpl-150e9ef9:15236cf2727:-8000</id>
+  <name>geoviz_grid_bodenluft</name>
+  <description>Grid for Bfs Bodenluft measurements</description>
+  <type>GeoTIFF</type>
+  <enabled>true</enabled>
+  <workspace>
+    <id>WorkspaceInfoImpl--2f946fda:1523028e050:-7fff</id>
+  </workspace>
+  <__default>false</__default>
+  <url>file://D:\Program Files\Apache Software Foundation\Tomcat 8.0\webapps\GeoViz\data\processed_data\bfs\bodenluft_4326_int_grid.tiff</url>
+</coverageStore>
