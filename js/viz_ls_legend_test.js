@@ -223,6 +223,8 @@ function layerSelection(id_clicked_label) {
 }
 
 //############### Print functionality: ###############//
+//with a little help of our friends @GCK: https://github.com/HsKA-OSGIS/GCK
+
 $('#print_image').on('click', function() {print(view)});
 
 
