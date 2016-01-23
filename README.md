@@ -105,6 +105,7 @@ Again, if you are using different PostGIS settings, you probably need to skip th
 In the folder "\geoserver" of this repository there is the folder of this projects' workspace.
 Copy it to "data_dir\workspace" of your Geoserver.
 After that you only have to make three changes by hand to the "coveragestore.xml" file of the three stores for the corresponding grids.
+They are stored inside the folders of the different stores "data\geoviz\".
 Inside these files you have to fix the <url>-tag which stores the filepath of the tiff-files.
 
 When you now start Geoserver you should be able to see the following additions:
