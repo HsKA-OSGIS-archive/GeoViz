@@ -36,52 +36,113 @@ All datasets used in this project were derived from the following sources:
 
 # Strucutre of project folders:
 
-- css:		contains all necessary css-files
-- fonts:	contains all necessary fonts
-- html:		contains all necessary html-files
-- img:		contains all necessary image-files, e.g. for the GUI
-- js:		contains all necessary javascript-files,
-			e.g. charts as well as OpenLayers implementation
-- lib:		contains all additional javascript libraries used
-- php:		contains the csv-files with the latest datasets for the charts
-			as well as the php-file that creates them
-- WEB-INF:	contains Quercus files to use PHP
+- css:				contains all necessary css-files
+- fonts:			contains all necessary fonts
+- geoserver:		workspace-folder for Geoserver
+- html:				contains all necessary html-files
+- img:				contains all necessary image-files, e.g. for the GUI
+- js:				contains all necessary javascript-files,
+					e.g. charts as well as OpenLayers implementation
+- lib:				contains all additional javascript libraries used
+- php:				contains the csv-files with the latest datasets for the charts
+					as well as the php-file that creates them
+- printing_plugin:	data for the installation of the printing plugin
+- WEB-INF:			contains Quercus files to use PHP
 
 # Installation Procedure:
 
-1.PostgreSQL 9.5
+-	PostgreSQL 9.5 with pgAdmin III
 
 Download and install PostgreSQL 9.5 for windows.
 The package includes pgAdmin III and PostGIS 2.0 shapefile and DBF loader exporter.
 Install the required extensions.
 
-2. In pgAdmin III create a database
+In pgAdmin III irst create a database with the following settings.
 
 - Name:		geoviz
 - Port:		5432
 - User:		postgres
 - Password:	user
 
-3. In PostGIS shapefile import/export manager 
+After you created the database add the extension PostGIS.
+The next step is to add the needed tables. There are two ways of doing that:
 
-Connect to the database by PostGIS Connection and fill the name, password, port and database name.
-Now the database is connected.
-Add the files from the folder, the shapefile is shown in the import list.
-You can give the SRID as 4326. Then import the shapefiles.
-Now the shapefiles are imported to database geoviz.
-Moreover in the folder "data\processed_data" there are two backup-files (both contain the same data, just different formats) that can also be used to "restore" the shapefiles.
-Hence a manual import is hopefully not necessary.
+Restoring the data automatically:
 
-4. Geoserver 2.8.1
+However, if you are using an other User/Password combination it might lead to problems when trying to use our backup file.
+You can restore our database by right-clicking it and choosing "Restore".
+In the folder "data\processed_data" there are two backup-files (both contain the same data, just different formats) that you can now choose from.
+After successfully restoring the database you should have 7 tables:
+-	bodenluft_4326
+-	deu_adm2_counties_statistics
+-	odl_4326
+-	pointcloud_formats
+-	project_area_4326
+-	raumluft_4326
+-	spatial_ref_sys
 
-Install Geoserver for windows and start geoserver.
-Run it as http://localhost:8080/geoserver/ in a web browser.
-User name as admin and password as geoserver for login into the geoserver.
-After the shapefiles are imported to the database, they should be published in Geoserver.
-Now a workspace is created 'geoviz' and in 'stores' the workspace is connected to the database (PostGIS database) by giving the database information.
-The layers from the database are now available in geoserver.
-The layers are published with publish button with respective feature types. During publishing the coordinate reference system is defined to EPSG:4326. 
-The styling is also given for the different features. The corresponding sld-files are stored in the "sld" folder of this project!
+Adding the tables manually:
+
+If there are errors during the restore process, you might have to add the tables / shapefiles manually.
+Therefore start the PostGIS Shapefile Import/Export Manager and import the following shapefiles stored in the "\processed_data"-folder:
+-	bodenluft_4326_attributes_total.shp				(bfs)
+-	odl_4326_attributes_total.shp					(bfs)
+-	project_area_4326.shp							(bfs)
+-	raumluft_4326_statistics_attributes_total.shp	(bfs)
+-	DEU_adm2_pa_clip_total_statistics_fixed.shp		(adm)
+Change the SRID to 4326 and then you can start importing the shapefiles.
+Now the shapefiles are imported to the database and are displayed as tables.
+
+
+-	Geoserver 2.8.1
+
+Install Geoserver and if possible use 8080 as the port, otherwise you would need to change it in the "\js\viz.js" file where all the OpenLayers and Geoserver settings
+are done.
+To be able to display our datasets there are again two possibilities.
+
+Adding the data (workspace, stores, layers and styles) automatically:
+
+Again, if you are using different PostGIS settings, you probably need to skip this part and do it by hand.
+In the folder "\geoserver" of this repository there is the folder of this projects' workspace.
+Copy it to "data_dir\workspace" of your Geoserver.
+After that you only have to make three changes by hand to the "coveragestore.xml" file of the three stores for the corresponding grids.
+Inside these files you have to fix the <url>-tag which stores the filepath of the tiff-files.
+
+When you now start Geoserver you should be able to see the following additions:
+-	1 Workspace:	geoviz
+
+-	4 Stores:		geoviz					PostGIS
+					geoviz_grid_bodenluft 	GeoTIFF
+					geoviz_grid_odl			GeoTIFF
+					geoviz_grid_raumluft	GeoTIFF
+					
+-	8 Layers:		bodenluft_4326
+					deu_adm2_counties_statistics
+					odl_4326
+					project_area_4326
+					raumluft_4326
+					bodenluft_4326_grid
+					odl_4326_grid
+					raumluft_4326_grid_combined
+			
+-	10 Styles:		geoviz_grid_bodenluft
+					geoviz_grid_odl
+					geoviz_grid_raumluft
+					geoviz_point_bodenluft / _gradient
+					geoviz_point_odl / _gradient
+					geoviz_point_raumluft / _gradient
+					geoviz_polygon_project_area
+
+If there are problems displaying the layers, you might have to manually add the styles to the layers (Layers -> click on layer -> publishing -> add styles).
+
+Adding the data manually:
+
+At first a workspace is created called "geoviz".
+After that you need to create the four stores inside the workspace "geoviz" (1 PostGIS, 4 GeoTIFF, see above!).
+The layers from the database are now available in Geoserver.
+Additionally, you can add the styles for the layers that are stored inside the folder "geoserver\geoviz\styles".
+Now everything should be set to publish the different layers.
+During publishing process the coordinate reference system is defined to EPSG:4326 as well as the corresponding styles are chosen.
 
 Additionally, we are using the Geoserver printing plugin to be able to create PDF-files of our web map.
 Therefore, you have to extract the zip-file in the "printing_plugin" folder into the "webapps\geoserver\WEB-INF\lib" of your Geoserver folder.
@@ -89,12 +150,11 @@ When you run Geoserver for the first time, e.g. by starting your local server, t
 If this is successful, you will find the file "config.yaml" in the folder "data_dir\printing" of Geoserver.
 This means that you now can you the plugin. If this is not the case, please use the available online documentation.
 
-5. Apache Tomcat 9.0
+-	Apache Tomcat 9.0
 
-Install the Apache Tomcat for windows and start it.
-All the files are stored in the Apache Tomcat and executed from the localhost.
+Moreover, we used Apache Tomcat as a the webserver for this project since this is the recommended application server (http://docs.geoserver.org/stable/en/user/installation/war.html).
 
-6. Quercus 4.0.39
+-	Quercus 4.0.39
 
 To be able to use php with Apache Tomcat we decided to use a Java implementation of PHP5 called Quercus.
 The latest version can be downloaded here: http://quercus.caucho.com/ and is released under the Open Source GPL license.
