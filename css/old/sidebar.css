@@ -77,12 +77,6 @@ footer a:hover {
     position: fixed;
     color: black;
     padding: 30px;
-    padding-top: 20px;
     font-size: 2em;
     text-align: center;
-}
-
-.finder {
-    border-width:0px;
-    border: none !important;
 }
