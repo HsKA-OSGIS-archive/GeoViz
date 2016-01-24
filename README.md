@@ -39,7 +39,7 @@ All datasets used in this project were derived from the following sources:
 -	Radon measurements by Federal Office for Radiation Protection - http://www.bfs.de/EN/home/home_node.html
 -	OSM Basemap - OpenStreetMap Tile Server - ODbl
 
-# Strucutre of project folders:
+# Structure of project folders:
 
 |Folder name | Description |
 |:------------|:-------------|
