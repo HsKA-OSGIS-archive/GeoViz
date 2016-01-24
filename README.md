@@ -7,7 +7,12 @@ done by the virtual Company GeoViz Ltd. at the University of Applied Sciences Ka
 # About:
 
 The objective of this project is to visualize radon measurements in parts of Germany in a web application. Different measurements of radon over the study area can be spatially analysed, compared and visualized. This gives an overview of radon measurements in basements and inside houses and can also be studied further with different factors influencing the radon gas, for example "rock type" (=petrograph).  
-In addition to the "classic" web application where the user can choose between different layers, it is also possible to display further statistical information about the visualized datasets. These charts are created using d3 and are displayed in different modal windows.
+In addition to the "classic" web application where the user can choose between different layers, it is also possible to display further statistical information about the visualized datasets. These charts are created using d3 and are displayed in a modal window.
+
+When we created the functions for the creation of the charts, we tried to get them as generalized as possible.
+This means that you can take these functions and use them to create your own d3 visualizations.
+Therefore you do not even need to understand how d3 works.
+At the beginning of each script there is a list with descriptions and explanations of all necessary arguments that are needed to run these functions.
 
 # Authors:
 
@@ -100,6 +105,7 @@ Therefore start the PostGIS Shapefile Import/Export Manager and import the follo
 Change the SRID to 4326 and then you can start importing the shapefiles.
 Now the shapefiles are imported to the database and are displayed as tables.
 
+
 -	Geoserver 2.8.1
 
 Install Geoserver and if possible use 8080 as the port, otherwise you would need to change it in the "\js\viz.js" file where all the OpenLayers and Geoserver settings
@@ -141,9 +147,11 @@ When you run Geoserver for the first time, e.g. by starting your local server, t
 If this is successful, you will find the file "config.yaml" in the folder "data_dir\printing" of Geoserver.
 This means that you now can you the plugin. If this is not the case, please use the available online documentation.
 
+
 -	Apache Tomcat 9.0
 
 Moreover, we used Apache Tomcat as a the webserver for this project since this is the recommended application server (http://docs.geoserver.org/stable/en/user/installation/war.html).
+
 
 -	Quercus 4.0.39
 
@@ -208,7 +216,7 @@ b) Add the following lines to the web.xml file in the \conf\ folder of Apache To
     <welcome-file>index.php</welcome-file>
   </welcome-file-list>
   
-c) Uncommend these two extensions in the file "php.ini" in the folder of your php-installation, e.g. in the folder EnterpriseDB-ApachePHP that comes with PostgreSQL:
+c) Uncomment these two extensions in the file "php.ini" in the folder of your php-installation, e.g. in the folder EnterpriseDB-ApachePHP that comes with PostgreSQL:
 extension=php_pdo_pgsql.dll
 extension=php_pgsql.dll
 
@@ -217,6 +225,7 @@ This way the different charts are always up-to-date.
 
 Hint: 	You could also use the OSGeo-Live 9.0 that can be downloaded here:http://live.osgeo.org/de/
 		In this case you would only need to install Quercus.
+		
 
 # External libraries:
 

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Bodenluft Charts</title>
+<title>Dashboard Charts</title>
 <link rel="stylesheet" 
           href="../css/style_charts.css" 
           type="text/css">
@@ -15,7 +15,7 @@
 	<!--script to load asynchronous JavaScript, otherwise DOM is not ready when the script is loaded-->
     <script language="javascript" type="text/javascript">
       function loadScriptAfter() {
-        drawDashboard("#dashboard", "../php/Geo_petrograph_statistics_total_php.csv", ["PETROGRAPH","RL_AVG_KE","RL_AVG_EG","RL_AVG_1G"]);
+        drawDashboard("#dashboard", "../php/Geo_petrograph_statistics_total_php.csv", ["PETROGRAPH","RL_AVG_KE","RL_AVG_EG","RL_AVG_1G"],["#98abc5","#6b486b", "#ff8c00"]);
 	}
       if (window.addEventListener) {
         window.addEventListener("load", loadScriptAfter);
