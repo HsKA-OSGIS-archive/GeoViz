@@ -238,4 +238,4 @@ Hint: 	You could also use the OSGeo-Live 9.0 that can be downloaded here:http://
 -	d3.js
 
 # License:
-Please refer the License file
+Please refer to the license file
