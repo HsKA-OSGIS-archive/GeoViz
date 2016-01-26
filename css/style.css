@@ -93,6 +93,10 @@ html {
 	width: auto;
 }
 
+.left {
+	text-align: left;
+}
+
 /*############### IDs ###############*/
 
 #basic_controls {
