@@ -232,10 +232,10 @@ Hint: 	You could also use the OSGeo-Live 9.0 that can be downloaded here:http://
 
 # External libraries:
 
--	JqueryUI
+-	jQueryUI
 -	BootStrap
 -	OpenLayers 3.0
--	D3.JS
+-	d3.js
 
 # License:
 Please refer the License file
