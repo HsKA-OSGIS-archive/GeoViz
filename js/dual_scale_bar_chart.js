@@ -30,6 +30,8 @@ y_axis_annotation:
 array of string for the annotation of the y-Axis,
 first entry: left bar = left y-Axis, second entry: right bar = right y-Axis
 in this case e.g. ["Average Value 1 [m]", "Average Value 2 [km]"]
+
+based on, but enhanced: https://github.com/liufly/Dual-scale-D3-Bar-Chart 
 **/
 function drawDualScaleBarChart(div,filename,attributes,attributes_tooltip,domain,y_axis_annotation) {
 	

@@ -1,17 +1,8 @@
-<!--######################### place for notes ############################
-
-here you can put notes. for the release candidate this will be deleted
-
-please use tabs to structre the code properly! so you can easily find out which element contains which element
-
-the stuff within the accordion has to be sortet!
-
-
+<!--######################### Notes about index.html: ############################
 Source of the examples
 Open Layers: http://openlayers.org/en/v3.5.0/examples/custom-controls.html
 Sidebar: http://jillix.github.io/jQuery-sidebar/
 Modal window: http://getbootstrap.com/javascript/
-
 ###########################################################################-->
 
 <!DOCTYPE html>
@@ -44,8 +35,8 @@ Modal window: http://getbootstrap.com/javascript/
       <!-- Sidebar -->
       <link href="./css/sidebar.css" 
             rel="stylesheet">
-      <script src="./js/jquery.sidebar.js"></script>
-      <script src="./js/handlers.js"></script>
+      <script src="./lib/jquery.sidebar.js"></script>
+      <script src="./lib/handlers.js"></script>
 
       <!-- D3 -->
       <script src="./lib/d3.min.js" charset="utf-8"></script>
@@ -67,7 +58,7 @@ Modal window: http://getbootstrap.com/javascript/
       <script src="./js/dual_scale_bar_chart.js"></script>
       <script src="./js/sortable_bar_chart.js"></script>
       <script src="./js/dashboard.js"></script>
-      <script src="./js/chart_ivoker.js"></script>
+      <script src="./js/chart_invoker.js"></script>
     
     <!-- the own js files is loaded on the bottom of the file -->
     <!-- own CSS -->
@@ -613,7 +604,7 @@ Modal window: http://getbootstrap.com/javascript/
     <script language="javascript" type="text/javascript">
       function loadScriptAfter() {
         var script = document.createElement("script");
-        script.src = "./js/viz_ls_legend_test.js";
+        script.src = "./js/viz.js";
         document.body.appendChild(script);
       }
 

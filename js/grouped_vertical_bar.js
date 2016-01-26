@@ -28,10 +28,10 @@ e.g. ["#98abc5","#6b486b", "#ff8c00"]
 y_axis_annotation:
 string for the annotation of the y-Axis,
 in this case e.g. "Average length [m]"
+
+based on, but enhanced: http://bl.ocks.org/mbostock/3887051
 **/
 function drawGroupedVerticalBar(div,filename,attributes,attributes_tooltip,range,y_axis_annotation) {
-/*div = div to append svg to, filename = csv-file with data to visualize, attributes = array with attribute names (fields in csv), range = colors for bars
-div,filenames,attribute_choropleth,attributes_tooltip,domain,range*/
 	
 var margin = {top: 40, right: 50, bottom: 225, left: 50},
     width = 1024 - margin.left - margin.right,
@@ -97,8 +97,7 @@ d3.csv(filename, function(error, data) {
   svg.append("g")
 	  .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
-      .call(xAxis) //;
-	  //new:
+      .call(xAxis)
 	  .selectAll("text")
       .style("text-anchor", "end")
       .attr("dx", "-.8em")
@@ -118,7 +117,6 @@ d3.csv(filename, function(error, data) {
   var chart = svg.selectAll(".chart")
       .data(data)
     .enter().append("g")
-      //.attr("class", "chart")
 	  .attr("class", "g")
       .attr("transform", function(d) { console.log(d[attributes[0]]); return "translate(" + x0(d[attributes[0]]) + ",0)"; });
 
@@ -129,8 +127,7 @@ d3.csv(filename, function(error, data) {
       .attr("x", function(d) { return x1(d.name); })
       .attr("y", function(d) { return y(d.value); })
       .attr("height", function(d) { return height - y(d.value); })
-      .style("fill", function(d) { return color(d.name); }) //;
-	  //new tooltip:
+      .style("fill", function(d) { return color(d.name); })
       .on('mouseover', tip.show)										// event for tooltip
       .on('mouseout', tip.hide);										// event for tooltip
 

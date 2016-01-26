@@ -21,6 +21,15 @@ html {
     width: 100%;
 }
 
+.rotate-north {
+ 	top: 65px;
+	left: .5em;
+}
+
+.ol-touch .rotate-north {
+  	top: 80px;
+}
+
 .sidebar.left {
     width: 350px;
 }
@@ -83,21 +92,6 @@ html {
 .modal-content {
 	width: auto;
 }
-
-.modal-content {
-    position: relative;
-    overflow-y: auto;
-    max-height: 1200px;
-	max-width: 1200px;
-    padding: 15px;
-}
-
-/*.modal-body {
-    position: relative;
-    overflow-y: auto;
-    max-height: 1000px;
-    padding: 15px;
-}*/
 
 .left {
 	text-align: left;

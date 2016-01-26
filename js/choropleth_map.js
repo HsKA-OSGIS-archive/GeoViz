@@ -167,10 +167,7 @@ function drawChoroplethMap(div,filenames,attributes_topojson,attribute_choroplet
 				var format = d3.format("0.2f");
 				return format(+extent[0]) + " - " + format(+extent[1]);
 			});
-    
-      
-    
-	
+    	
 	d3.csv(filenames[2], function(point_data) {
       var points = svg.selectAll('circle').data(point_data);
 
@@ -181,7 +178,6 @@ function drawChoroplethMap(div,filenames,attributes_topojson,attribute_choroplet
           .attr('r', 4)
           .attr('fill', 'steelblue')
 		  .attr('stroke', 'black')
-		  //new tooltip:
 		  .on('mouseover', tip.show)			// event for tooltip
 		  .on('mouseout', tip.hide);			// event for tooltip  
     

@@ -28,6 +28,8 @@ e.g. ["#98abc5","#6b486b", "#ff8c00"]
 y_axis_annotation:
 string for the annotation of the y-Axis,
 in this case e.g. "Average length [m]"
+
+based on, but enhanced: http://bl.ocks.org/mbostock/3886208
 **/
 function drawStackedVerticalBar(div,filename,attributes,attributes_tooltip,range,y_axis_annotation) {
 var margin = {top: 50, right: 20, bottom: 350, left: 125},
@@ -57,19 +59,6 @@ var tip = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-	/*var name = "";
-	var measurement = Math.round(d.y1-d.y0);		//explanation: look below!
-	if (d.name == "rl_eg") {
-		name = "<strong>Avg. msrmnt. on ground floor</strong>";
-	}
-	if (d.name == "rl_1g") {
-		name = "<strong>Avg. msrmnt. on first floor</strong>";
-	}
-	if (d.name == "rl_ke") {
-		name = "<strong>Avg. msrmnt. in basement</strong>";
-	}
-    return "<strong>Floor </strong>" + d.name name +  "<strong>: </strong><span style='color:red'>" + d.y0 + "</span>";
-	return name +  "<strong>: </strong><span style='color:red'>" + measurement + "</span>";*/
 	var measurement = Math.round(d.y1-d.y0);		//explanation: look below!
 	var type = "";
 		var unit = "";
@@ -80,10 +69,6 @@ var tip = d3.tip()
 				unit = array_type[2];					//-> unit = "Bq m-3"
 			}
 		}
-		
-		/*console.log(type);
-		console.log(unit);
-		return d.name + ": " + d.value;  });*/
 		return type + ": " + measurement + " " + unit; });
 
 var svg = d3.select(div).append("svg")
@@ -150,8 +135,7 @@ d3.csv(filename, function(error, data) {
       .attr("width", x.rangeBand())
       .attr("y", function(d) { return y(d.y1); })
       .attr("height", function(d) { return y(d.y0) - y(d.y1); })
-      .style("fill", function(d) { return color(d.name); }) //;
-	  //new tooltip:
+      .style("fill", function(d) { return color(d.name); })
       .on('mouseover', tip.show)										// event for tooltip
       .on('mouseout', tip.hide);										// event for tooltip
 
@@ -172,18 +156,7 @@ d3.csv(filename, function(error, data) {
       .attr("y", 9)
       .attr("dy", ".35em")
       .style("text-anchor", "end")
-      .text(function(d) { 
-	    /*var name = "";
-		if (d == "rl_ke") {
-			name = "Msrmnt. in basement";
-		}
-		if (d == "rl_1g") {
-			name = "Msrmnt. on first floor";
-		}
-		if (d == "rl_eg") {
-			name = "Msrmnt. on ground floor";
-		}
-		return name; */
+      .text(function(d) {
 		return d;});
 });
 }

@@ -18,6 +18,7 @@
 <script src="../js/stacked_vertical_bar.js"></script>
 <script src="../js/dual_scale_bar_chart.js"></script>
 <script src="../js/sortable_bar_chart.js"></script>
+<script src="../js/dashboard.js"></script>
 </head>
 <body>
 	<!--Define buttons and div for d3 chart-->
@@ -25,18 +26,20 @@
 	<button id="button_grouped" onClick="updateData(this.id)">Grouped (AVG)</button>
 	<button id="button_dual" onClick="updateData(this.id)">Dual Scale (RL / BL)</button>
 	<button id="button_sortable" onClick="updateData(this.id)">Sortable Bar</button>
+	<button id="button_dashboard" onClick="updateData(this.id)">Dashboard</button>
 	
 	<div id="choropleth" visibility:"hidden"></div>
 	<div id="grouped"></div>
 	<div id="dual_scale"></div>
 	<div id="sortable_bar"></div>
+	<div id="dashboard"></div>
 	<label id="label_checkbox"><input type="checkbox" id="checkbox">Sort values</label>
 	
 	<!--Define variable to control the type of the drawn chart-->
 	<script>
 	
 		//Array to realize changing of visualizations with buttons consisting of button-id as well as div-id:
-		var arrayChartsData = [['button_choro', 'choropleth'],['button_grouped','grouped'],['button_dual','dual_scale'],['button_sortable','sortable_bar']];
+		var arrayChartsData = [['button_choro', 'choropleth'],['button_grouped','grouped'],['button_dual','dual_scale'],['button_sortable','sortable_bar'],['button_dashboard','dashboard']];
 		
 		//Choropleth:
 		var 	choro_div = "#choropleth",
@@ -69,44 +72,39 @@
 			sortable_attributes = ["NAME_2", "AVG_MW_BL"],
 			sortable_attributes_tooltip = ["average value in bottom air", "kBq m-3"],
 			sortable_y_axis_annotation = "Average Radon msrmnt. in bottom air [kBq m-3]";
+			
+		//Dashboard:
+		var dashboard_div = "#dashboard",
+			dashboard_filename = "../php/DEU_counties_statistics_php.csv",
+			dashboard_attributes = ["ID_2", "AVG_MW_RL", "AVG_MW_BL", "AVG_MW_ODL"],
+			dashboard_colors = ["#98abc5","#6b486b", "#ff8c00"];
 	</script>
 	
 	<!--script to load asynchronous JavaScript, otherwise DOM is not ready when the script is loaded-->
     <script language="javascript" type="text/javascript">
       function loadScriptAfter() {
-        /*var script = document.getElementById("diagram");
-        script.src = "GeoViz_local/js/stacked_vertical_bar.js";
-        document.body.appendChild(script);*/
 		
 		drawChoroplethMap(choro_div,choro_filenames,choro_attributes_topojson,choro_attribute_choropleth,choro_attributes_tooltip,choro_domain,choro_range);
 		drawGroupedVerticalBar(grouped_div,grouped_filename,grouped_attributes,grouped_attributes_tooltip,grouped_range,grouped_y_axis_annotation);
 		drawDualScaleBarChart(dual_div,dual_filename,dual_attributes,dual_attributes_tooltip,dual_domain,dual_y_axis_annotation);
 		drawSortableBarChart(sortable_div,sortable_filename,sortable_attributes,sortable_attributes_tooltip,sortable_y_axis_annotation);
-		
-		/*$('#choropleth').hide();
-		$('#grouped').hide();
-		$('#stacked').hide();
-		$('#dual_scale').hide();
-		$('#sortable_bar').hide();*/
+		drawDashboard(dashboard_div, dashboard_filename, dashboard_attributes, dashboard_colors);		
+	
 		//button settings when loading the page:
 		document.getElementById('button_choro').disabled = true; 
 		document.getElementById('button_grouped').disabled = false;
 		document.getElementById('button_dual').disabled = false; 
 		document.getElementById('button_sortable').disabled = false; 
-		document.getElementById('label_checkbox').style.visibility="hidden"; 
-		//$(document.getElementById('label_checkbox')).hidden();
+		document.getElementById('button_dashboard').disabled = false; 
+		document.getElementById('label_checkbox').style.visibility="hidden";
 		document.getElementById('checkbox').checked = false;
 		
 		//div display settings when loading the page:
-		/*document.getElementById('choropleth').style.display = true; 	
-		document.getElementById('grouped').style.display = false; 
-		document.getElementById('stacked').style.display = false; 
-		document.getElementById('dual_scale').style.display = false; 
-		document.getElementById('sortable_bar').style.display = false; */
 		$(document.getElementById('choropleth')).show();
 		$(document.getElementById('grouped')).hide();
 		$(document.getElementById('dual_scale')).hide();
 		$(document.getElementById('sortable_bar')).hide();
+		$(document.getElementById('dashboard')).hide();
       }
 
       if (window.addEventListener) {
@@ -138,7 +136,6 @@
 				//Enable other buttons:
 				document.getElementById(singleChartArray[0]).disabled = false;
 				//Disable display of div:
-				//document.getElementById(singleChartArray[1]).style.display = false;
 				$(document.getElementById(singleChartArray[1])).hide();
 				if (clicked_buttonid != "button_sortable") {
 					document.getElementById('label_checkbox').style.visibility="hidden"; 
