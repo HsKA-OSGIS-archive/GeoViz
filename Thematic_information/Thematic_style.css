@@ -1,0 +1,232 @@
+/*############### HTML5 Elements ###############*/
+
+dd { 
+	display:none; 
+    font-size: .45em;
+}
+
+dt {
+    font-size: .5em;
+}
+
+html { 
+	overflow-y: hidden; 
+}
+/* added text alignment*/
+div {
+text-align: justify;
+text-justify: inter-word;
+}
+
+/*############### Classes ###############*/
+
+.map {
+    height: 70%;
+    width: 100%;
+}
+
+.rotate-north {
+ 	top: 65px;
+	left: .5em;
+}
+
+.ol-touch .rotate-north {
+  	top: 80px;
+}
+
+.sidebar.left {
+    width: 350px;
+}
+
+.closed { 
+	background:red;
+}
+
+.open {
+	background:green;
+}
+
+.search_bar {
+	width: 100%;
+	font-size: .5em;
+	height: 30px;
+}
+
+.search_bar_2 {
+	width: 160px;
+	font-size: 1em;
+	height: 30px;
+}
+
+.layer {
+	font-size: .9em;
+	width: 100%;
+}
+
+.layer_name {
+	float: left;
+	width: 270px;
+}
+
+.prop_button {
+	float: right;
+}
+
+.btn {
+	background-color: none;
+}
+
+.move_it {
+	float: left;
+	padding-right: 100px;
+}
+
+.modal-content {
+	padding: 10px;
+}
+
+.modal fade bs-example-modal-lg {
+	width: auto;
+}
+
+.modal-dialog modal-lg {
+	width: auto;
+}
+
+.moda-content {
+	width: auto;
+}
+/* thematic information*/
+/*Modal Window*/
+.modalDialog {
+    position: fixed;
+    font-family: Arial, Helvetica, sans-serif;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 99999;
+    opacity:0;
+    -webkit-transition: opacity 400ms ease-in;
+    -moz-transition: opacity 400ms ease-in;
+    transition: opacity 400ms ease-in;
+    pointer-events: none;
+}
+.modalDialog:target {
+    opacity:1;
+    pointer-events: auto;
+}
+.modalDialog > div {
+    width: 400px;
+	height: 500px;
+    position: relative;
+    margin: 10% auto;
+    padding: 5px 20px 13px 20px;
+    border-radius: 10px;
+    background: #fff;
+    background: -moz-linear-gradient(#fff, #999);
+    background: -webkit-linear-gradient(#fff, #999);
+    background: -o-linear-gradient(#fff, #999);*/
+}
+.close {
+    background: #606061;
+    color: #FFFFFF;
+    line-height: 25px;
+    position: absolute;
+    right: -12px;
+    text-align: center;
+    top: -10px;
+    width: 24px;
+    text-decoration: none;
+    font-weight: bold;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    border-radius: 12px;
+    -moz-box-shadow: 1px 1px 3px #000;
+    -webkit-box-shadow: 1px 1px 3px #000;
+    box-shadow: 1px 1px 3px #000;
+}
+.close:hover {
+    background: #00d9ff;
+}
+/*Modal Window end*/
+
+/*############### IDs ###############*/
+
+#basic_controls {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+#control_panel {
+	position: absolute;
+	left: 20px;
+	top: 20px;
+	height: 43px;
+	width: auto;
+	background-color: white;
+	font-size: .9em;
+	padding-left: 4px;
+}
+
+#move_left {
+	float: right;
+	margin-bottom: 20px;
+}
+
+
+#links {
+	float: left;
+}
+
+#rechts {
+	float: right;
+	margin-right: 3px;
+}
+
+#chart_controls {
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	height: 33px;
+}
+
+#grouped {
+	margin-top: 10px;
+}
+
+#legend {
+	max-height: 400px; /* Fix a height here */
+	overflow: auto; /* Optionally you can also use overflow: scroll; */
+}
+
+#legend_selection {
+	
+	font-size: 0.7em !important;
+}
+/*added scroll function*/
+#flexible {
+height: 350px;
+overflow: scroll;
+}
+/* image cross fading*/
+
+#image {
+  position:relative;
+  height:10px;
+  width:10px;
+  margin:0 auto;
+}
+
+#image img {
+  position:absolute;
+  left:0;
+  -webkit-transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -o-transition: opacity 1s ease-in-out;
+  transition: opacity 1s ease-in-out;
+}
+
+#image img.top:hover {
+  opacity:0;
+}

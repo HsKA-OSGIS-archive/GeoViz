@@ -1,0 +1,960 @@
+<!--######################### place for notes ############################
+
+here you can put notes. for the release candidate this will be deleted
+
+please use tabs to structre the code properly! so you can easily find out which element contains which element
+
+the stuff within the accordion has to be sortet!
+
+
+Source of the examples
+Open Layers: http://openlayers.org/en/v3.5.0/examples/custom-controls.html
+Sidebar: http://jillix.github.io/jQuery-sidebar/
+Modal window: http://getbootstrap.com/javascript/
+
+###########################################################################-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!-- title -->
+    <title>Radon Measurements by GeoViz</title>
+     
+    <link rel="stylesheet" 
+          href="./css/style_charts.css" 
+          type="text/css">
+
+    <!-- external libraries with css code -->
+      <!-- jQuery -->
+      <script src="./lib/jquery-1.11.2.min.js"></script>
+
+      <!-- bootstrap -->
+      <link rel="stylesheet" 
+            href="./css/bootstrap.min.css" 
+            type="text/css">
+      <script src="./lib/bootstrap.min.js"></script>
+
+      <!-- Open Layers -->
+      <link rel="stylesheet" 
+            href="./css/ol.css" 
+            type="text/css">
+      <script src="./lib/ol.js"></script>
+
+      <!-- Sidebar -->
+      <link href="./css/sidebar.css" 
+            rel="stylesheet">
+      <script src="./js/jquery.sidebar.js"></script>
+      <script src="./js/handlers.js"></script>
+
+      <!-- D3 -->
+      <script src="./lib/d3.min.js" charset="utf-8"></script>
+      <script src="./lib/d3.js" charset="utf-8"></script>
+      <script src="./lib/d3.tip.v0.6.3.js"></script>
+
+      <!-- topojson -->
+      <script src="./lib/topojson.v1.min.js" charset="utf-8"></script>
+
+
+
+    <!-- own scripts for charts -->
+
+      <script src="./lib/base.js" charset="utf-8"></script>
+      <script src="./lib/sparkline.js" charset="utf-8"></script>
+      <script src="./js/choropleth_map.js"></script>
+      <script src="./js/grouped_vertical_bar.js"></script>
+      <script src="./js/stacked_vertical_bar.js"></script>
+      <script src="./js/dual_scale_bar_chart.js"></script>
+      <script src="./js/sortable_bar_chart.js"></script>
+      <script src="./js/dashboard.js"></script>
+    
+    <!-- the own js files is loaded on the bottom of the file -->
+    <!-- own CSS -->
+     <link rel="stylesheet" 
+           href="./css/style.css" 
+           type="text/css">
+    
+     
+  </head>
+  <body>
+    <script>
+      
+      function modal_change(type){
+        console.log("BUTTON WURDE GEDRÜCKT!");
+        if (type == 1){
+          document.getElementById('petrographic').style.display="none";
+          document.getElementById('raumluft').style.display="inline";
+          console.log("Die Bodensachen sind sichtbar");
+
+           console.log("die daten aus raum werden geladen!")
+              //Array to realize changing of visualizations with buttons consisting of button-id as well as div-id:
+              var arrayChartsData = [['button_choro', 'choropleth'],['button_grouped','grouped'],['button_stacked','stacked'],['button_dual','dual_scale'],['button_sortable','sortable_bar']];
+              
+              //Choropleth: would be nice if two additional choropleth maps (min and max) could be created and chosen using buttonset...but only if you like @Sebastian :D
+              var   choro_div = "#choropleth",
+                  choro_filenames = ["./data/processed_data/adm/DEU_adm2_pa_clip_total_statistics2_topo.json","../php/DEU_counties_statistics_php.csv",'../php/Raumluft_4326_statistics_php.csv'],
+                  choro_attributes_topojson = ["counties","id"],
+                  choro_attribute_choropleth = ["ID_2","AVG_MW_RL"],
+                  choro_attributes_tooltip = ["HAUSART","BAUWEISE","AVG_MW","MESSW_1G","MESSW_EG","MESSW_KE"],
+                  choro_domain = [65, 129, 194, 259, 323],
+                  choro_range = ["#1a9641", "#89cb61", "#dbef9d", "#fede9a", "#f59053", "#d7191c"] //gradient now better?
+              
+              //Grouped:
+              var   grouped_div = "#grouped",
+                  grouped_filename = "./php/Raumluft_4326_statistics_petrograph_php.csv",
+                  grouped_attributes = ["PETROGRAPH","RL_AVG","RL_MIN","RL_MAX"], //first: attribute for x-Axis, the following attributes: attribute for y-Axis (bars)
+                  grouped_attributes_tooltip = [["RL_AVG","average value in room air", "Bq m-3"], ["RL_MIN","minimum value in room air", "Bq m-3"], ["RL_MAX","maximum value in room air", "Bq m-3"]],
+                  grouped_range = ["#98abc5","#6b486b", "#ff8c00"] //; //colors for bars
+                  grouped_y_axis_annotation = "Radon msrmnt. in room air [Bq m-3]";
+              
+              //Stacked:
+              var   stacked_div = "#stacked",
+                  stacked_filename = "./php/Raumluft_4326_statistics_petrograph_php.csv",
+                  stacked_attributes = ["PETROGRAPH","RL_AVG_KE","RL_AVG_EG","RL_AVG_1G"],  //first: attribute for x-Axis, the following attributes: attribute for y-Axis (bars)
+                  stacked_attributes_tooltip = [["RL_AVG_KE","average value in basement", "Bq m-3"], ["RL_AVG_EG","average value on ground floor", "Bq m-3"], ["RL_AVG_1G","average value on first floor", "Bq m-3"]],
+                  stacked_range = ["#98abc5","#6b486b", "#ff8c00"] //; //colors for bars
+                  stacked_y_axis_annotation = "Average Radon msrmnt. in room air [Bq m-3]";
+              
+              //Dual_Scale:
+              var   dual_div = "#dual_scale",
+                  dual_filename = "./php/DEU_counties_statistics_php.csv",
+                  dual_attributes = ["NAME_2", "AVG_MW_RL", "AVG_MW_ODL"] //; //first: attribute for x-Axis, second: attribute for y-Axis (left bars), second: attribute for y-Axis (right bars,
+                  dual_attributes_tooltip = [["average value in room air", "Bq m-3"], ["average value of ODL", "nSv h-1"]],
+                  dual_domain = [400,325];
+                  dual_y_axis_annotation = ["Average Radon msrmnt. in room air [Bq m-3]", "Average ODL msrmnt. [nSv m-1]"];
+              
+              //Sortable:
+              var sortable_div = "#sortable_bar",
+                sortable_filename = "./php/DEU_counties_statistics_php.csv",
+                sortable_attributes = ["NAME_2", "AVG_MW_RL"],
+                sortable_attributes_tooltip = ["average value in room air", "Bq m-3"],
+                sortable_y_axis_annotation = "Average Radon msrmnt. in room air [Bq m-3]";
+        }
+        if (type == 2){
+          document.getElementById('petrographic').style.display="inline";
+          document.getElementById('raumluft').style.display="none";
+          console.log("Die Raumsachen sind sichtbar");
+
+           console.log("die daten aus raum werden geladen!")
+              //Array to realize changing of visualizations with buttons consisting of button-id as well as div-id:
+              var arrayChartsData = [['button_choro', 'choropleth'],['button_grouped','grouped'],['button_stacked','stacked'],['button_dual','dual_scale'],['button_sortable','sortable_bar']];
+              
+              //Choropleth: would be nice if two additional choropleth maps (min and max) could be created and chosen using buttonset...but only if you like @Sebastian :D
+              var   choro_div = "#choropleth",
+                  choro_filenames = ["./data/processed_data/adm/DEU_adm2_pa_clip_total_statistics2_topo.json","../php/DEU_counties_statistics_php.csv",'../php/Raumluft_4326_statistics_php.csv'],
+                  choro_attributes_topojson = ["counties","id"],
+                  choro_attribute_choropleth = ["ID_2","AVG_MW_RL"],
+                  choro_attributes_tooltip = ["HAUSART","BAUWEISE","AVG_MW","MESSW_1G","MESSW_EG","MESSW_KE"],
+                  choro_domain = [65, 129, 194, 259, 323],
+                  choro_range = ["#1a9641", "#89cb61", "#dbef9d", "#fede9a", "#f59053", "#d7191c"] //gradient now better?
+              
+              //Grouped:
+              var   grouped_div = "#grouped",
+                  grouped_filename = "./php/Raumluft_4326_statistics_petrograph_php.csv",
+                  grouped_attributes = ["PETROGRAPH","RL_AVG","RL_MIN","RL_MAX"], //first: attribute for x-Axis, the following attributes: attribute for y-Axis (bars)
+                  grouped_attributes_tooltip = [["RL_AVG","average value in room air", "Bq m-3"], ["RL_MIN","minimum value in room air", "Bq m-3"], ["RL_MAX","maximum value in room air", "Bq m-3"]],
+                  grouped_range = ["#98abc5","#6b486b", "#ff8c00"] //; //colors for bars
+                  grouped_y_axis_annotation = "Radon msrmnt. in room air [Bq m-3]";
+              
+              //Stacked:
+              var   stacked_div = "#stacked",
+                  stacked_filename = "./php/Raumluft_4326_statistics_petrograph_php.csv",
+                  stacked_attributes = ["PETROGRAPH","RL_AVG_KE","RL_AVG_EG","RL_AVG_1G"],  //first: attribute for x-Axis, the following attributes: attribute for y-Axis (bars)
+                  stacked_attributes_tooltip = [["RL_AVG_KE","average value in basement", "Bq m-3"], ["RL_AVG_EG","average value on ground floor", "Bq m-3"], ["RL_AVG_1G","average value on first floor", "Bq m-3"]],
+                  stacked_range = ["#98abc5","#6b486b", "#ff8c00"] //; //colors for bars
+                  stacked_y_axis_annotation = "Average Radon msrmnt. in room air [Bq m-3]";
+              
+              //Dual_Scale:
+              var   dual_div = "#dual_scale",
+                  dual_filename = "./php/DEU_counties_statistics_php.csv",
+                  dual_attributes = ["NAME_2", "AVG_MW_RL", "AVG_MW_ODL"] //; //first: attribute for x-Axis, second: attribute for y-Axis (left bars), second: attribute for y-Axis (right bars,
+                  dual_attributes_tooltip = [["average value in room air", "Bq m-3"], ["average value of ODL", "nSv h-1"]],
+                  dual_domain = [400,325];
+                  dual_y_axis_annotation = ["Average Radon msrmnt. in room air [Bq m-3]", "Average ODL msrmnt. [nSv m-1]"];
+              
+              //Sortable:
+              var sortable_div = "#sortable_bar",
+                sortable_filename = "./php/DEU_counties_statistics_php.csv",
+                sortable_attributes = ["NAME_2", "AVG_MW_RL"],
+                sortable_attributes_tooltip = ["average value in room air", "Bq m-3"],
+                sortable_y_axis_annotation = "Average Radon msrmnt. in room air [Bq m-3]";
+              }
+        }
+      }
+
+
+    </script>
+    <!-- modal window -->
+    <!-- modal code in a top-level position in the document to avoid other components affection the modal's appearance and functionality-->
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div id="petrographic">
+            <!--Define buttons and div for d3 chart-->
+            <div id="chart_controls">
+              <div id="links">
+                <button class="btn btn-default" id="button_grouped" onClick="updateData(this.id)">Grouped (AVG)</button>
+                <button class="btn btn-default" id="button_stacked" onClick="updateData(this.id)">Stacked (AVG)</button>
+                <button class="btn btn-default" id="button_dual" onClick="updateData(this.id)">Dual Scale (RL / BL)</button>
+                <button class="btn btn-default" id="button_sortable" onClick="updateData(this.id)">Sortable Bar</button>
+                <button class="btn btn-default" id="button_dashboard" onClick="updateData(this.id)">Dashboard</button>
+              </div>
+              <div id="rechts">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+            
+            <div id="grouped"></div>
+            <div id="stacked"></div>
+            <div id="dual_scale"></div>
+            <div id="sortable_bar"></div>
+            <label id="label_checkbox"><input type="checkbox" id="checkbox"> Sort values</label>
+            <div id='dashboard'></div>
+            
+            <!--Define variable to control the type of the drawn chart-->
+            <script>
+  /*            if (type == 1){
+                console.log("die daten aus petro werden geladen!")
+              //Array to realize changing of visualizations with buttons consisting of button-id as well as div-id:
+              var arrayChartsData = [['button_grouped','grouped'],['button_stacked','stacked'],['button_dual','dual_scale'],['button_sortable','sortable_bar']];
+              
+              //Problem with these charts: number of measurements per Petrograph not the same, some at least 25,
+              //but other not...however still showing that e.g. Granit with the highest values!
+              
+              //Grouped:
+              var   grouped_div = "#grouped",
+                  grouped_filename = "./php/Geo_petrograph_statistics_total_php.csv",
+                  grouped_attributes = ["PETROGRAPH","RL_AVG","BL_AVG","ODL_AVG"],  //first: attribute for x-Axis, the following attributes: attribute for y-Axis (bars)
+                  grouped_attributes_tooltip = [["RL_AVG","average value in room air", "Bq m-3"], ["BL_AVG","average value in bottom air", "kBq m-3"], ["ODL_AVG","average value of ODL", "nSv h-1"]],
+                  grouped_range = ["#98abc5","#6b486b", "#ff8c00"] //; //colors for bars
+                  grouped_y_axis_annotation = "Average msrmnts. [Bq m-3, kBq m-3, nSv h-1]";
+              
+              //Stacked:
+              var   stacked_div = "#stacked",
+                  stacked_filename = "./php/Geo_petrograph_statistics_total_php.csv",
+                  stacked_attributes = ["PETROGRAPH","RL_AVG","BL_AVG","ODL_AVG"],  //first: attribute for x-Axis, the following attributes: attribute for y-Axis (bars)
+                  stacked_attributes_tooltip = [["RL_AVG","average value in room air", "Bq m-3"], ["BL_AVG","average value in bottom air", "kBq m-3"], ["ODL_AVG","average value of ODL", "nSv h-1"]],
+                  stacked_range = ["#98abc5","#6b486b", "#ff8c00"] //; //colors for bars
+                  stacked_y_axis_annotation = "Average msrmnts. [Bq m-3, kBq m-3, nSv h-1]";
+              
+              //Dual_Scale:
+              var   dual_div = "#dual_scale",
+                  dual_filename = "./php/Geo_petrograph_statistics_total_php.csv",
+                  dual_attributes = ["PETROGRAPH", "RL_AVG", "ODL_AVG"] //; //first: attribute for x-Axis, second: attribute for y-Axis (left bars), second: attribute for y-Axis (right bars,
+                  dual_attributes_tooltip = [["average value in room air", "Bq m-3"], ["average value of ODL", "nSv h-1"]],
+                  dual_domain = [350,150];
+                  dual_y_axis_annotation = ["Average Radon msrmnt. in room air [Bq m-3]", "Average ODL msrmnt. [nSv m-1]"];
+              
+              //Sortable:
+              var sortable_div = "#sortable_bar",
+                sortable_filename = "./php/Geo_petrograph_statistics_total_php.csv",
+                sortable_attributes = ["PETROGRAPH", "RL_AVG"],
+                sortable_attributes_tooltip = ["average value in room air", "Bq m-3"],
+                sortable_y_axis_annotation = "Average Radon msrmnt. in room air [Bq m-3]";
+              }
+*/
+            </script>
+
+            <!--script to load asynchronous JavaScript, otherwise DOM is not ready when the script is loaded-->
+            <script language="javascript" type="text/javascript">
+              function loadScriptAfter() {
+                   
+                drawGroupedVerticalBar(grouped_div,grouped_filename,grouped_attributes,grouped_attributes_tooltip,grouped_range,grouped_y_axis_annotation);
+                drawStackedVerticalBar(stacked_div,stacked_filename,stacked_attributes,stacked_attributes_tooltip,stacked_range,stacked_y_axis_annotation);
+                drawDualScaleBarChart(dual_div,dual_filename,dual_attributes,dual_attributes_tooltip,dual_domain,dual_y_axis_annotation);
+                drawSortableBarChart(sortable_div,sortable_filename,sortable_attributes,sortable_attributes_tooltip,sortable_y_axis_annotation);
+           //     drawDashboard("#dashboard", "../php/Geo_petrograph_statistics_total_php.csv", ["PETROGRAPH","RL_AVG_KE","RL_AVG_EG","RL_AVG_1G"]);  
+
+                /*$('#choropleth').hide();
+                $('#grouped').hide();
+                $('#stacked').hide();
+                $('#dual_scale').hide();
+                $('#sortable_bar').hide();*/
+                //button settings when loading the page:
+                document.getElementById('button_grouped').disabled = true; 
+                document.getElementById('button_stacked').disabled = false; 
+                document.getElementById('button_dual').disabled = false; 
+                document.getElementById('button_sortable').disabled = false; 
+                document.getElementById('label_checkbox').style.visibility="hidden"; 
+                //$(document.getElementById('label_checkbox')).hidden();
+                document.getElementById('checkbox').checked = false;
+                document.getElementById('label_checkbox').style.display="none";
+                
+                $(document.getElementById('grouped')).show();
+                $(document.getElementById('stacked')).hide();
+                $(document.getElementById('dual_scale')).hide();
+                $(document.getElementById('sortable_bar')).hide();
+              }
+
+              if (window.addEventListener) {
+                window.addEventListener("load", loadScriptAfter);
+              } else if (window.attachEvent) {
+                window.attachEvent("onload", loadScriptAfter);
+              } else {
+                window.onload = loadScriptAfter;
+              }
+            </script>
+
+            <!--Interaction with the buttons-->
+            <script>
+              function updateData(clicked_buttonid) {
+                
+                //Disable clicked button and change drawType as well as enable other buttons:
+                for (i = 0; i<arrayChartsData.length; i++) {
+                  singleChartArray = arrayChartsData[i];
+                  console.log(singleChartArray[0]);
+                  console.log(singleChartArray[1]);
+                  if (clicked_buttonid == singleChartArray[0]) {
+                    //Disable clicked button:
+                    document.getElementById(clicked_buttonid).disabled = true;  
+                    $(document.getElementById(singleChartArray[1])).show();
+                    if (clicked_buttonid == "button_sortable") {
+                      document.getElementById('label_checkbox').style.display="inline"; 
+                      document.getElementById('label_checkbox').style.visibility="visible"; 
+                    }
+                  } else {
+                    //Enable other buttons:
+                    document.getElementById(singleChartArray[0]).disabled = false;
+                    //Disable display of div:
+                    //document.getElementById(singleChartArray[1]).style.display = false;
+                    $(document.getElementById(singleChartArray[1])).hide();
+                    if (clicked_buttonid != "button_sortable") {
+                      document.getElementById('label_checkbox').style.display="none"; 
+                    }
+                  }     
+                } 
+              };  
+            </script>
+          </div>
+          <div id="raumluft">
+            <!--Define buttons and div for d3 chart-->
+            <button id="button_choro" onClick="updateData(this.id)">Choropleth (AVG)</button>
+            <button id="button_grouped" onClick="updateData(this.id)">Grouped (AVG)</button>
+            <button id="button_stacked" onClick="updateData(this.id)">Stacked (AVG)</button>
+            <button id="button_dual" onClick="updateData(this.id)">Dual Scale (RL / BL)</button>
+            <button id="button_sortable" onClick="updateData(this.id)">Sortable Bar</button>
+            
+            <div id="choropleth" visibility:"hidden"></div>
+            <div id="grouped"></div>
+            <div id="stacked"></div>
+            <div id="dual_scale"></div>
+            <div id="sortable_bar"></div>
+            <label id="label_checkbox"><input type="checkbox" id="checkbox">Sort values</label>
+            
+            <!--Define variable to control the type of the drawn chart-->
+            <script>
+/*              if (type == "2"){
+                console.log("die daten aus raum werden geladen!")
+              //Array to realize changing of visualizations with buttons consisting of button-id as well as div-id:
+              var arrayChartsData = [['button_choro', 'choropleth'],['button_grouped','grouped'],['button_stacked','stacked'],['button_dual','dual_scale'],['button_sortable','sortable_bar']];
+              
+              //Choropleth: would be nice if two additional choropleth maps (min and max) could be created and chosen using buttonset...but only if you like @Sebastian :D
+              var   choro_div = "#choropleth",
+                  choro_filenames = ["./data/processed_data/adm/DEU_adm2_pa_clip_total_statistics2_topo.json","../php/DEU_counties_statistics_php.csv",'../php/Raumluft_4326_statistics_php.csv'],
+                  choro_attributes_topojson = ["counties","id"],
+                  choro_attribute_choropleth = ["ID_2","AVG_MW_RL"],
+                  choro_attributes_tooltip = ["HAUSART","BAUWEISE","AVG_MW","MESSW_1G","MESSW_EG","MESSW_KE"],
+                  choro_domain = [65, 129, 194, 259, 323],
+                  choro_range = ["#1a9641", "#89cb61", "#dbef9d", "#fede9a", "#f59053", "#d7191c"] //gradient now better?
+              
+              //Grouped:
+              var   grouped_div = "#grouped",
+                  grouped_filename = "./php/Raumluft_4326_statistics_petrograph_php.csv",
+                  grouped_attributes = ["PETROGRAPH","RL_AVG","RL_MIN","RL_MAX"], //first: attribute for x-Axis, the following attributes: attribute for y-Axis (bars)
+                  grouped_attributes_tooltip = [["RL_AVG","average value in room air", "Bq m-3"], ["RL_MIN","minimum value in room air", "Bq m-3"], ["RL_MAX","maximum value in room air", "Bq m-3"]],
+                  grouped_range = ["#98abc5","#6b486b", "#ff8c00"] //; //colors for bars
+                  grouped_y_axis_annotation = "Radon msrmnt. in room air [Bq m-3]";
+              
+              //Stacked:
+              var   stacked_div = "#stacked",
+                  stacked_filename = "./php/Raumluft_4326_statistics_petrograph_php.csv",
+                  stacked_attributes = ["PETROGRAPH","RL_AVG_KE","RL_AVG_EG","RL_AVG_1G"],  //first: attribute for x-Axis, the following attributes: attribute for y-Axis (bars)
+                  stacked_attributes_tooltip = [["RL_AVG_KE","average value in basement", "Bq m-3"], ["RL_AVG_EG","average value on ground floor", "Bq m-3"], ["RL_AVG_1G","average value on first floor", "Bq m-3"]],
+                  stacked_range = ["#98abc5","#6b486b", "#ff8c00"] //; //colors for bars
+                  stacked_y_axis_annotation = "Average Radon msrmnt. in room air [Bq m-3]";
+              
+              //Dual_Scale:
+              var   dual_div = "#dual_scale",
+                  dual_filename = "./php/DEU_counties_statistics_php.csv",
+                  dual_attributes = ["NAME_2", "AVG_MW_RL", "AVG_MW_ODL"] //; //first: attribute for x-Axis, second: attribute for y-Axis (left bars), second: attribute for y-Axis (right bars,
+                  dual_attributes_tooltip = [["average value in room air", "Bq m-3"], ["average value of ODL", "nSv h-1"]],
+                  dual_domain = [400,325];
+                  dual_y_axis_annotation = ["Average Radon msrmnt. in room air [Bq m-3]", "Average ODL msrmnt. [nSv m-1]"];
+              
+              //Sortable:
+              var sortable_div = "#sortable_bar",
+                sortable_filename = "./php/DEU_counties_statistics_php.csv",
+                sortable_attributes = ["NAME_2", "AVG_MW_RL"],
+                sortable_attributes_tooltip = ["average value in room air", "Bq m-3"],
+                sortable_y_axis_annotation = "Average Radon msrmnt. in room air [Bq m-3]";
+              }*/
+            </script>
+            
+            <!--script to load asynchronous JavaScript, otherwise DOM is not ready when the script is loaded-->
+              <script language="javascript" type="text/javascript">
+                function loadScriptAfter() {
+                  /*var script = document.getElementById("diagram");
+                  script.src = "GeoViz_local/js/stacked_vertical_bar.js";
+                  document.body.appendChild(script);*/
+              
+              drawChoroplethMap(choro_div,choro_filenames,choro_attributes_topojson,choro_attribute_choropleth,choro_attributes_tooltip,choro_domain,choro_range);
+              drawGroupedVerticalBar(grouped_div,grouped_filename,grouped_attributes,grouped_attributes_tooltip,grouped_range,grouped_y_axis_annotation);
+              drawStackedVerticalBar(stacked_div,stacked_filename,stacked_attributes,stacked_attributes_tooltip,stacked_range,stacked_y_axis_annotation);
+              drawDualScaleBarChart(dual_div,dual_filename,dual_attributes,dual_attributes_tooltip,dual_domain,dual_y_axis_annotation);
+              drawSortableBarChart(sortable_div,sortable_filename,sortable_attributes,sortable_attributes_tooltip,sortable_y_axis_annotation);
+              
+              /*$('#choropleth').hide();
+              $('#grouped').hide();
+              $('#stacked').hide();
+              $('#dual_scale').hide();
+              $('#sortable_bar').hide();*/
+              //button settings when loading the page:
+              document.getElementById('button_choro').disabled = true; 
+              document.getElementById('button_grouped').disabled = false; 
+              document.getElementById('button_stacked').disabled = false; 
+              document.getElementById('button_dual').disabled = false; 
+              document.getElementById('button_sortable').disabled = false; 
+              document.getElementById('label_checkbox').style.visibility="hidden"; 
+              //$(document.getElementById('label_checkbox')).hidden();
+              document.getElementById('checkbox').checked = false;
+              
+              //div display settings when loading the page:
+              /*document.getElementById('choropleth').style.display = true;   
+              document.getElementById('grouped').style.display = false; 
+              document.getElementById('stacked').style.display = false; 
+              document.getElementById('dual_scale').style.display = false; 
+              document.getElementById('sortable_bar').style.display = false; */
+              $(document.getElementById('choropleth')).show();
+              $(document.getElementById('grouped')).hide();
+              $(document.getElementById('stacked')).hide();
+              $(document.getElementById('dual_scale')).hide();
+              $(document.getElementById('sortable_bar')).hide();
+                }
+
+                if (window.addEventListener) {
+                  window.addEventListener("load", loadScriptAfter);
+                } else if (window.attachEvent) {
+                  window.attachEvent("onload", loadScriptAfter);
+                } else {
+                  window.onload = loadScriptAfter;
+                }
+              </script>
+            
+            <!--Interaction with the buttons-->
+            <script>
+            function updateData(clicked_buttonid) {
+              
+              //Disable clicked button and change drawType as well as enable other buttons:
+              for (i = 0; i<arrayChartsData.length; i++) {
+                singleChartArray = arrayChartsData[i];
+                console.log(singleChartArray[0]);
+                console.log(singleChartArray[1]);
+                if (clicked_buttonid == singleChartArray[0]) {
+                  //Disable clicked button:
+                  document.getElementById(clicked_buttonid).disabled = true;  
+                  $(document.getElementById(singleChartArray[1])).show();
+                  if (clicked_buttonid == "button_sortable") {
+                    document.getElementById('label_checkbox').style.visibility="visible"; 
+                  }
+                } else {
+                  //Enable other buttons:
+                  document.getElementById(singleChartArray[0]).disabled = false;
+                  //Disable display of div:
+                  //document.getElementById(singleChartArray[1]).style.display = false;
+                  $(document.getElementById(singleChartArray[1])).hide();
+                  if (clicked_buttonid != "button_sortable") {
+                    document.getElementById('label_checkbox').style.visibility="hidden"; 
+                  }
+                }     
+              } 
+              };  
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- map part -->
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span12">
+          <div id="map" class="map"></div>
+        </div>
+      </div>
+    </div>
+    <div id="control_panel">
+      <table align="center">
+        <tr>
+          <td>
+            <a href="">
+              <img src="./img/zoom_in.png"
+                   alt="zoom in"
+                   width="30" 
+                   height="30" 
+                   border="0" />
+            </a>
+          </td>
+          <td>
+            <a href="">
+              <img src="./img/zoom_out.png"
+                   alt="zoom in"
+                   width="30" 
+                   height="30" 
+                   border="0" />
+            </a>
+          </td>
+          <td>
+            <input type="text" 
+                   class="search_bar_2" 
+                   value="Search"/>
+          </td>
+          <td>
+            <a href="#" 
+               class="btn btn-primary" 
+               data-action="toggle" 
+               data-side="left">
+              <img src="./img/menu.png"
+                   alt="zoom in"
+                   width="44" 
+                   height="30" 
+                   border="0" />
+            </a>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Sidebar part -->
+    <div class="sidebars">
+      <div class="sidebar left">
+        <div id="move_left">
+          <a href="#" class="btn btn-danger" data-action="close" data-side="left">
+            <img src="./img/collapse_left.png"
+                 alt="close sidebar"
+                 width="30" 
+                 height="30" 
+                 border="0" />
+          </a>
+        </div>
+        <input type="text" class="search_bar" value="Search"/>
+        <br>
+        <div id="basic_controls">
+          <table align="center">
+            <tr>
+              <td>
+                <a href="">
+                  <img src="./img/zoom_in.png"
+                       alt="zoom in"
+                       width="30" 
+                       height="30" 
+                       border="0" />
+                </a>
+              </td>
+              <td>
+                <a href="">
+                  <img src="./img/zoom_out.png"
+                       alt="zoom in"
+                       width="30" 
+                       height="30" 
+                       border="0" />
+                </a>
+              </td>
+              <td>
+                <a href="">
+                  <img src="./img/language_de.png"
+                       alt="zoom in"
+                       width="30" 
+                       height="30" 
+                       border="0" />
+                </a>
+              </td>
+              <td>
+                <a id="print_image">	<!--href=""-->
+                  <img src="./img/print.png"
+                       alt="zoom in"
+                       width="30" 
+                       height="30" 
+                       border="0" />
+                </a>
+              </td>
+              <td>
+                <a href="">
+                  <img src="./img/help.png"
+                       alt="zoom in"
+                       width="30" 
+                       height="30" 
+                       border="0" />
+                </a>
+              </td>
+            </tr>
+          </table>
+        </div><!--basic controls-->
+
+        <!-- Accordion part -->
+        <dl>
+          <dt>
+            <img src="./img/bar.png"
+                 alt="---------------------------"
+                 width= "100%" 
+                 height="4" 
+                 border="0"/>
+            <table>
+              <tr>
+                <td>
+                  Layer Selection
+                </td>
+                <td>
+                  <a href="#" 
+                     class="closed">
+                    <img src="./img/collapse_top_1.png"
+                         alt="open"
+                         width= "20" 
+                         height="20" 
+                         border="0"/>
+                  </a>
+                </td>
+            </table>
+          </dt>
+          <dd>
+            <div id="layer_selection">
+              <!-- content of this accordion -->
+              <table>
+                <tr>
+                  <td>
+                    <div class="layer_name">
+                      <div class="move_it">
+                        <label for="dots" id="label_ls_osm">OSM Basemap</label>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="prop_button">
+                      <img src="./img/properties.png"
+                           alt="properties"
+                           data-toggle="modal" 
+                           data-target=".bs-example-modal-lg"
+                           width= "20" 
+                           height="20" 
+                           border="0"/>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="layer_name">
+                      <div class="move_it">
+                        <label for="dots" id="label_ls_rl">Radon in room air</label>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="prop_button">
+                      <img src="./img/properties.png"
+                           alt="properties"
+                           data-toggle="modal" 
+                           data-target=".bs-example-modal-lg"
+                           width= "20" 
+                           height="20" 
+                           border="0"
+                           onclick="modal_change(2)"/>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="layer_name">
+                      <div class="move_it">
+                        <label for="dots" id="label_ls_bl">Radon in bottom air</label>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="prop_button">
+                      <img src="./img/properties.png"
+                           alt="properties"
+                           data-toggle="modal" 
+                           data-target=".bs-example-modal-lg"
+                           width= "20" 
+                           height="20" 
+                           border="0"
+                           onclick="modal_change(1)"/>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="layer_name">
+                      <div class="move_it">
+                        <label for="dots" id="label_ls_odl">ODL</label>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="prop_button">
+                      <img src="./img/properties.png"
+                           alt="properties"
+                           data-toggle="modal" 
+                           data-target=".bs-example-modal-lg"
+                           width= "20" 
+                           height="20" 
+                           border="0"/>
+                    </div>
+                  </td>
+                </tr>
+                 <tr>
+                  <td>
+                    <div class="layer_name">
+                      <div class="move_it">
+                        <label for="dots" id="label_ls_rl_grid">Room air grid</label>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="prop_button">
+                      <img src="./img/properties.png"
+                           alt="properties"
+                           data-toggle="modal" 
+                           data-target=".bs-example-modal-lg"
+                           width= "20" 
+                           height="20" 
+                           border="0"/>
+                    </div>
+                  </td>
+                </tr>
+                 <tr>
+                  <td>
+                    <div class="layer_name">
+                      <div class="move_it">
+                        <label for="dots" id="label_ls_bl_grid">Bottom air grid</label>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="prop_button">
+                      <img src="./img/properties.png"
+                           alt="properties"
+                           data-toggle="modal" 
+                           data-target=".bs-example-modal-lg"
+                           width= "20" 
+                           height="20" 
+                           border="0"/>
+                    </div>
+                  </td>
+                </tr>
+                 <tr>
+                  <td>
+                    <div class="layer_name">
+                      <div class="move_it">
+                        <label for="dots" id="label_ls_odl_grid">ODL grid</label>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="prop_button">
+                      <img src="./img/properties.png"
+                           alt="properties"
+                           data-toggle="modal" 
+                           data-target=".bs-example-modal-lg"
+                           width= "20" 
+                           height="20" 
+                           border="0"/>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="layer_name">
+                      <div class="move_it">
+                        <label for="dots" id="label_ls_pa">Project Area</label>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="prop_button">
+                      <img src="./img/properties.png"
+                           alt="properties"
+                           data-toggle="modal" 
+                           data-target=".bs-example-modal-lg"
+                           width= "20" 
+                           height="20" 
+                           border="0"/>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+              <!-- end of this accordion content -->
+            </div><!--layer selection-->
+          </dd>       
+          <dt>
+            <img src="./img/bar.png"
+                 alt="---------------------------"
+                 width= "100%" 
+                 height="4" 
+                 border="0"/>
+            <table>
+              <tr>
+                <td>
+                  Legend
+                </td>
+                <td>
+                  <a href="#" 
+                     class="closed">
+                    <img src="./img/collapse_top_1.png"
+                         alt="open"
+                         width= "20" 
+                         height="20" 
+                         border="0"/>
+                  </a>
+                </td>
+            </table>
+          </dt>
+          <dd>
+            <div id="legend">
+              <!-- content of this accordion -->
+              <!--put here content for the legend-->
+              <!-- end of this accordion content -->
+      			  <div id="legend_rl">
+                        <label for="dots" id="label_legend_rl">Radon value in room air [Bq m-3]:</label>
+      				  <br>
+      				  <img id="image_legend_rl">
+                    </div>
+      			  <br>
+      			  <div id="legend_bl">
+                        <label for="dots" id="label_legend_bl">Radon value in bottom air [kBq m-3]:</label>
+      				  <br>
+      				  <img id="image_legend_bl">
+                    </div>
+      			  <br>
+      			  <div id="legend_odl">
+                        <label for="dots" id="label_legend_odl">ODL value [nSv h-1]:</label>
+      				  <br>
+      				  <img id="image_legend_odl">
+                    </div>
+      			  <br>
+      			  <div id="legend_rl_grid">
+                        <label for="dots" id="label_legend_rl_grid">Radon value in room air (grid) [Bq m-3]:</label>
+      				  <br>
+      				  <img id="image_legend_rl_grid">
+                    </div>
+      			  <br>
+      			  <div id="legend_bl_grid">
+                        <label for="dots" id="label_legend_bl_grid">Radon value in bottom air (grid) [kBq m-3]:</label>
+      				  <br>
+      				  <img id="image_legend_bl_grid">
+                    </div>
+      			  <br>
+      			  <div id="legend_odl_grid">
+                        <label for="dots" id="label_legend_odl_grid">ODL value (grid) [nSv h-1]:</label>
+      				  <br>
+      				  <img id="image_legend_odl_grid" >
+                    </div>
+      			  <div id="legend_pa">
+                        <label for="dots" id="label_legend_pa">Project Area:</label>
+      				  <br>
+      				  <img id="image_legend_pa" >
+              </div>
+            </div><!--legend-->
+          </dd>
+          <dt>
+            <img src="./img/bar.png"
+                 alt="---------------------------"
+                 width= "100%" 
+                 height="4" 
+                 border="0"/>
+            <table>
+              <tr>
+                <td>
+                  Thematic Information
+                </td>
+                <td>
+                  <a href="#" 
+                     class="closed">
+                    <img src="./img/collapse_top_1.png"
+                         alt="open"
+                         width= "20" 
+                         height="20" 
+                         border="0"/>
+                  </a>
+                </td>
+            </table>
+          </dt>
+          <dd>
+            <div id="flexible">
+              <!-- content of this accordion -->
+              <h4><b> About Radon</b></h4>
+			  <p> Radon is a colourless, odourless, tasteless, and chemically inert radioactive gas.
+			  Radon is a chemical element with symbol Rn and atomic number 86.<br>
+			  <p> It is measured in becquerel per cubic meter (Bq/m³).
+			  Natural radioactive decay of uranium to plumbum.</p>
+              <ul>
+			  <li>Radiation Exposure</li>
+			  <a href="#openModal"> <img src="./img/properties.png"
+                         alt="open"
+                         width= "20" 
+                         height="20" 
+                         border="0"/></a>
+				<div id="openModal" class="modalDialog">
+				<div>	<a href="#close" title="Close" class="close">X</a>
+				</div>
+		     </div>
+			 <li>Occurrence</li>
+			  <a href="#openModal"> <img src="./img/properties.png"
+                         alt="open"
+                         width= "20" 
+                         height="20" 
+                         border="0"/></a>
+				<div id="openModal" class="modalDialog">
+				<div>	<a href="#close" title="Close" class="close">X</a>
+				</div>
+		     </div>
+			 
+			  <li>Health Risks</li>
+					<a href="#openModal">
+					<img src="./img/properties.png"
+                         alt="open"
+                         width= "20" 
+                         height="20" 
+                         border="0"/></a>
+
+				<div id="openModal" class="modalDialog">
+					<div> <a href="#close" title="Close" class="close">X</a>
+						<div id="image">
+				<img class="bottom" src="./img/radon.png" />
+				<img class="top" src="./img/radon6.png" />
+						</div>
+        <p id="p1">This is a sample modal box that can be created using CSS3.</p>
+        <p></p>
+					</div>
+				</div>
+			  </ul>
+			  <div id="image">
+				<img class="bottom" src="./img/radon.png" />
+				<img class="top" src="./img/radon6.png" />
+				</div>
+              <!-- end of this accordion content -->
+            </div>
+			<!--flexible-->
+          </dd>
+        </dl>
+      </div>
+    </div>
+
+    <!--script to load asynchronous JavaScript, otherwise DOM is not ready when the script is loaded-->
+    <script language="javascript" type="text/javascript">
+      function loadScriptAfter() {
+        var script = document.createElement("script");
+        script.src = "./js/viz_ls_legend_test.js";
+        document.body.appendChild(script);
+      }
+
+      if (window.addEventListener) {
+        window.addEventListener("load", loadScriptAfter);
+      } else if (window.attachEvent) {
+        window.attachEvent("onload", loadScriptAfter);
+      } else {
+        window.onload = loadScriptAfter;
+      }
+    </script>
+  </body>
+</html>
