@@ -165,7 +165,8 @@ a) Open War-file with e.g. WinRar and extract "quercus.jar" as well as "javamail
 
 b) Add the following lines to the web.xml file in the \conf\ folder of Apache Tomcat:
 
-<!--Quercus stuff:-->
+<!--Quercus settings:-->
+
   <servlet>
     <servlet-name>Quercus Servlet</servlet-name>
     <servlet-class>com.caucho.quercus.servlet.QuercusServlet</servlet-class>
@@ -215,7 +216,9 @@ b) Add the following lines to the web.xml file in the \conf\ folder of Apache To
   <welcome-file-list>
     <welcome-file>index.php</welcome-file>
   </welcome-file-list>
-  
+<!-- End of Quercus settings-->
+
+ 
 c) Uncomment these two extensions in the file "php.ini" in the folder of your php-installation, e.g. in the folder EnterpriseDB-ApachePHP that comes with PostgreSQL:
 extension=php_pdo_pgsql.dll
 extension=php_pgsql.dll
@@ -229,10 +232,10 @@ Hint: 	You could also use the OSGeo-Live 9.0 that can be downloaded here:http://
 
 # External libraries:
 
-JqueryUI
-BootStrap
-OpenLayers 3.0
-D3.JS
+-	JqueryUI
+-	BootStrap
+-	OpenLayers 3.0
+-	D3.JS
 
 # License:
 Please refer the License file
