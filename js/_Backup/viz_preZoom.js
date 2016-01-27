@@ -181,8 +181,7 @@ var array_layer = [
 					["label_ls_bl_grid",bodenluft_grid_visible,layer_bodenluft_grid,["legend_bl_grid","label_legend_bl_grid","image_legend_bl_grid"]],
 					["label_ls_odl_grid",odl_grid_visible,layer_odl_grid,["legend_odl_grid","label_legend_odl_grid","image_legend_odl_grid"]],
 					["label_ls_pa",project_area_visible,layer_project_area,["legend_pa","label_legend_pa","image_legend_pa"]]
-				  ];
-				  
+				  ]
 //############### Layer Selection part ###############//
 //############### a) bind function to button: ###############//
 $('#label_ls_rl').on('click', function() {layerSelection('label_ls_rl')});
@@ -222,31 +221,6 @@ function layerSelection(id_clicked_label) {
 		}
 	}  
 }
-
-//############### Zoom functionality: ###############//
-document.getElementById("zoom_out_closed").onclick = function() {
-	var view = map.getView();
-	var zoom = view.getZoom();
-	view.setZoom(zoom-1);
-};
-
-document.getElementById("zoom_in_closed").onclick = function() {
-	var view = map.getView();
-	var zoom = view.getZoom();
-	view.setZoom(zoom+1);
-};
-
-document.getElementById("zoom_in_open").onclick = function() {
-	var view = map.getView();
-	var zoom = view.getZoom();
-	view.setZoom(zoom+1);
-};
-
-document.getElementById("zoom_out_open").onclick = function() {
-	var view = map.getView();
-	var zoom = view.getZoom();
-	view.setZoom(zoom-1);
-};
 
 //############### Print functionality: ###############//
 //with a little help of our friends @GCK: https://github.com/HsKA-OSGIS/GCK
