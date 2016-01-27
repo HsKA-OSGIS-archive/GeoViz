@@ -36,7 +36,7 @@ At the beginning of each script there is a list with descriptions and explanatio
 All datasets used in this project are stored inside the folder "data\processed_data" and were derived from the following sources:
 
 -	GADM database of Global Administrative Areas - Counties in Germany - http://www.gadm.org/
--	Radon measurements by Federal Office for Radiation Protection, additional important information about the origin are stored in a license file inside "data\processed_data\bfs"  - http://www.bfs.de/EN/home/home_node.html
+-	Radon measurements by Federal Office for Radiation Protection, additional important information about the origin is stored in a license file inside "data\processed_data\bfs"  - http://www.bfs.de/EN/home/home_node.html
 -	OSM Basemap - OpenStreetMap Tile Server - ODbl
 -	We also used datasets from the Bundesanstalt für Geowissenschaften und Rohstoffe for statistical analysis. Please refer to their website (only available in German) for the datasets - http://www.bgr.bund.de
 
