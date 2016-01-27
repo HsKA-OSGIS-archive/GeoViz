@@ -1,5 +1,4 @@
 //############### Open Layers part ###############//
-
 //
 // Create map object:
 //
@@ -198,22 +197,25 @@ $('#label_ls_pa').on('click', function() {layerSelection('label_ls_pa')});
 function layerSelection(id_clicked_label) {
 	console.log("layerSelection");
 	for (i = 0; i<array_layer.length; i++) {
-		subarray_layer = array_layer[i];
+		subarray_layer = array_layer[i];				// get subarray -> array for single layer
 		if (id_clicked_label == subarray_layer[0]) {
 			console.log(subarray_layer[0]);
-			if (subarray_layer[1] == "true") {	//*_visible control variable
-				subarray_layer[1] = "false";	//set to false
-				clicked_layer = subarray_layer[2];
-				clicked_layer.setVisible(false);
-				subarray_layer[2].setVisible(false);
+			if (subarray_layer[1] == "true") {			//*_visible control variable
+				subarray_layer[1] = "false";			//set control variable to false
+				document.getElementById(subarray_layer[0]).style.color = "#CCC";		//change color to grey when layer not visible
+				//clicked_layer = subarray_layer[2];
+				//clicked_layer.setVisible(false);		
+				subarray_layer[2].setVisible(false);	//set visibility of OL layer object to false
 				subarray_legend = subarray_layer[3];
 				for (j = 0; j<subarray_legend.length; j++) {
 					$(document.getElementById(subarray_legend[j])).hide();
 				}
 			} else {
 				subarray_layer[1] = "true";	//set to false
-				clicked_layer = subarray_layer[2];
-				clicked_layer.setVisible(true);
+				document.getElementById(subarray_layer[0]).style.color = "#000";		//change color back to black when layer visible
+				//clicked_layer = subarray_layer[2];
+				//clicked_layer.setVisible(true);
+				subarray_layer[2].setVisible(true);		//set visibility of OL layer object to true
 				subarray_legend = subarray_layer[3];
 				for (j = 0; j<subarray_legend.length; j++) {
 					$(document.getElementById(subarray_legend[j])).show();
@@ -361,4 +363,24 @@ var printConfiguration = {
 
 //Run function once to initiale href:
 print(view);
+
+//Tooltip for image in accordion:
+$('.tooltip_image_master').hover(function(){
+        // Hover over code
+        var title = $(this).attr('title');
+        $(this).data('tipText', title).removeAttr('title');
+        $('<p class="tooltip_image"></p>')
+        .text(title)
+        .appendTo('body')
+        .fadeIn('slow');
+}, function() {
+        // Hover out code
+        $(this).attr('title', $(this).data('tipText'));
+        $('.tooltip_image').remove();
+}).mousemove(function(e) {
+        var mousex = e.pageX + 20; //Get X coordinates
+        var mousey = e.pageY + 10; //Get Y coordinates
+        $('.tooltip_image')
+        .css({ top: mousey, left: mousex })
+});
 

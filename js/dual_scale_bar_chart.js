@@ -35,9 +35,9 @@ based on, but enhanced: https://github.com/liufly/Dual-scale-D3-Bar-Chart
 **/
 function drawDualScaleBarChart(div,filename,attributes,attributes_tooltip,domain,y_axis_annotation) {
 	
-var margin = {top: 50, right: 80, bottom: 200, left: 120},
-    width = 900 - margin.left - margin.right,
-    height = 800 - margin.top - margin.bottom;
+var margin = {top: 50, right: 80, bottom: 300, left: 120},
+    width = 855 - margin.left - margin.right,
+    height = 700 - margin.top - margin.bottom;
 var x = d3.scale.ordinal()
     .rangeRoundBands([0, width], .1);
 //var y0 = d3.scale.linear().domain([300, 1100]).range([height, 0]),
@@ -132,8 +132,7 @@ d3.csv(filename, type, function(error, data) {
       .attr("x", function(d) { return x(d.value_x) + x.rangeBand()/2; })
       .attr("width", x.rangeBand() / 2)
       .attr("y", function(d) { return y1(d.value_y2); })
-	  .attr("height", function(d,i,j) { return height - y1(d.value_y2); }) //; 
-	  //new tooltip:
+	  .attr("height", function(d,i,j) { return height - y1(d.value_y2); })
       .on('mouseover', tip_rb.show)										// event for tooltip
       .on('mouseout', tip_rb.hide);										// event for tooltip
 });

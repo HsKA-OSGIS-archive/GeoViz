@@ -16,7 +16,7 @@ At the beginning of each script there is a list with descriptions and explanatio
 
 # Authors:
 
--	Sebastian Lemstra
+-	Sebastian Lemstra (alienus@gmx.de)
 -	Georg Stubenrauch
 -	Md Kamrul Ahsan
 -	Rajesh Mahalingam
@@ -33,11 +33,12 @@ At the beginning of each script there is a list with descriptions and explanatio
 
 # Data and data sources
 
-All datasets used in this project were derived from the following sources:
+All datasets used in this project are stored inside the folder "data\processed_data" and were derived from the following sources:
 
 -	GADM database of Global Administrative Areas - Counties in Germany - http://www.gadm.org/
--	Radon measurements by Federal Office for Radiation Protection - http://www.bfs.de/EN/home/home_node.html
+-	Radon measurements by Federal Office for Radiation Protection, additional important information about the origin are stored in a license file inside "data\processed_data\bfs"  - http://www.bfs.de/EN/home/home_node.html
 -	OSM Basemap - OpenStreetMap Tile Server - ODbl
+-	We also used datasets from the Bundesanstalt für Geowissenschaften und Rohstoffe for statistical analysis. Please refer to their website (only available in German) for the datasets - http://www.bgr.bund.de
 
 # Structure of project folders:
 
@@ -230,12 +231,23 @@ Hint: 	You could also use the OSGeo-Live 9.0 that can be downloaded here:http://
 		In this case you would only need to install Quercus.
 		
 
-# External libraries:
+# External libraries (stored in folder "lib"):
 
 -	jQueryUI
 -	BootStrap
 -	OpenLayers 3.0
 -	d3.js
+
+# Known Issues:
+-	print functionality not always working, legends missing, not all scales set up
+-	statistical visualizations of petrographic attributes are accessible via the property button of the room air grid
+-	sorting functionality only working for petrographic visualizations (room air grid), not working in other modal windows, probably problem with the checkbox ids
+-	search function not implemented (-> nominatim)
+-	language switcher not implemented
+-	d3 bug in choropleth maps (panning)
+-	realization of modal windows not sophisticated, could be done with one function (rough description in js\charts_invoker.js)
+-	"problem" of extrapolation in grids is know, accepted for the sole purpose of functionality demonstration
+-	"problem" in dashboard of multiple bars and disapearing pie slices: only because attribute of x-value not unique, problem only because of our chosen attributes for the presentation, function itself is working fine with unique keys!
 
 # License:
 Please refer to the license file

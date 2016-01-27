@@ -2,12 +2,10 @@
 
 ini_set('display_errors', 1); // show errors
 error_reporting(-1); // of all levels
-date_default_timezone_set('UTC'); // PHP will complain about on this error level
 
 // function to connect to a database:
 function connectToDb($conn_string) {
 
-	//$dbh = pg_connect("host=localhost port=5432 dbname=geoviz user=postgres password=user");
 	$dbh = pg_connect($conn_string);
 
 	if (!$dbh) {
@@ -28,7 +26,7 @@ function disconnectFromDb($dbh) {
 }
 
 function getData($dbh, $sql, $filename) {
-	//$sql = "SELECT ST_X(geom) AS X, ST_Y(geom) AS Y, gid, standort, einheit, messw_bl, lon, lat, petrograph FROM public.bodenluft_4326";
+	
 	$result = pg_query($dbh, $sql);
 
 	if (!$result) {
@@ -37,7 +35,6 @@ function getData($dbh, $sql, $filename) {
 
 	}
 
-	//$filename = 'Bodenluft_4326_statistics_php.csv';
 	$fp = fopen($filename, "w+");
 
 	// fetch a row and write the column names (!) out to the file -> first line of CSV
@@ -51,7 +48,7 @@ function getData($dbh, $sql, $filename) {
 	$line .= "\n";
 	fputs($fp, $line);
 
-	// remove the result pointer back to the start
+	// remove the result pointer and get back to the start of the columns:
 	pg_result_seek($result, 0);
 
 	// and loop through the actual data

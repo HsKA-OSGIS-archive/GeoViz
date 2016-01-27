@@ -36,9 +36,9 @@ based on: http://bl.ocks.org/mbostock/3885705
 //based on: http://bl.ocks.org/mbostock/3885705
 function drawSortableBarChart(div,filename,attributes,attributes_tooltip,y_axis_annotation) {
 	// setup size of visualization:
-	var margin = {top: 70, right: 50, bottom: 230, left: 80},
-		width = 960 - margin.left - margin.right,
-		height = 550 - margin.top - margin.bottom;
+	var margin = {top: 70, right: 50, bottom: 300, left: 80},
+		width = 855 - margin.left - margin.right,
+		height = 700 - margin.top - margin.bottom;
 		
 	// Formatting both x- and y-axis:
 	var formatyAxis = d3.format(".4n");			

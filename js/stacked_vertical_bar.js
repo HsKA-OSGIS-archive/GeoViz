@@ -32,9 +32,9 @@ in this case e.g. "Average length [m]"
 based on, but enhanced: http://bl.ocks.org/mbostock/3886208
 **/
 function drawStackedVerticalBar(div,filename,attributes,attributes_tooltip,range,y_axis_annotation) {
-var margin = {top: 50, right: 20, bottom: 350, left: 125},
-    width = 1024 - margin.left - margin.right,
-    height = 900 - margin.top - margin.bottom;
+var margin = {top: 50, right: 20, bottom: 300, left: 125},
+    width = 855 - margin.left - margin.right,
+    height = 700 - margin.top - margin.bottom;
 
 var x = d3.scale.ordinal()
     .rangeRoundBands([0, width], .1);

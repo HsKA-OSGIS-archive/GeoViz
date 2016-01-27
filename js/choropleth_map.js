@@ -28,7 +28,7 @@ e.g. ["ID","AVG_VALUE"]
 
 attributes_tooltip:
 Needed for the tooltip of the points (second csv file), array of attribute names inside the csv file that should be displayed when hovering over the points
-e.g.["TYPE","AVG_VALUE","COUNT"]
+e.g.["TYPE","AVG_VALUE","COUNT"], up to five tooltips, for more changes would need to be made
 
 domain:
 Array of numerical values that are needed to specify the classes for the choropleth map, best use the boundaries of the data (e.g. "AVG_VALUE" of the csv file)
@@ -134,7 +134,7 @@ function drawChoroplethMap(div,filenames,attributes_topojson,attribute_choroplet
 		choropleth_var.exit().remove();
 
 		
-		//legend (source: http://stackoverflow.com/questions/21838013/d3-choropleth-map-with-legend)                           
+		//legend:                         
 		var legend = svg.selectAll('g.legendEntry')
 			.data(color.range())
 			.enter()
@@ -151,16 +151,14 @@ function drawChoroplethMap(div,filenames,attributes_topojson,attribute_choroplet
 			.style("stroke", "black")
 			.style("stroke-width", 1)
 			.style("fill", function(d){return d;}); 
-		
-		//the data objects are the fill colors
 
 		legend
 			.append('text')
-			.attr("x", width - 105) //leave 5 pixel space after the <rect>
+			.attr("x", width - 105) //leave space of about 5 pixel after the rectangles
 			.attr("y", function(d, i) {
 				return i * 20;
 			})
-			.attr("dy", "0.8em") //place text one line *below* the x,y point
+			.attr("dy", "0.8em") //place text one line "below" the x,y point
 			.text(function(d,i) {
 				var extent = color.invertExtent(d);
 				//extent will be a two-element array, format it however you want:

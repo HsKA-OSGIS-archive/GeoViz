@@ -33,9 +33,9 @@ based on, but enhanced: http://bl.ocks.org/mbostock/3887051
 **/
 function drawGroupedVerticalBar(div,filename,attributes,attributes_tooltip,range,y_axis_annotation) {
 	
-var margin = {top: 40, right: 50, bottom: 225, left: 50},
-    width = 1024 - margin.left - margin.right,
-    height = 800 - margin.top - margin.bottom;
+var margin = {top: 40, right: 50, bottom: 300, left: 60},
+    width = 855 - margin.left - margin.right,
+    height = 700 - margin.top - margin.bottom;
 
 var x0 = d3.scale.ordinal()
     .rangeRoundBands([0, width], .1);

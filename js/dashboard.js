@@ -58,9 +58,9 @@ function drawDashboard(in_div, in_filename, in_attributes, in_colors){
     
 		// function to handle the histogram part:
 		function histoGram(fD){
-			var hG={},    hGDim = {t: 30, r: 0, b: 200, l: 50};
-			hGDim.w = 700 - hGDim.l - hGDim.r, 
-			hGDim.h = 500 - hGDim.t - hGDim.b;
+			var hG={},    hGDim = {t: 30, r: 0, b: 300, l: 100};
+			hGDim.w = 855 - hGDim.l - hGDim.r, 
+			hGDim.h = 700 - hGDim.t - hGDim.b;
             
 			//create a svg element for the histogram part:
 			var hGsvg = d3.select(div).append("svg")
@@ -100,7 +100,7 @@ function drawDashboard(in_div, in_filename, in_attributes, in_colors){
 				.on("mouseover",mouseover)// mouseover is defined below.
 				.on("mouseout",mouseout);// mouseout is defined below.
             
-			//Create the frequency labels above the rectangles:
+			//Create the labels above the rectangles:
 			bars.append("text").text(function(d){ return d3.format(",")(d[1])})
 				.attr("x", function(d) { return x(d[0])+x.rangeBand()/2; })
 				.attr("y", function(d) { return y(d[1])-5; })
@@ -136,7 +136,7 @@ function drawDashboard(in_div, in_filename, in_attributes, in_colors){
                 .attr("height", function(d) { return hGDim.h - y(d[1]); })
                 .attr("fill", color);
 
-            // transition the frequency labels location and change value:
+            // transition the labels location and change value:
             bars.select("text").transition().duration(500)
                 .text(function(d){ return d3.format(",")(d[1])})
                 .attr("y", function(d) {return y(d[1])-5; });            

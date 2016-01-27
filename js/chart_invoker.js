@@ -2,6 +2,8 @@ console.log("chart_invoker wird geladen");
 
 //#######################################################################################################################################//
 //                                                            Modal content                                                              //
+//	needs to be improved in future versions, possible solutions: use one div and control element for all four modal windows,			 //
+//	pass type of layer, delete child nodes for all divs needed for the visualization using empty() functions, then call used functionss	 //
 //#######################################################################################################################################//
 
 var arrayChartsData = [['button_grouped','grouped'],['button_stacked','stacked'],['button_dual','dual_scale'],['button_sortable','sortable_bar'],['button_dashboard', 'dashboard'],
@@ -344,20 +346,20 @@ function modal_5(){
 		
 		//Choropleth:
 		var 	choro_div = "#choropleth4",
-				choro_filenames = ["./data/processed_data/adm/DEU_adm2_pa_clip_total_statistics2_topo.json","./php/DEU_counties_statistics_php.csv",'./php/ODL_4326_statistics_php.csv'],
+				choro_filenames = ["./data/processed_data/adm/DEU_adm2_pa_clip_total_statistics2_topo.json","./php/DEU_counties_statistics_php.csv",'./php/Bodenluft_4326_statistics_php.csv'],
 				choro_attributes_topojson = ["counties","id"],
-				choro_attribute_choropleth = ["ID_2","AVG_MW_ODL"],
-				choro_attributes_tooltip = ["STANDORT","MESSW_ODL","PETROGRAPH"],
-				choro_domain = [18,35,53,71,88],
+				choro_attribute_choropleth = ["ID_2","AVG_MW_BL"],
+				choro_attributes_tooltip = ["STANDORT","MESSW_BL","PETROGRAPH"],
+				choro_domain = [52, 105, 157, 210, 262],
 				choro_range = ["#1a9641", "#89cb61", "#dbef9d", "#fede9a", "#f59053", "#d7191c"] //gradient now better?
 		
 		//Grouped:
 		var 	grouped_div = "#grouped4",
-				grouped_filename = "./php/BL_4326_statistics_petrograph_php.csv",
+				grouped_filename = "./php/Bodenluft_4326_statistics_petrograph_php.csv",
 				grouped_attributes = ["PETROGRAPH","BL_AVG","BL_MIN","BL_MAX"],	//first: attribute for x-Axis, the following attributes: attribute for y-Axis (bars)
-				grouped_attributes_tooltip = [["ODL_AVG","average value of ODL", "nSv h-1"], ["ODL_MIN","minimum value of ODL", "nSv h-1"], ["ODL_MAX","maximum value of ODL", "nSv h-1"]],
+				grouped_attributes_tooltip = [["BL_AVG","average value in bottom air", "kBq m-3"], ["BL_MIN","minimum value in bottom air", "kBq m-3"], ["BL_MAX","maximum value in bottom air", "kBq m-3"]],
 				grouped_range = ["#98abc5","#6b486b", "#ff8c00"] //; //colors for bars
-				grouped_y_axis_annotation = "ODL msrmnt. [nSv h-1]";
+				grouped_y_axis_annotation = "Bottom air msrmnt. [kBq m-3]";
 		
 		//Dual_Scale:
 		var 	dual_div = "#dual_scale4",
@@ -371,7 +373,7 @@ function modal_5(){
 		var sortable_div = "#sortable_bar4",
 			sortable_filename = "./php/DEU_counties_statistics_php.csv",
 			sortable_attributes = ["NAME_2", "AVG_MW_BL"],
-			sortable_attributes_tooltip = ["average value of BL", "kBq m-3"],
+			sortable_attributes_tooltip = ["average value in bottom air", "kBq m-3"],
 			sortable_y_axis_annotation = "Average BL msrmnt. [kBq m-3]";
 		
 		//reset visualization -> only charts of this type are displayed:
