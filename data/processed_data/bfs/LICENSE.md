@@ -1,0 +1,2 @@
+# License
+These are modified datasets of datasets containing radon measurements provided by the federal office for radiation protection. The given measurements do not represent original values and locations.
